@@ -21,7 +21,15 @@ inline float3 Unity_SafeNormalize(float3 inVec)
     return inVec * rsqrt(dp3);
 }
 
+float4 GetTimeParameters()
+{
+    return float4(_Time.y, _SinTime.w, _CosTime.w, 0);
+}
+#define _TimeParameters GetTimeParameters()
+
 #define SafeNormalize Unity_SafeNormalize
+
+
  
 #include "SpaceTransforms.hlsl"
 #include "StdLib.hlsl"
