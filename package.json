@@ -1,8 +1,7 @@
 {
   "name": "com.z3y.shadergraphex",
-  "description": "",
   "version": "0.0.0",
   "unity": "2019.4",
   "unityRelease": "28f1",
-  "displayName": "ShaderGraph Extended"
+  "displayName": "Shader Graph Extended"
 }

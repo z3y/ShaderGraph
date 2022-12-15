@@ -20,8 +20,8 @@ namespace z3y.ShaderGraphExtended
             // Definition
             displayName = "Unlit Pass",
             referenceName = "SHADERPASS_UNLIT",
-            passInclude = "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/UnlitPass.hlsl",
-            varyingsInclude = "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/Varyings.hlsl",
+            passInclude = "Packages/com.z3y.shader-graph-extended/hlsl/UnlitPass.hlsl",
+            varyingsInclude = "Packages/com.z3y.shader-graph-extended/hlsl/Varyings.hlsl",
             useInPreview = true,
 
             // Port mask
@@ -41,19 +41,14 @@ namespace z3y.ShaderGraphExtended
             // Pass setup
             includes = new List<string>()
             {
-                "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl",
-                "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl",
-                "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl",
-                "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl",
-                "Packages/com.unity.shadergraph/ShaderGraphLibrary/ShaderVariablesFunctions.hlsl"
+                "UnityCG.cginc",
+                "Packages/com.z3y.shader-graph-extended/hlsl/Shims.hlsl"
             },
             pragmas = new List<string>()
             {
-                "prefer_hlslcc gles",
-                "exclude_renderers d3d11_9x",
-                "target 2.0",
-                "multi_compile_fog",
-                "multi_compile_instancing",
+                "target 3.0"
+                //"multi_compile_fog",
+                //"multi_compile_instancing",
             },
             keywords = new KeywordDescriptor[]
             {
