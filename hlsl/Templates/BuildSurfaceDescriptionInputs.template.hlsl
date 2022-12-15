@@ -1,7 +1,7 @@
 SurfaceDescriptionInputs BuildSurfaceDescriptionInputs(Varyings input)
 {
-    SurfaceDescriptionInputs output;
-    ZERO_INITIALIZE(SurfaceDescriptionInputs, output);
+    SurfaceDescriptionInputs output = (SurfaceDescriptionInputs)0;
+
 
 	$SurfaceDescriptionInputs.WorldSpaceNormal: // must use interpolated tangent, bitangent and normal before they are normalized in the pixel shader.
 	$SurfaceDescriptionInputs.WorldSpaceNormal: float3 unnormalizedNormalWS = input.normalWS;

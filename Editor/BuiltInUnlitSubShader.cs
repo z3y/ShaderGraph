@@ -120,7 +120,7 @@ namespace z3y.ShaderGraphExtended
             var activeFields = GetActiveFieldsFromMasterNode(masterNode, pass);
 
             // use standard shader pass generation
-            return GenerationUtils.GenerateShaderPass(masterNode, pass, mode, activeFields, result, sourceAssetDependencyPaths,
+            return GenerationUtilsBuiltIn.GenerateShaderPass(masterNode, pass, mode, activeFields, result, sourceAssetDependencyPaths,
                 BuiltInExtendedGraphResources.s_Dependencies, BuiltInExtendedGraphResources.s_ResourceClassName, BuiltInExtendedGraphResources.s_AssemblyName);
         }
         
