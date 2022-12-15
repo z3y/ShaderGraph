@@ -11,6 +11,10 @@
 #define UNITY_MATRIX_IT_MV transpose(mul(UNITY_MATRIX_I_M, UNITY_MATRIX_I_V))
 #define UNITY_MATRIX_MVP   mul(UNITY_MATRIX_VP, UNITY_MATRIX_M)
 
+#if defined(UNITY_INSTANCING_ENABLED)
+    #define UNITY_ANY_INSTANCING_ENABLED
+#endif
+
 #include "StdLib.hlsl"
 
 //
