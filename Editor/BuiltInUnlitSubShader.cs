@@ -46,9 +46,9 @@ namespace z3y.ShaderGraphExtended
             },
             pragmas = new List<string>()
             {
-                "target 3.0"
+                "target 3.0",
                 //"multi_compile_fog",
-                //"multi_compile_instancing",
+                "multi_compile_instancing",
             },
             keywords = new KeywordDescriptor[]
             {

@@ -12,7 +12,7 @@
 // #define UNITY_MATRIX_MVP   mul(UNITY_MATRIX_VP, UNITY_MATRIX_M)
 
 #if defined(UNITY_INSTANCING_ENABLED)
-    #define UNITY_ANY_INSTANCING_ENABLED
+    #define UNITY_ANY_INSTANCING_ENABLED 1
 #endif
 
 inline float3 Unity_SafeNormalize(float3 inVec)
@@ -20,6 +20,7 @@ inline float3 Unity_SafeNormalize(float3 inVec)
     float dp3 = max(0.001f, dot(inVec, inVec));
     return inVec * rsqrt(dp3);
 }
+#define SafeNormalize Unity_SafeNormalize
 
 float4 GetTimeParameters()
 {
@@ -27,7 +28,6 @@ float4 GetTimeParameters()
 }
 #define _TimeParameters GetTimeParameters()
 
-#define SafeNormalize Unity_SafeNormalize
 
 #if defined (SHADER_API_GAMECORE)
 #include "Packages/com.unity.render-pipelines.gamecore/ShaderLibrary/API/GameCore.hlsl"
