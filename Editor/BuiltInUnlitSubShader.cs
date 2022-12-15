@@ -42,7 +42,7 @@ namespace z3y.ShaderGraphExtended
             includes = new List<string>()
             {
                 "UnityCG.cginc",
-                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl"
+                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
             },
             pragmas = new List<string>()
             {
