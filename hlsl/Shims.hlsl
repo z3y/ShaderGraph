@@ -29,11 +29,38 @@ float4 GetTimeParameters()
 
 #define SafeNormalize Unity_SafeNormalize
 
-
+#if defined (SHADER_API_GAMECORE)
+#include "Packages/com.unity.render-pipelines.gamecore/ShaderLibrary/API/GameCore.hlsl"
+#elif defined(SHADER_API_XBOXONE)
+#include "Packages/com.unity.render-pipelines.xboxone/ShaderLibrary/API/XBoxOne.hlsl"
+#elif defined(SHADER_API_PS4)
+#include "Packages/com.unity.render-pipelines.ps4/ShaderLibrary/API/PSSL.hlsl"
+#elif defined(SHADER_API_PS5)
+#include "Packages/com.unity.render-pipelines.ps5/ShaderLibrary/API/PSSL.hlsl"
+#elif defined(SHADER_API_D3D11)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/D3D11.hlsl"
+#elif defined(SHADER_API_METAL)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Metal.hlsl"
+#elif defined(SHADER_API_VULKAN)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Vulkan.hlsl"
+#elif defined(SHADER_API_SWITCH)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Switch.hlsl"
+#elif defined(SHADER_API_GLCORE)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLCore.hlsl"
+#elif defined(SHADER_API_GLES3)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLES3.hlsl"
+#elif defined(SHADER_API_GLES)
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLES2.hlsl"
+#else
+#error unsupported shader api
+#endif
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Validate.hlsl"
  
 #include "SpaceTransforms.hlsl"
 #include "StdLib.hlsl"
 #include "Functions.hlsl"
+
+
 
 
 
