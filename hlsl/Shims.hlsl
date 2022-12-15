@@ -15,7 +15,18 @@
     #define UNITY_ANY_INSTANCING_ENABLED
 #endif
 
+inline float3 Unity_SafeNormalize(float3 inVec)
+{
+    float dp3 = max(0.001f, dot(inVec, inVec));
+    return inVec * rsqrt(dp3);
+}
+
+#define SafeNormalize Unity_SafeNormalize
+ 
+#include "SpaceTransforms.hlsl"
 #include "StdLib.hlsl"
+
+
 
 //
 // sRGB transfer functions
