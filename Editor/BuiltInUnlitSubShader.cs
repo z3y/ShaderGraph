@@ -20,8 +20,8 @@ namespace z3y.ShaderGraphExtended
             // Definition
             displayName = "Unlit Pass",
             referenceName = "SHADERPASS_UNLIT",
-            passInclude = "Packages/com.z3y.shader-graph-extended/hlsl/UnlitPass.hlsl",
-            varyingsInclude = "Packages/com.z3y.shader-graph-extended/hlsl/Varyings.hlsl",
+            passInclude = "Packages/com.z3y.shadergraphex/hlsl/UnlitPass.hlsl",
+            varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
             useInPreview = true,
 
             // Port mask
@@ -42,7 +42,7 @@ namespace z3y.ShaderGraphExtended
             includes = new List<string>()
             {
                 "UnityCG.cginc",
-                "Packages/com.z3y.shader-graph-extended/hlsl/Shims.hlsl"
+                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl"
             },
             pragmas = new List<string>()
             {
@@ -128,8 +128,8 @@ namespace z3y.ShaderGraphExtended
         {
             if (sourceAssetDependencyPaths != null)
             {
-                // LightWeightPBRSubShader.cs
-                sourceAssetDependencyPaths.Add(AssetDatabase.GUIDToAssetPath("62511ee827d14492a8c78ba0ef167e7f"));
+                // BuiltInUnlitSubShader.cs
+                sourceAssetDependencyPaths.Add(AssetDatabase.GUIDToAssetPath("2cb9502eccfabce4a9a5f3678bbd4486"));
             }
 
             // Master Node data
@@ -142,15 +142,26 @@ namespace z3y.ShaderGraphExtended
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
                 var tagsBuilder = new ShaderStringBuilder(0);
-                surfaceTags.GetTags(tagsBuilder, "BuiltIn");
+                surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
             }
             subShader.Deindent();
             subShader.AddShaderChunk("}", true);
+            
+            /*ICanChangeShaderGUI canChangeShaderGui = masterNode as ICanChangeShaderGUI;
+            if (!canChangeShaderGui.OverrideEnabled)
+            {
+                subShader.AddShaderChunk(@"CustomEditor ""UnityEditor.ShaderGraph.PBRMasterGUI""");
+            }*/
 
             return subShader.GetShaderString(0);
+        }
+
+        private static string RemovePipelineName()
+        {
+            return "";
         }
 
         public bool IsPipelineCompatible(RenderPipelineAsset renderPipelineAsset)
