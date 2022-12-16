@@ -7,8 +7,8 @@ using UnityEditor.ShaderGraph.Internal;
 namespace UnityEditor.ShaderGraph
 {
 
-    [Title("Input", "Texture", "Texel Size")]
-    class Texture2DPropertiesNode : AbstractMaterialNode, IGeneratesBodyCode, IMayRequireMeshUV
+    [Title("Input", "Texture", "Texel Size Array")]
+    class Texture2DArrayPropertiesNode : AbstractMaterialNode, IGeneratesBodyCode, IMayRequireMeshUV
     {
         public const int OutputSlotWId = 0;
         public const int OutputSlotHId = 2;
@@ -24,7 +24,7 @@ namespace UnityEditor.ShaderGraph
 
         public override bool hasPreview { get { return false; } }
 
-        public Texture2DPropertiesNode()
+        public Texture2DArrayPropertiesNode()
         {
             name = "Texel Size";
             UpdateNodeAfterDeserialization();
@@ -39,7 +39,7 @@ namespace UnityEditor.ShaderGraph
             AddSlot(new Vector1MaterialSlot(OutputSlotW2Id, kOutputSlotW2Name, kOutputSlotW2Name, SlotType.Output, 0, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(OutputSlotH2Id, kOutputSlotH2Name, kOutputSlotH2Name, SlotType.Output, 0, ShaderStageCapability.Fragment));
             
-            AddSlot(new Texture2DInputMaterialSlot(TextureInputId, kTextureInputName, kTextureInputName));
+            AddSlot(new Texture2DArrayInputMaterialSlot(TextureInputId, kTextureInputName, kTextureInputName));
             RemoveSlotsNameNotMatching(new[] { OutputSlotWId, OutputSlotHId, TextureInputId, OutputSlotW2Id, OutputSlotH2Id});
         }
 
