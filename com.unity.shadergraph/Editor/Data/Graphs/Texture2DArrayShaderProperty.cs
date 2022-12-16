@@ -28,7 +28,7 @@ namespace UnityEditor.ShaderGraph.Internal
 
         internal override string GetPropertyDeclarationString(string delimiter = ";")
         {
-            return $"TEXTURE2D_ARRAY({referenceName}){delimiter} SAMPLER(sampler{referenceName}){delimiter}";
+            return $"TEXTURE2D_ARRAY({referenceName}){delimiter} SAMPLER(sampler{referenceName}){delimiter} {concretePrecision.ToShaderString()}4 {referenceName}_TexelSize{delimiter}";
         }
 
         internal override string GetPropertyAsArgumentString()
