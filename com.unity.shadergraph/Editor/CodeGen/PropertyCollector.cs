@@ -31,7 +31,8 @@ namespace UnityEditor.ShaderGraph
             }
 
             var batchAll = mode == GenerationMode.Preview;
-            builder.AppendLine("CBUFFER_START(UnityPerMaterial)");
+            // no cbuffer needed
+            //builder.AppendLine("CBUFFER_START(UnityPerMaterial)");
             int instancedCount = 0;
             foreach (var prop in properties.Where(n => batchAll || (n.generatePropertyBlock && n.isBatchable)))
             {
@@ -57,7 +58,8 @@ namespace UnityEditor.ShaderGraph
                 }
                 builder.AppendLine("#endif");
             }
-            builder.AppendLine("CBUFFER_END");
+            // no cbuffer needed
+            //builder.AppendLine("CBUFFER_END");
 
             if (batchAll)
                 return;
