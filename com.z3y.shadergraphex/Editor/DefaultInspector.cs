@@ -31,7 +31,7 @@ namespace z3y.ShaderGraphExtended
         private static bool surfaceInputsFoldout = true;
         private static bool additionalSettingsFoldout = false;
 
-        private int additionalPropertiesStart = 0;
+        private int additionalPropertiesStart = -1;
 
         private int propCount = 0;
 
@@ -62,7 +62,7 @@ namespace z3y.ShaderGraphExtended
 
             if (true)
             {
-                if (surfaceOptionsFoldout == DrawHeaderFoldout(new GUIContent("Rendering Options"), surfaceOptionsFoldout))
+                if (surfaceOptionsFoldout = DrawHeaderFoldout(new GUIContent("Rendering Options"), surfaceOptionsFoldout))
                 {
                     EditorGUI.BeginChangeCheck();
 
@@ -72,6 +72,8 @@ namespace z3y.ShaderGraphExtended
                     {
                         SetupBlendMode(materialEditor, mode);
                     }
+                    
+                    EditorGUILayout.Space();
 
                     DrawPropertyFromIndex(materialEditor, properties, _SrcBlend);
                     DrawPropertyFromIndex(materialEditor, properties, _DstBlend);
@@ -86,15 +88,20 @@ namespace z3y.ShaderGraphExtended
                 }
             }
 
-            if (surfaceInputsFoldout == DrawHeaderFoldout(new GUIContent("Properties"), surfaceInputsFoldout))
+            if (surfaceInputsFoldout = DrawHeaderFoldout(new GUIContent("Properties"), surfaceInputsFoldout))
             {
                 EditorGUILayout.Space();
                 for (int i = 0; i < properties.Length; i++)
                 {
                     var property = properties[i];
+                    
                     if (property.name.Equals("_Cull", StringComparison.Ordinal))
                     {
-                        additionalPropertiesStart = i;
+                        additionalPropertiesStart = i+1;
+                    }
+                    
+                    if (property.name.Equals("_Mode", StringComparison.Ordinal))
+                    {
                         break;
                     }
 
@@ -134,19 +141,22 @@ namespace z3y.ShaderGraphExtended
 
 
 
-            if (additionalSettingsFoldout == DrawHeaderFoldout(new GUIContent("Additional Settings"), additionalSettingsFoldout))
+            if (additionalSettingsFoldout = DrawHeaderFoldout(new GUIContent("Additional Settings"), additionalSettingsFoldout))
             {
                 EditorGUILayout.Space();
-                for (int i = additionalPropertiesStart; i < properties.Length; i++)
+                if (additionalPropertiesStart > 0)
                 {
-                    var property = properties[i];
-
-                    if ((property.flags & MaterialProperty.PropFlags.HideInInspector) != 0)
+                    for (int i = additionalPropertiesStart; i < properties.Length; i++)
                     {
-                        continue;
-                    }
+                        var property = properties[i];
 
-                    materialEditor.ShaderProperty(property, new GUIContent(property.displayName));
+                        if ((property.flags & MaterialProperty.PropFlags.HideInInspector) != 0)
+                        {
+                            continue;
+                        }
+
+                        materialEditor.ShaderProperty(property, new GUIContent(property.displayName));
+                    }
                 }
 
 
