@@ -27,7 +27,60 @@ namespace UnityEditor.ShaderGraph.Drawing
             deleteSelection = DeleteSelectionImplementation;
             RegisterCallback<DragUpdatedEvent>(OnDragUpdatedEvent);
             RegisterCallback<DragPerformEvent>(OnDragPerformEvent);
+            RegisterCallback<MouseDownEvent>(NodeShortcut);
+            RegisterCallback<KeyDownEvent>(NodeShortcutKeyDown);
+            RegisterCallback<KeyUpEvent>(NodeShortcutKeyUp);
+
         }
+
+        #region Shortcuts
+        private void NodeShortcutKeyDown(KeyDownEvent e)
+        {
+            ChangeKeyStates(e.keyCode, true);
+        }
+        
+        private void NodeShortcutKeyUp(KeyUpEvent e)
+        {
+            ChangeKeyStates(e.keyCode, false);
+        }
+
+        private void ChangeKeyStates(KeyCode key, bool isDown)
+        {
+            if (key == KeyCode.Alpha1) keyDown_1 = isDown;
+        }
+
+        private bool keyDown_1;
+        private bool keyDown_2;
+        private bool keyDown_3;
+        private bool keyDown_4;
+
+        void NodeShortcut(MouseDownEvent e)
+        {
+            if (!(e.target is MaterialGraphView) || e.button != (int)MouseButton.LeftMouse)
+            {
+                return;
+            }
+
+            Vector2 mousePosition = e.localMousePosition;
+            
+            if (keyDown_1)
+            {
+                var vector1Node = new Vector1Node();
+                AddNoteAtPosition(vector1Node, mousePosition);
+            }
+        }
+
+        private void AddNoteAtPosition(AbstractMaterialNode node, Vector2 localMousePosition)
+        {
+            graph.owner.RegisterCompleteObjectUndo("Add Node with Shortcut");
+            Vector2 nodePosition = viewTransform.matrix.inverse.MultiplyPoint(localMousePosition);
+            var drawState = node.drawState;
+            drawState.position = new Rect(nodePosition, drawState.position.size);
+            node.drawState = drawState;
+
+            graph.AddNode(node);
+        }
+        #endregion
 
         protected override bool canCopySelection
         {
@@ -693,6 +746,8 @@ namespace UnityEditor.ShaderGraph.Drawing
                 DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
             }
         }
+        
+        
 
         void OnDragPerformEvent(DragPerformEvent e)
         {
