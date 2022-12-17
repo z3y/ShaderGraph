@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEditor.ShaderGraph.Drawing.Controls;
+using UnityEditor.ShaderGraph.Internal;
 
 namespace UnityEditor.ShaderGraph
 {
@@ -104,6 +105,26 @@ namespace UnityEditor.ShaderGraph
             return null;
         }
 
+        private void AppendDefaultShaderProperties(ref PropertyCollector propertyCollector)
+        {
+            var modeProperty = new Vector1ShaderProperty
+            {
+                displayName = "Rendering Mode",
+                overrideReferenceName = "_Mode"
+            };
+            var scrBlendProperty = new Vector1ShaderProperty
+            {
+                displayName = "Source Blend",
+                overrideReferenceName = "_SrcBlend"
+            };
+
+            scrBlendProperty.attributes += "[Enum(UnityEngine.Rendering.BlendMode)]";
+
+            propertyCollector.AddShaderProperty(modeProperty);
+            propertyCollector.AddShaderProperty(scrBlendProperty);
+
+        }
+
         public sealed override string GetShader(GenerationMode mode, string outputName, out List<PropertyCollector.TextureInfo> configuredTextures, List<string> sourceAssetDependencyPaths = null)
         {
             var activeNodeList = Graphing.ListPool<AbstractMaterialNode>.Get();
@@ -127,6 +148,8 @@ namespace UnityEditor.ShaderGraph
 
             foreach (var activeNode in activeNodeList.OfType<AbstractMaterialNode>())
                 activeNode.CollectShaderProperties(shaderProperties, mode);
+
+            AppendDefaultShaderProperties(ref shaderProperties);
 
             var finalShader = new ShaderStringBuilder();
             finalShader.AppendLine(@"Shader ""{0}""", outputName);

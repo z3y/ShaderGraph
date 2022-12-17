@@ -114,7 +114,7 @@ namespace z3y.ShaderGraphExtended
 
         private static bool GenerateShaderPass(UnlitMasterNode masterNode, ShaderPass pass, GenerationMode mode, ShaderGenerator result, List<string> sourceAssetDependencyPaths)
         {
-            //UniversalShaderGraphUtilities.SetRenderState(masterNode.surfaceType, masterNode.alphaMode, masterNode.twoSided.isOn, ref pass);
+            ShaderGraphExtendedUtils.SetRenderState(masterNode.surfaceType, masterNode.alphaMode, masterNode.twoSided.isOn, ref pass, ref result);
 
             // apply master node options to active fields
             var activeFields = GetActiveFieldsFromMasterNode(masterNode, pass);

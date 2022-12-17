@@ -15,6 +15,15 @@ namespace UnityEditor.ShaderGraph.Internal
         
         [SerializeField]
         private bool m_GPUInstanced = false;
+        
+        [SerializeField]
+        private string m_Attributes = string.Empty;
+
+        public string attributes
+        {
+            get { return m_Attributes; }
+            set => m_Attributes = value;
+        }
 
         public bool gpuInstanced
         {
@@ -48,7 +57,16 @@ namespace UnityEditor.ShaderGraph.Internal
             set => m_Hidden = value;
         }
 
-        internal string hideTagString => hidden ? "[HideInInspector]" : "";
+        // hijack the hideTagString to add attributes to all properties that already implement this
+        internal string hideTagString
+        {
+            get
+            {
+                var att = attributes;
+                if (hidden) att += "[HideInInspector]";
+                return att;
+            }
+        }
 
         internal virtual string GetPropertyBlockString()
         {
