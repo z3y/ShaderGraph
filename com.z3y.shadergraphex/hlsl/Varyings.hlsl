@@ -1,7 +1,3 @@
-#if defined(SHADERPASS_SHADOWCASTER)
-    float3 _LightDirection;
-#endif
-
 Varyings BuildVaryings(Attributes input)
 {
     Varyings output = (Varyings)0;
@@ -58,13 +54,17 @@ Varyings BuildVaryings(Attributes input)
 #endif
 
 #if defined(SHADERPASS_SHADOWCASTER)
-    // Define shadow pass specific clip position for Universal
-    output.positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
-    #if UNITY_REVERSED_Z
-        output.positionCS.z = min(output.positionCS.z, output.positionCS.w * UNITY_NEAR_CLIP_VALUE);
-    #else
-        output.positionCS.z = max(output.positionCS.z, output.positionCS.w * UNITY_NEAR_CLIP_VALUE);
-    #endif
+
+    #define v input // unity macros lmao
+    #define vertex positionOS
+    #define normal normalOS
+    output.positionCS = UnityClipSpaceShadowCasterPos(input.positionOS, input.normalOS);
+    output.positionCS = UnityApplyLinearShadowBias(output.positionCS);
+    TRANSFER_SHADOW_CASTER_NOPOS(output, output.positionCS);
+    #undef v
+    #undef normal
+    #undef positionOS
+
 #elif defined(SHADERPASS_META)
     output.positionCS = MetaVertexPosition(float4(input.positionOS, 0), input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
 #else

@@ -6,7 +6,7 @@ PackedVaryings vert(Attributes input)
     return packedOutput;
 }
 
-half4 frag(PackedVaryings packedInput) : SV_TARGET 
+half frag(PackedVaryings packedInput) : SV_TARGET 
 {    
     Varyings unpacked = UnpackVaryings(packedInput);
     UNITY_SETUP_INSTANCE_ID(unpacked);
@@ -15,8 +15,18 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     SurfaceDescriptionInputs surfaceDescriptionInputs = BuildSurfaceDescriptionInputs(unpacked);
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
 
-    #if defined(_ALPHATEST_ON) || defined(_ALPHAPREMULTIPLY_ON) || defined(_ALPHAFADE_ON)
+    #ifdef _ALPHATEST_ON
         clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
+    #endif
+
+   // #ifdef _ALPHAPREMULTIPLY_ON
+    // for lit
+        //surf.alpha = lerp(surf.alpha, 1.0, surf.metallic);
+    //#endif
+
+    #if defined(_ALPHAPREMULTIPLY_ON) || defined(_ALPHAFADE_ON)
+        half dither = Unity_Dither(surfaceDescription.Alpha, unpacked.positionCS.xy);
+        if (dither < 0.0) discard;
     #endif
 
     return 0;

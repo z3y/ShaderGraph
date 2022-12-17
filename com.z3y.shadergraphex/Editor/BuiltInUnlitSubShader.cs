@@ -60,7 +60,7 @@ namespace z3y.ShaderGraphExtended
         {
             // Definition
             displayName = "SHADOWCASTER",
-            referenceName = "SHADOWCASTER",
+            referenceName = "SHADERPASS_SHADOWCASTER",
             passInclude = "Packages/com.z3y.shadergraphex/hlsl/ShadowCasterPass.hlsl",
             varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
             useInPreview = true,
@@ -68,7 +68,8 @@ namespace z3y.ShaderGraphExtended
             // Port mask
             vertexPorts = new List<int>()
             {
-                UnlitMasterNode.PositionSlotId
+                UnlitMasterNode.PositionSlotId,
+                UnlitMasterNode.VertNormalSlotId,
             },
             pixelPorts = new List<int>
             {
@@ -170,8 +171,6 @@ namespace z3y.ShaderGraphExtended
 
         private static bool GenerateShaderPass(UnlitMasterNode masterNode, ShaderPass pass, GenerationMode mode, ShaderGenerator result, List<string> sourceAssetDependencyPaths)
         {
-            ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(masterNode.surfaceType, masterNode.alphaMode, masterNode.twoSided.isOn, ref pass, ref result);
-
             // apply master node options to active fields
             var activeFields = GetActiveFieldsFromMasterNode(masterNode, pass);
 
@@ -203,6 +202,7 @@ namespace z3y.ShaderGraphExtended
                 surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
+                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_UnlitPass, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
             }
             
@@ -214,6 +214,7 @@ namespace z3y.ShaderGraphExtended
                 surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
+                ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
             }
             

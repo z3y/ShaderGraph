@@ -26,5 +26,19 @@ namespace z3y.ShaderGraphExtended
             pass.BlendOverride = "Blend [_SrcBlend] [_DstBlend]";
 
         }
+        
+        public static void SetRenderStateShadowCasterPass(SurfaceType surfaceType, AlphaMode alphaMode, bool twoSided, ref ShaderPass pass, ref ShaderGenerator result)
+        {
+            var options = ShaderGenerator.GetMaterialOptions(surfaceType, alphaMode, twoSided);
+            
+
+            pass.ZWriteOverride = "ZWrite On";
+
+
+            pass.CullOverride = "Cull [_Cull]";
+
+            pass.ZTestOverride = "ZTest LEqual";
+
+        }
     }
 }
