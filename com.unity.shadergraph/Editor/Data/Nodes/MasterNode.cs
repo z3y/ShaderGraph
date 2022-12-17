@@ -110,19 +110,58 @@ namespace UnityEditor.ShaderGraph
             var modeProperty = new Vector1ShaderProperty
             {
                 displayName = "Rendering Mode",
-                overrideReferenceName = "_Mode"
+                overrideReferenceName = "_Mode",
+                attributes = "[Enum(Opaque, 0, Cutout, 1, Fade, 2, Transparent, 3, Additive, 4, Multiply, 5)]",
+                value = 0
             };
+            
             var scrBlendProperty = new Vector1ShaderProperty
             {
                 displayName = "Source Blend",
-                overrideReferenceName = "_SrcBlend"
+                overrideReferenceName = "_SrcBlend",
+                attributes = "[Enum(UnityEngine.Rendering.BlendMode)]",
+                value = 1
             };
-
-            scrBlendProperty.attributes += "[Enum(UnityEngine.Rendering.BlendMode)]";
+            
+            var dstBlendProperty = new Vector1ShaderProperty
+            {
+                displayName = "Destination Blend",
+                overrideReferenceName = "_DstBlend",
+                attributes = "[Enum(UnityEngine.Rendering.BlendMode)]",
+                value = 0
+            };
+            
+            var zWriteProperty = new Vector1ShaderProperty
+            {
+                displayName = "ZWrite",
+                overrideReferenceName = "_ZWrite",
+                attributes = "[Enum(Off, 0, On, 1)]",
+                value = 1
+            };
+            
+            var alphaToMaskProperty = new Vector1ShaderProperty
+            {
+                displayName = "AlphaToMask",
+                overrideReferenceName = "_AlphaToMask",
+                attributes = "[Enum(Off, 0, On, 1)]",
+                value = 0
+            };
+            
+            var cullProperty = new Vector1ShaderProperty
+            {
+                displayName = "Cull",
+                overrideReferenceName = "_Cull",
+                attributes = "[Enum(UnityEngine.Rendering.CullMode)]",
+                value = 2
+            };
+            
 
             propertyCollector.AddShaderProperty(modeProperty);
             propertyCollector.AddShaderProperty(scrBlendProperty);
-
+            propertyCollector.AddShaderProperty(dstBlendProperty);
+            propertyCollector.AddShaderProperty(zWriteProperty);
+            propertyCollector.AddShaderProperty(alphaToMaskProperty);
+            propertyCollector.AddShaderProperty(cullProperty);
         }
 
         public sealed override string GetShader(GenerationMode mode, string outputName, out List<PropertyCollector.TextureInfo> configuredTextures, List<string> sourceAssetDependencyPaths = null)
