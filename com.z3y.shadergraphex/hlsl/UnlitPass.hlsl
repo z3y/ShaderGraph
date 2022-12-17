@@ -27,7 +27,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half4 finalColor = half4(surfaceDescription.Color, surfaceDescription.Alpha);
 
     #ifdef FOG_ANY
-        UNITY_APPLY_FOG(packedInput.fogCoord, finalColor);
+        UNITY_APPLY_FOG(unpacked.fogCoord, finalColor);
     #endif
 
     return finalColor;
