@@ -51,6 +51,16 @@ namespace UnityEditor.ShaderGraph.Drawing
                     field.RegisterValueChangedCallback(ChangeRenderingMode);
                 });
             });
+            
+            m_PropertySheet.Add(new PropertyRow(new Label("Alpha To Coverage")), (row) =>
+            {
+                var alphaToCoverage = new Toggle();
+                row.Add(alphaToCoverage, (toggle) =>
+                {
+                    toggle.value = m_MasterNode.m_AlphaToCoverage;
+                    toggle.OnToggleChanged(ChangeAlphaToCoverageEvent);
+                });
+            });
 
             Toggle enabledToggle = new Toggle();
             m_PropertySheet.Add(new PropertyRow(new Label("Override ShaderGUI")), (row) =>
@@ -84,13 +94,19 @@ namespace UnityEditor.ShaderGraph.Drawing
             m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Override Enabled Change");
             ProcessOverrideEnabledToggle(evt.newValue);
         }
+        
+        private void ChangeAlphaToCoverageEvent(ChangeEvent<bool> evt)
+        {
+            m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Change A2C Value");
+            m_MasterNode.m_AlphaToCoverage = evt.newValue;
+        }
 
         private void ChangeShaderGUIOverride(ChangeEvent<string> evt)
         {
             ProcessShaderGUIField(evt.newValue, true);
         }
-        
-                
+
+
         void ChangeRenderingMode(ChangeEvent<Enum> evt)
         {
             if (Equals(m_MasterNode.renderMode, evt.newValue))

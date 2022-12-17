@@ -78,6 +78,9 @@ namespace UnityEditor.ShaderGraph
                 Dirty(ModificationScope.Graph);
             }
         }
+        
+        [SerializeField]
+        public bool m_AlphaToCoverage = true;
 
         public Guid guid
         {

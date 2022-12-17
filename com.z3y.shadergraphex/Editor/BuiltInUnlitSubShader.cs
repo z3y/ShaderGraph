@@ -54,6 +54,7 @@ namespace z3y.ShaderGraphExtended
             {
                 defaultModeKeywords
             },
+            
         };
         
         ShaderPass m_ShadowCaster = new ShaderPass
@@ -202,7 +203,7 @@ namespace z3y.ShaderGraphExtended
                 surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
-                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_UnlitPass, ref subShader);
+                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode, ref m_UnlitPass, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
             }
             
