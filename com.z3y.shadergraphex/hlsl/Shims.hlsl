@@ -17,6 +17,10 @@
     #define UNITY_ANY_INSTANCING_ENABLED 1
 #endif
 
+#if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
+    #define FOG_ANY
+#endif
+
 inline float3 Unity_SafeNormalize(float3 inVec)
 {
     float dp3 = max(0.001f, dot(inVec, inVec));

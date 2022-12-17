@@ -107,6 +107,10 @@ Varyings BuildVaryings(Attributes input)
     output.fogFactorAndVertexLight = half4(fogFactor, vertexLight);
 #endif
 
+#ifdef FOG_ANY
+    UNITY_TRANSFER_FOG(output, output.positionCS);
+#endif
+
 #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
     output.shadowCoord = GetShadowCoord(vertexInput);
 #endif

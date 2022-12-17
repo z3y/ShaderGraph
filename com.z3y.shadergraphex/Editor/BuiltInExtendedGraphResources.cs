@@ -75,8 +75,8 @@ namespace z3y.ShaderGraphExtended
             Vector2 lightmapUV;
             [Optional][PreprocessorIf("!defined(LIGHTMAP_ON)")]
             Vector3 sh;
-            [Optional]
-            Vector4 fogFactorAndVertexLight;
+            [Semantic("FOG_COORD")][PreprocessorIf("defined(FOG_ANY)")]
+            float fogCoord;
             [Optional]
             Vector4 shadowCoord;
             [Semantic("CUSTOM_INSTANCE_ID")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")]
