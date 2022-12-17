@@ -78,6 +78,12 @@ namespace z3y.ShaderGraphExtended
             // Must be executed before types are built
             foreach (var instance in activeFields.all.instances)
                 ShaderSpliceUtil.ApplyDependencies(instance, dependencies);
+            
+            // Grab Pass
+            if (graphRequirements.baseInstance.requirements.requiresCameraOpaqueTexture)
+            {
+                result.AddShaderChunk("GrabPass {\"_CameraOpaqueTexture\"}", true);
+            }
 
             // --------------------------------------------------
             // Pass Setup

@@ -77,9 +77,18 @@ float shadergraph_SampleSceneDepth(float2 uv)
     return 1;
 }
 
+#ifdef REQUIRE_OPAQUE_TEXTURE
+    TEXTURE2D(_CameraOpaqueTexture);
+    SAMPLER(sampler_CameraOpaqueTexture);
+#endif
+
 float3 shadergraph_SampleSceneColor(float2 uv)
 {
-    return 0;
+    #ifdef REQUIRE_OPAQUE_TEXTURE
+        return SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv);
+    #else
+        return 0;
+    #endif
 }
 
 float3 shadergraph_BakedGI(float3 positionWS, float3 normalWS, float2 uvStaticLightmap, float2 uvDynamicLightmap, bool applyScaling)
