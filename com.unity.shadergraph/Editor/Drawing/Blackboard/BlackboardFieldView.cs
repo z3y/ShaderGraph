@@ -118,6 +118,22 @@ namespace UnityEditor.ShaderGraph.Drawing
 
                 AddRow("Reference", m_ReferenceNameField, input.isRenamable);
             }
+            
+            // attributes drawer
+            if (input is AbstractShaderProperty property)
+            {
+                var drawerText = new TextField(512, false, false, ' ') { isDelayed = true };
+                drawerText.styleSheets.Add(Resources.Load<StyleSheet>("Styles/PropertyNameReferenceField"));
+                drawerText.value = property.attributes;
+                
+                drawerText.RegisterValueChangedCallback(evt =>
+                {
+                    property.attributes = evt.newValue;
+                });
+                
+                AddRow("Attributes", drawerText, input.isRenamable);
+            }
+            
         }
 
         public abstract void BuildCustomFields(ShaderInput input);
