@@ -129,7 +129,7 @@ namespace z3y.ShaderGraphExtended
             if (sourceAssetDependencyPaths != null)
             {
                 // BuiltInUnlitSubShader.cs
-                sourceAssetDependencyPaths.Add(AssetDatabase.GUIDToAssetPath("2cb9502eccfabce4a9a5f3678bbd4486"));
+                //sourceAssetDependencyPaths.Add(AssetDatabase.GUIDToAssetPath("2cb9502eccfabce4a9a5f3678bbd4486"));
             }
 
             // Master Node data
