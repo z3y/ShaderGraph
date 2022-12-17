@@ -12,6 +12,7 @@ namespace UnityEditor.ShaderGraph.Internal
         internal ColorShaderProperty()
         {
             displayName = "Color";
+            value = Color.white;
         }
         
         public override PropertyType propertyType => PropertyType.Color;
