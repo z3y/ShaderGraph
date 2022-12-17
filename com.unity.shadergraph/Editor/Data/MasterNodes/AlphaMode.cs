@@ -8,7 +8,7 @@ namespace UnityEditor.ShaderGraph
         Transparent
     }
     
-    enum SurfaceMode
+    enum RenderMode
     {
         Opaque,
         Cutout,

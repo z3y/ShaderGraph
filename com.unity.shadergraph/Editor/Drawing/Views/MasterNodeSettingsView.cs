@@ -45,9 +45,9 @@ namespace UnityEditor.ShaderGraph.Drawing
             
             m_PropertySheet.Add(new PropertyRow(new Label("Rendering Mode")), (row) =>
             {
-                row.Add(new EnumField(SurfaceMode.Opaque), (field) =>
+                row.Add(new EnumField(RenderMode.Opaque), (field) =>
                 {
-                    field.value = m_MasterNode.surfaceMode;
+                    field.value = m_MasterNode.renderMode;
                     field.RegisterValueChangedCallback(ChangeRenderingMode);
                 });
             });
@@ -93,11 +93,11 @@ namespace UnityEditor.ShaderGraph.Drawing
                 
         void ChangeRenderingMode(ChangeEvent<Enum> evt)
         {
-            if (Equals(m_MasterNode.surfaceMode, evt.newValue))
+            if (Equals(m_MasterNode.renderMode, evt.newValue))
                 return;
 
             m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Rendering Mode Change");
-            m_MasterNode.surfaceMode = (SurfaceMode)evt.newValue;
+            m_MasterNode.renderMode = (RenderMode)evt.newValue;
         }
 
         private void ProcessOverrideEnabledToggle(bool newValue)

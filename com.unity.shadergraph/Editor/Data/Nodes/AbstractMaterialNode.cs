@@ -64,9 +64,9 @@ namespace UnityEditor.ShaderGraph
         }
         
         [SerializeField]
-        SurfaceMode m_SurfaceMode;
+        RenderMode m_SurfaceMode;
 
-        public SurfaceMode surfaceMode
+        public RenderMode renderMode
         {
             get { return m_SurfaceMode; }
             set

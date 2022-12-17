@@ -107,12 +107,13 @@ namespace UnityEditor.ShaderGraph
 
         private void AppendDefaultShaderProperties(ref PropertyCollector propertyCollector)
         {
+
             var modeProperty = new Vector1ShaderProperty
             {
                 displayName = "Rendering Mode",
                 overrideReferenceName = "_Mode",
-                attributes = "[Enum(UnityEditor.ShaderGraph.SurfaceMode)]",
-                value = 0
+                attributes = "[Enum(UnityEditor.ShaderGraph.RenderMode)]",
+                value = (int)renderMode
             };
             
             
