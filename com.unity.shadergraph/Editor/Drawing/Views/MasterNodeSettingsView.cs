@@ -42,6 +42,15 @@ namespace UnityEditor.ShaderGraph.Drawing
         protected PropertySheet GetShaderGUIOverridePropertySheet()
         {
             m_PropertySheet = new PropertySheet();
+            
+            m_PropertySheet.Add(new PropertyRow(new Label("Rendering Mode")), (row) =>
+            {
+                row.Add(new EnumField(SurfaceMode.Opaque), (field) =>
+                {
+                    field.value = m_MasterNode.surfaceMode;
+                    field.RegisterValueChangedCallback(ChangeRenderingMode);
+                });
+            });
 
             Toggle enabledToggle = new Toggle();
             m_PropertySheet.Add(new PropertyRow(new Label("Override ShaderGUI")), (row) =>
@@ -79,6 +88,16 @@ namespace UnityEditor.ShaderGraph.Drawing
         private void ChangeShaderGUIOverride(ChangeEvent<string> evt)
         {
             ProcessShaderGUIField(evt.newValue, true);
+        }
+        
+                
+        void ChangeRenderingMode(ChangeEvent<Enum> evt)
+        {
+            if (Equals(m_MasterNode.surfaceMode, evt.newValue))
+                return;
+
+            m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Rendering Mode Change");
+            m_MasterNode.surfaceMode = (SurfaceMode)evt.newValue;
         }
 
         private void ProcessOverrideEnabledToggle(bool newValue)

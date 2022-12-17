@@ -59,22 +59,6 @@ namespace UnityEditor.ShaderGraph
                 Dirty(ModificationScope.Graph);
             }
         }
-        
-        [SerializeField]
-        SurfaceMode m_SurfaceMode;
-
-        public SurfaceMode surfaceMode
-        {
-            get { return m_SurfaceMode; }
-            set
-            {
-                if (m_SurfaceMode == value)
-                    return;
-
-                m_SurfaceMode = value;
-                Dirty(ModificationScope.Graph);
-            }
-        }
 
         [SerializeField]
         bool m_TwoSided;

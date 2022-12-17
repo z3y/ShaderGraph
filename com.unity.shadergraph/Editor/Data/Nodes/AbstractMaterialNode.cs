@@ -62,6 +62,22 @@ namespace UnityEditor.ShaderGraph
             if (m_OnModified != null)
                 m_OnModified(this, scope);
         }
+        
+        [SerializeField]
+        SurfaceMode m_SurfaceMode;
+
+        public SurfaceMode surfaceMode
+        {
+            get { return m_SurfaceMode; }
+            set
+            {
+                if (m_SurfaceMode == value)
+                    return;
+
+                m_SurfaceMode = value;
+                Dirty(ModificationScope.Graph);
+            }
+        }
 
         public Guid guid
         {
