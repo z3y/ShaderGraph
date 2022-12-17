@@ -86,6 +86,8 @@ namespace UnityEditor.ShaderGraph
             if (instancedCount > 0)
             {
                 builder.AppendLine("#if defined(UNITY_DOTS_INSTANCING_ENABLED)");
+                builder.AppendLine("UNITY_INSTANCING_CBUFFER_START(unity_Builtins0)");
+
                 builder.AppendLine("#define SHADER_GRAPH_GENERATED");
                 builder.Append("#define DOTS_CUSTOM_ADDITIONAL_MATERIAL_VARS\t");
 
@@ -112,6 +114,8 @@ namespace UnityEditor.ShaderGraph
                     }
                 }
             }
+            builder.AppendLine("UNITY_INSTANCING_CBUFFER_END");
+
             builder.AppendLine("#endif");
             return builder.ToString();
         }

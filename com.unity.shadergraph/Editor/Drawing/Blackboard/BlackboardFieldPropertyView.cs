@@ -99,7 +99,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     property.gpuInstanced = evt.newValue;
                     DirtyNodes(ModificationScope.Graph);
                 });
-                AddRow("Hybrid Instanced (experimental)", gpuInstancedToogle);
+                AddRow("GPU Instanced", gpuInstancedToogle);
             }
 
         }
