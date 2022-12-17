@@ -91,7 +91,7 @@ namespace UnityEditor.ShaderGraph
                 builder.AppendLine("UNITY_INSTANCING_BUFFER_START(InstancedProps)");
 
                 builder.AppendLine("#define SHADER_GRAPH_GENERATED");
-                builder.Append("#define DOTS_CUSTOM_ADDITIONAL_MATERIAL_VARS\t");
+               // builder.Append("#define DOTS_CUSTOM_ADDITIONAL_MATERIAL_VARS\t");
 
                 int count = 0;
                 foreach (var prop in properties.Where(n => batchAll || (n.generatePropertyBlock && n.isBatchable)))
@@ -100,7 +100,7 @@ namespace UnityEditor.ShaderGraph
                     {
                         string varName = $"{prop.referenceName}";
                         string sType = prop.concreteShaderValueType.ToShaderString(prop.concretePrecision);
-                        builder.Append("UNITY_DEFINE_INSTANCED_PROP({0}, {1})", sType, varName);
+                        builder.AppendLine("UNITY_DEFINE_INSTANCED_PROP({0}, {1})", sType, varName);
                         if (count < instancedCount - 1)
                             builder.Append("\\");
                         builder.AppendLine("");
@@ -112,7 +112,7 @@ namespace UnityEditor.ShaderGraph
                     if (prop.gpuInstanced)
                     {
                         string varName = $"{prop.referenceName}";
-                        builder.AppendLine("#define {0} UNITY_ACCESS_INSTANCED_PROP(InstancedProps, {1})", prop.referenceName, varName);
+                        builder.AppendLine("#define {0} UNITY_ACCESS_INSTANCED_PROP(InstancedProps, {1})", prop.referenceName + "_Array", varName);
                     }
                 }
             }

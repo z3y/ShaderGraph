@@ -120,46 +120,53 @@ namespace UnityEditor.ShaderGraph
             var property = owner.properties.FirstOrDefault(x => x.guid == propertyGuid);
             if (property == null)
                 return;
+
+            var referenceName = property.referenceName;
+            if (property.gpuInstanced)
+            {
+                referenceName += "_Array";
+            }
             
             switch(property.propertyType)
             {
                 case PropertyType.Boolean:
-                    sb.AppendLine($"$precision {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Vector1:
-                    sb.AppendLine($"$precision {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Vector2:
-                    sb.AppendLine($"$precision2 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision2 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Vector3:
-                    sb.AppendLine($"$precision3 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision3 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Vector4:
-                    sb.AppendLine($"$precision4 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision4 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Color:
-                    sb.AppendLine($"$precision4 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision4 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Matrix2:
-                    sb.AppendLine($"$precision2x2 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision2x2 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Matrix3:
-                    sb.AppendLine($"$precision3x3 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision3x3 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Matrix4:
-                    sb.AppendLine($"$precision4x4 {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"$precision4x4 {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.SamplerState:
-                    sb.AppendLine($"SamplerState {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                    sb.AppendLine($"SamplerState {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
                 case PropertyType.Gradient:
                 if(generationMode == GenerationMode.Preview)
-                        sb.AppendLine($"Gradient {GetVariableNameForSlot(OutputSlotId)} = {GradientUtil.GetGradientForPreview(property.referenceName)};");
+                        sb.AppendLine($"Gradient {GetVariableNameForSlot(OutputSlotId)} = {GradientUtil.GetGradientForPreview(referenceName)};");
                 else
-                        sb.AppendLine($"Gradient {GetVariableNameForSlot(OutputSlotId)} = {property.referenceName};");
+                        sb.AppendLine($"Gradient {GetVariableNameForSlot(OutputSlotId)} = {referenceName};");
                     break;
             }
+            
         }
 
         public override string GetVariableNameForSlot(int slotId)
