@@ -161,7 +161,7 @@ namespace z3y.ShaderGraphExtended
         
         public static void ApplyChanges(Material m)
         {
-            SetupGIFlags(m.GetFloat("_EmissionToggle"), m);
+            if (m.HasProperty("_Emission")) SetupGIFlags(m.GetFloat("_Emission"), m);
 
             int mode = (int)m.GetFloat("_Mode");
             m.ToggleKeyword("_ALPHATEST_ON", mode == 1);
