@@ -32,6 +32,8 @@ namespace UnityEditor.ShaderGraph.Internal
         public string ZWriteOverride;
         public string ColorMaskOverride;
         public string ZClipOverride;
+        public string AlphaToMaskOverride; //TODO: Implement
+
         public List<string> StencilOverride;
     }
 }
