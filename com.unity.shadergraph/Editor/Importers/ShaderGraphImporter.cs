@@ -9,6 +9,7 @@ using UnityEditor.Experimental.AssetImporters;
 using UnityEditor.Graphing;
 using UnityEditor.Graphing.Util;
 using UnityEditor.ShaderGraph.Internal;
+using z3y.ShaderGraphExtended;
 using Object = System.Object;
 
 namespace UnityEditor.ShaderGraph
@@ -143,8 +144,8 @@ Shader ""Hidden/GraphErrorShader2""
             if (defaultMaterial != null)
             {
                 defaultMaterial.name = "Material";
+                DefaultInspector.ApplyChanges(defaultMaterial);
                 ctx.AddObjectToAsset("DefaultMaterial", defaultMaterial);
-
             }
 
 
