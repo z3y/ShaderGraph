@@ -48,7 +48,9 @@ namespace UnityEditor.ShaderGraph
                 foreach (var prop in properties.Where(n => batchAll || (n.generatePropertyBlock && n.isBatchable)))
                 {
                     if (prop.gpuInstanced)
+                    {
                         builder.AppendLine(prop.GetPropertyDeclarationString("_dummy;"));
+                    }
                 }
                 builder.AppendLine("#else");
                 foreach (var prop in properties.Where(n => batchAll || (n.generatePropertyBlock && n.isBatchable)))
@@ -86,7 +88,7 @@ namespace UnityEditor.ShaderGraph
             if (instancedCount > 0)
             {
                 builder.AppendLine("#if defined(UNITY_DOTS_INSTANCING_ENABLED)");
-                builder.AppendLine("UNITY_INSTANCING_CBUFFER_START(unity_Builtins0)");
+                builder.AppendLine("UNITY_INSTANCING_BUFFER_START(InstancedProps)");
 
                 builder.AppendLine("#define SHADER_GRAPH_GENERATED");
                 builder.Append("#define DOTS_CUSTOM_ADDITIONAL_MATERIAL_VARS\t");
@@ -96,7 +98,7 @@ namespace UnityEditor.ShaderGraph
                 {
                     if (prop.gpuInstanced)
                     {
-                        string varName = $"{prop.referenceName}_Array";
+                        string varName = $"{prop.referenceName}";
                         string sType = prop.concreteShaderValueType.ToShaderString(prop.concretePrecision);
                         builder.Append("UNITY_DEFINE_INSTANCED_PROP({0}, {1})", sType, varName);
                         if (count < instancedCount - 1)
@@ -109,12 +111,12 @@ namespace UnityEditor.ShaderGraph
                 {
                     if (prop.gpuInstanced)
                     {
-                        string varName = $"{prop.referenceName}_Array";
-                        builder.AppendLine("#define {0} UNITY_ACCESS_INSTANCED_PROP(unity_Builtins0, {1})", prop.referenceName, varName);
+                        string varName = $"{prop.referenceName}";
+                        builder.AppendLine("#define {0} UNITY_ACCESS_INSTANCED_PROP(InstancedProps, {1})", prop.referenceName, varName);
                     }
                 }
             }
-            builder.AppendLine("UNITY_INSTANCING_CBUFFER_END");
+            builder.AppendLine("UNITY_INSTANCING_BUFFER_END(InstancedProps)");
 
             builder.AppendLine("#endif");
             return builder.ToString();

@@ -64,11 +64,12 @@ Pass
     $features.graphVertex:              #define FEATURES_GRAPH_VERTEX
     $splice(PassInstancing)
     $splice(GraphDefines)
-    $splice(DotsInstancingVars)
 
     // Includes
     $splice(PassIncludes)
 
+    $splice(DotsInstancingVars)
+    
     // --------------------------------------------------
     // Graph
 
