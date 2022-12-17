@@ -47,11 +47,17 @@ namespace UnityEditor.ShaderGraph.Drawing
         private void ChangeKeyStates(KeyCode key, bool isDown)
         {
             if (key == KeyCode.Alpha1) keyDown_1 = isDown;
+            if (key == KeyCode.Alpha2) keyDown_2 = isDown;
+            if (key == KeyCode.Alpha3) keyDown_3 = isDown;
+            if (key == KeyCode.V) keyDown_V = isDown;
+            if (key == KeyCode.Alpha4) keyDown_4 = isDown;
+
         }
 
         private bool keyDown_1;
         private bool keyDown_2;
         private bool keyDown_3;
+        private bool keyDown_V;
         private bool keyDown_4;
 
         void NodeShortcut(MouseDownEvent e)
@@ -65,13 +71,14 @@ namespace UnityEditor.ShaderGraph.Drawing
             
             if (keyDown_1)
             {
-                var vector1Node = new Vector1Node();
-                AddNoteAtPosition(vector1Node, mousePosition);
+                AddNodeAtPosition<Vector1Node>(mousePosition);
             }
         }
 
-        private void AddNoteAtPosition(AbstractMaterialNode node, Vector2 localMousePosition)
+        private void AddNodeAtPosition<T>(Vector2 localMousePosition) where T : AbstractMaterialNode, new()
         {
+            var node = new T();
+
             graph.owner.RegisterCompleteObjectUndo("Add Node with Shortcut");
             Vector2 nodePosition = viewTransform.matrix.inverse.MultiplyPoint(localMousePosition);
             var drawState = node.drawState;
