@@ -149,12 +149,11 @@ namespace z3y.ShaderGraphExtended
             }
             subShader.Deindent();
             subShader.AddShaderChunk("}", true);
-            
-            /*ICanChangeShaderGUI canChangeShaderGui = masterNode as ICanChangeShaderGUI;
-            if (!canChangeShaderGui.OverrideEnabled)
+
+            if (masterNode is ICanChangeShaderGUI canChangeShaderGui && !canChangeShaderGui.OverrideEnabled)
             {
-                subShader.AddShaderChunk(@"CustomEditor ""UnityEditor.ShaderGraph.PBRMasterGUI""");
-            }*/
+                subShader.AddShaderChunk("CustomEditor \"z3y.ShaderGraphExtended.DefaultInspector\" ");
+            }
 
             return subShader.GetShaderString(0);
         }

@@ -161,6 +161,8 @@ namespace UnityEditor.ShaderGraph
             propertyCollector.AddShaderProperty(dstBlendProperty);
             propertyCollector.AddShaderProperty(zWriteProperty);
             propertyCollector.AddShaderProperty(alphaToMaskProperty);
+            
+            // cull last marks the end of rendering properties
             propertyCollector.AddShaderProperty(cullProperty);
         }
 
