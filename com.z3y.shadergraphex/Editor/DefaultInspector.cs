@@ -7,14 +7,6 @@ using UnityEngine;
 
 namespace z3y.ShaderGraphExtended
 {
-    public enum BlendingMode
-    {
-        Alpha,
-        Premultiply,
-        Additive,
-        Multiply
-    }
-
     public class DefaultInspector : ShaderGUI
     {
         
@@ -44,11 +36,9 @@ namespace z3y.ShaderGraphExtended
         
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {
-
             if (_firstTime || propCount != properties.Length)
             {
                 propCount = properties.Length;
-                var material = materialEditor.target as Material;
 
                 _Mode = Array.FindIndex(properties, x => x.name.Equals("_Mode", StringComparison.Ordinal));
                 _SrcBlend = Array.FindIndex(properties, x => x.name.Equals("_SrcBlend", StringComparison.Ordinal));
@@ -168,6 +158,30 @@ namespace z3y.ShaderGraphExtended
             }
 
         }
+        
+        public static void ApplyChanges(Material m)
+        {
+            SetupGIFlags(m.GetFloat("_EmissionToggle"), m);
+
+            int mode = (int)m.GetFloat("_Mode");
+            m.ToggleKeyword("_ALPHATEST_ON", mode == 1);
+            m.ToggleKeyword("_ALPHAFADE_ON", mode == 2);
+            m.ToggleKeyword("_ALPHAPREMULTIPLY_ON", mode == 3);
+            m.ToggleKeyword("_ALPHAMODULATE_ON", mode == 5);
+        }
+        
+        public static void SetupGIFlags(float emissionEnabled, Material material)
+        {
+            MaterialGlobalIlluminationFlags flags = material.globalIlluminationFlags;
+            if ((flags & (MaterialGlobalIlluminationFlags.BakedEmissive | MaterialGlobalIlluminationFlags.RealtimeEmissive)) != 0)
+            {
+                flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                if (emissionEnabled != 1)
+                    flags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+
+                material.globalIlluminationFlags = flags;
+            }
+        }
 
         public void SetupBlendMode(MaterialEditor materialEditor, MaterialProperty mode)
         {
@@ -175,6 +189,7 @@ namespace z3y.ShaderGraphExtended
             {
                 var m = (Material)o;
                 SetupMaterialWithBlendMode(m, (int)mode.floatValue);
+                ApplyChanges(m);
             }
         }
 
@@ -196,7 +211,7 @@ namespace z3y.ShaderGraphExtended
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_ZWrite", 1);
                     material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
-                    //material.SetInt("_AlphaToMask", 1);
+                    material.SetInt("_AlphaToMask", 1);
                     break;
                 case 2: // alpha fade
                     SetupTransparentMaterial(material);

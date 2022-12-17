@@ -74,7 +74,7 @@ namespace UnityEditor.ShaderGraph
             switch(keyword.type)
             {
                 case KeywordType.Boolean:
-                    return $"#pragma {definitionString} _ {keyword.referenceName}";
+                    return $"#pragma {definitionString} {keyword.referenceName}";
                 case KeywordType.Enum:
                     var enumEntryDefinitions = keyword.entries.Select(x => $"{keyword.referenceName}_{x.referenceName}");
                     string enumEntriesString = string.Join(" ", enumEntryDefinitions);

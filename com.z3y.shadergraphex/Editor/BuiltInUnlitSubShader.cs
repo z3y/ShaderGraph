@@ -52,12 +52,19 @@ namespace z3y.ShaderGraphExtended
             },
             keywords = new KeywordDescriptor[]
             {
-
+                defaultModeKeywords
             },
         };
         
 #endregion
-        
+    static KeywordDescriptor defaultModeKeywords = new KeywordDescriptor()
+    {
+        displayName = "Mode Keywords",
+        referenceName = "_ _ALPHATEST_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
 #region Keywords
 
 

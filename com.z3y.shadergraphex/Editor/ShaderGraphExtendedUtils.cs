@@ -19,11 +19,7 @@ namespace z3y.ShaderGraphExtended
 
             pass.ZWriteOverride = "ZWrite [_ZWrite]";
 
-            if (string.IsNullOrEmpty(pass.ZTestOverride))
-            {
-                pass.ZTestOverride = "ZTest " + options.zTest.ToString();
-            }
-            
+
             pass.CullOverride = "Cull [_Cull]";
 
 
