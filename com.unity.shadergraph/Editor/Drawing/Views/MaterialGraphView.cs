@@ -27,40 +27,100 @@ namespace UnityEditor.ShaderGraph.Drawing
             deleteSelection = DeleteSelectionImplementation;
             RegisterCallback<DragUpdatedEvent>(OnDragUpdatedEvent);
             RegisterCallback<DragPerformEvent>(OnDragPerformEvent);
-            RegisterCallback<MouseDownEvent>(NodeShortcut);
-            RegisterCallback<KeyDownEvent>(NodeShortcutKeyDown);
-            RegisterCallback<KeyUpEvent>(NodeShortcutKeyUp);
+            RegisterCallback<MouseDownEvent>(NodeHotkey);
+            RegisterCallback<KeyDownEvent>(NodeHotkeyKeyDown);
+            RegisterCallback<KeyUpEvent>(NodeHotkeyKeyUp);
 
         }
 
-        #region Shortcuts
-        private void NodeShortcutKeyDown(KeyDownEvent e)
+        #region Hotkeys
+        private void NodeHotkeyKeyDown(KeyDownEvent e)
         {
             ChangeKeyStates(e.keyCode, true);
         }
         
-        private void NodeShortcutKeyUp(KeyUpEvent e)
+        private void NodeHotkeyKeyUp(KeyUpEvent e)
         {
             ChangeKeyStates(e.keyCode, false);
         }
 
         private void ChangeKeyStates(KeyCode key, bool isDown)
         {
-            if (key == KeyCode.Alpha1) keyDown_1 = isDown;
-            if (key == KeyCode.Alpha2) keyDown_2 = isDown;
-            if (key == KeyCode.Alpha3) keyDown_3 = isDown;
-            if (key == KeyCode.V) keyDown_V = isDown;
-            if (key == KeyCode.Alpha4) keyDown_4 = isDown;
-
+            switch (key)
+            {
+                case KeyCode.Alpha1:
+                    keyDown_1 = isDown;
+                    break;
+                case KeyCode.Alpha0:
+                    keyDown_0 = isDown;
+                    break;
+                case KeyCode.Alpha2:
+                    keyDown_2 = isDown;
+                    break;
+                case KeyCode.Alpha3:
+                    keyDown_3 = isDown;
+                    break;
+                case KeyCode.Alpha4:
+                    keyDown_4 = isDown;
+                    break;
+                case KeyCode.Alpha5:
+                    keyDown_5 = isDown;
+                    break;
+                case KeyCode.L:
+                    keyDown_L = isDown;
+                    break;
+                case KeyCode.N:
+                    keyDown_N = isDown;
+                    break;
+                case KeyCode.O:
+                    keyDown_O = isDown;
+                    break;
+                case KeyCode.E:
+                    keyDown_E = isDown;
+                    break;
+                case KeyCode.A:
+                    keyDown_A = isDown;
+                    break;
+                case KeyCode.M:
+                    keyDown_M = isDown;
+                    break;
+                case KeyCode.S:
+                    keyDown_S = isDown;
+                    break;
+                case KeyCode.R:
+                    keyDown_R = isDown;
+                    break;
+                case KeyCode.T:
+                    keyDown_T = isDown;
+                    break;
+                case KeyCode.U:
+                    keyDown_U = isDown;
+                    break;
+                case KeyCode.D:
+                    keyDown_D = isDown;
+                    break;
+            }
         }
 
+        private bool keyDown_0;
         private bool keyDown_1;
         private bool keyDown_2;
         private bool keyDown_3;
-        private bool keyDown_V;
         private bool keyDown_4;
+        private bool keyDown_5;
+        private bool keyDown_L;
+        private bool keyDown_N;
+        private bool keyDown_O;
+        private bool keyDown_E;
+        private bool keyDown_A;
+        private bool keyDown_D;
+        private bool keyDown_M;
+        private bool keyDown_S;
+        private bool keyDown_R;
+        private bool keyDown_T;
+        private bool keyDown_U;
 
-        void NodeShortcut(MouseDownEvent e)
+        void NodeHotkey(MouseDownEvent e)
         {
             if (!(e.target is MaterialGraphView) || e.button != (int)MouseButton.LeftMouse)
             {
@@ -73,13 +133,77 @@ namespace UnityEditor.ShaderGraph.Drawing
             {
                 AddNodeAtPosition<Vector1Node>(mousePosition);
             }
+            
+            else if (keyDown_0)
+            {
+                AddNodeAtPosition<IntegerNode>(mousePosition);
+            }
+            else if (keyDown_2)
+            {
+                AddNodeAtPosition<Vector2Node>(mousePosition);
+            }
+            else if (keyDown_3)
+            {
+                AddNodeAtPosition<Vector3Node>(mousePosition);
+            }
+            else if (keyDown_4)
+            {
+                AddNodeAtPosition<Vector4Node>(mousePosition);
+            }
+            else if (keyDown_5)
+            {
+                AddNodeAtPosition<ColorNode>(mousePosition);
+            }
+            
+            else if (keyDown_L)
+            {
+                AddNodeAtPosition<LerpNode>(mousePosition);
+            }
+            else if (keyDown_N)
+            {
+                AddNodeAtPosition<NormalizeNode>(mousePosition);
+            }
+            else if (keyDown_O)
+            {
+                //TODO: find another key, a focuses all nodes
+                //AddNodeAtPosition<OneMinusNode>(mousePosition);
+            }
+            else if (keyDown_E)
+            {
+                AddNodeAtPosition<PowerNode>(mousePosition);
+            }
+            else if (keyDown_A)
+            {
+                //TODO: find another key, a focuses all nodes
+                //AddNodeAtPosition<AddNode>(mousePosition);
+            }
+            else if (keyDown_D)
+            {
+                AddNodeAtPosition<DivideNode>(mousePosition);
+            }
+            else if (keyDown_M)
+            {
+                AddNodeAtPosition<MultiplyNode>(mousePosition);
+            }
+            else if (keyDown_S)
+            {
+                AddNodeAtPosition<SubtractNode>(mousePosition);
+            }
+            else if (keyDown_T)
+            {
+                AddNodeAtPosition<SampleTexture2DNode>(mousePosition);
+            }
+            else if (keyDown_U)
+            {
+                AddNodeAtPosition<UVNode>(mousePosition);
+            }
         }
 
         private void AddNodeAtPosition<T>(Vector2 localMousePosition) where T : AbstractMaterialNode, new()
         {
             var node = new T();
 
-            graph.owner.RegisterCompleteObjectUndo("Add Node with Shortcut");
+            graph.owner.RegisterCompleteObjectUndo("Hotkey Add Node");
             Vector2 nodePosition = viewTransform.matrix.inverse.MultiplyPoint(localMousePosition);
             var drawState = node.drawState;
             drawState.position = new Rect(nodePosition, drawState.position.size);

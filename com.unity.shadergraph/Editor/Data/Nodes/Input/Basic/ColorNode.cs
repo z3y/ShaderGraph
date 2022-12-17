@@ -30,7 +30,7 @@ namespace UnityEditor.ShaderGraph
 
 
         [SerializeField]
-        Color m_Color = new Color(UnityEngine.Color.clear, ColorMode.Default);
+        Color m_Color = new Color(UnityEngine.Color.white, ColorMode.Default);
 
         [Serializable]
         public struct Color
