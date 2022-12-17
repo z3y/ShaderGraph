@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using UnityEngine;
 
 namespace UnityEditor.ShaderGraph
@@ -16,10 +17,11 @@ namespace UnityEditor.ShaderGraph
             GraphUtil.CreateNewGraph(new PBRMasterNode());
         }
 
-        [MenuItem("Assets/Create/Shader/VFX Shader Graph", false, 208)]
+        // not supported
+        /*[MenuItem("Assets/Create/Shader/VFX Shader Graph", false, 208)]
         public static void CreateVfxShaderGraph()
         {
             GraphUtil.CreateNewGraph(new VfxMasterNode());
-        }
+        }*/
     }
 }
