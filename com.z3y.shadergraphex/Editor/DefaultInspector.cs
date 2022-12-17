@@ -65,11 +65,11 @@ namespace z3y.ShaderGraphExtended
                     
                     EditorGUILayout.Space();
 
+                    DrawPropertyFromIndex(materialEditor, properties, _Cull);
                     DrawPropertyFromIndex(materialEditor, properties, _SrcBlend);
                     DrawPropertyFromIndex(materialEditor, properties, _DstBlend);
                     DrawPropertyFromIndex(materialEditor, properties, _ZWrite);
-                    DrawPropertyFromIndex(materialEditor, properties, _AlphaToMask);
-                    DrawPropertyFromIndex(materialEditor, properties, _Cull);
+                    //DrawPropertyFromIndex(materialEditor, properties, _AlphaToMask);
 
 
 

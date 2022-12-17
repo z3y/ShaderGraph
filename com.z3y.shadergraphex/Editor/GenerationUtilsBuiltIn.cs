@@ -297,6 +297,11 @@ namespace z3y.ShaderGraphExtended
             {
                 graphDefines.AppendLine("#define {0}", pass.referenceName);
 
+                if (masterNode.m_AlphaToCoverage)
+                {
+                    graphDefines.AppendLine("#define ALPHATOCOVERAGE_ON");
+                }
+
                 if (graphRequirements.permutationCount > 0)
                 {
                     List<int> activePermutationIndices;

@@ -17,7 +17,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
 
     #ifdef _ALPHATEST_ON
-        clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
+        #ifdef ALPHATOCOVERAGE_ON
+            surfaceDescription.Alpha = (surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold) / max(fwidth(surfaceDescription.Alpha), 0.01f) + 0.5f;
+        #else
+            clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
+        #endif
     #endif
 
     #ifdef _ALPHAPREMULTIPLY_ON
