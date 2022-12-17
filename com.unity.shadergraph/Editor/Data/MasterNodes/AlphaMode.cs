@@ -7,6 +7,16 @@ namespace UnityEditor.ShaderGraph
         Opaque,
         Transparent
     }
+    
+    enum SurfaceMode
+    {
+        Opaque,
+        Cutout,
+        Fade,
+        Transparent,
+        Additive,
+        Multiply
+    }
 
     enum AlphaMode
     {

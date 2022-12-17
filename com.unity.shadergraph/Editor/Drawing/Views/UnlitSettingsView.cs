@@ -17,31 +17,41 @@ namespace UnityEditor.ShaderGraph.Drawing
             m_Node = node as UnlitMasterNode;
 
             PropertySheet ps = new PropertySheet();
-
-            ps.Add(new PropertyRow(new Label("Surface")), (row) =>
+            
+            // properties overriden
+            /*ps.Add(new PropertyRow(new Label("Surface")), (row) =>
                 {
                     row.Add(new EnumField(SurfaceType.Opaque), (field) =>
                     {
                         field.value = m_Node.surfaceType;
                         field.RegisterValueChangedCallback(ChangeSurface);
                     });
-                });
+                });*/
 
-            ps.Add(new PropertyRow(new Label("Blend")), (row) =>
+            /*ps.Add(new PropertyRow(new Label("Blend")), (row) =>
                 {
                     row.Add(new EnumField(AlphaMode.Additive), (field) =>
                     {
                         field.value = m_Node.alphaMode;
                         field.RegisterValueChangedCallback(ChangeAlphaMode);
                     });
-                });
+                });*/
 
-            ps.Add(new PropertyRow(new Label("Two Sided")), (row) =>
+            /*ps.Add(new PropertyRow(new Label("Two Sided")), (row) =>
                 {
                     row.Add(new Toggle(), (toggle) =>
                     {
                         toggle.value = m_Node.twoSided.isOn;
                         toggle.OnToggleChanged(ChangeTwoSided);
+                    });
+                });*/
+            
+            ps.Add(new PropertyRow(new Label("Rendering Mode")), (row) =>
+                {
+                    row.Add(new EnumField(SurfaceMode.Opaque), (field) =>
+                    {
+                        field.value = m_Node.surfaceMode;
+                        field.RegisterValueChangedCallback(ChangeRenderingMode);
                     });
                 });
 
@@ -56,6 +66,15 @@ namespace UnityEditor.ShaderGraph.Drawing
 
             m_Node.owner.owner.RegisterCompleteObjectUndo("Surface Change");
             m_Node.surfaceType = (SurfaceType)evt.newValue;
+        }
+        
+        void ChangeRenderingMode(ChangeEvent<Enum> evt)
+        {
+            if (Equals(m_Node.surfaceMode, evt.newValue))
+                return;
+
+            m_Node.owner.owner.RegisterCompleteObjectUndo("Rendering Mode Change");
+            m_Node.surfaceMode = (SurfaceMode)evt.newValue;
         }
 
         void ChangeAlphaMode(ChangeEvent<Enum> evt)

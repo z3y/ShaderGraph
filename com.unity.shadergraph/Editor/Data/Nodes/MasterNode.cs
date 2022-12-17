@@ -111,9 +111,10 @@ namespace UnityEditor.ShaderGraph
             {
                 displayName = "Rendering Mode",
                 overrideReferenceName = "_Mode",
-                attributes = "[Enum(Opaque, 0, Cutout, 1, Fade, 2, Transparent, 3, Additive, 4, Multiply, 5)]",
+                attributes = "[Enum(UnityEditor.ShaderGraph.SurfaceMode)]",
                 value = 0
             };
+            
             
             var scrBlendProperty = new Vector1ShaderProperty
             {
@@ -216,7 +217,7 @@ namespace UnityEditor.ShaderGraph
                     }
                 }
 
-                finalShader.AppendLine(@"FallBack ""Hidden/Shader Graph/FallbackError""");
+                //finalShader.AppendLine(@"FallBack ""Hidden/Shader Graph/FallbackError""");
             }
             configuredTextures = shaderProperties.GetConfiguredTexutres();
             return finalShader.ToString();
