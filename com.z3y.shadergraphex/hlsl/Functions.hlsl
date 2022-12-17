@@ -94,8 +94,8 @@ float3 shadergraph_ReflectionProbe(float3 viewDir, float3 normalOS, float lod)
 
 void shadergraph_Fog(float3 position, out float4 color, out float density)
 {
-    color = 0;
-    density = 0;
+    color = unity_FogColor;
+    density = unity_FogParams.x;
 }
 
 #endif // UNITY_GRAPHFUNCTIONS_INCLUDED
