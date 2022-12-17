@@ -46,7 +46,7 @@ namespace z3y.ShaderGraphExtended
             },
             pragmas = new List<string>()
             {
-                "target 3.0",
+                "target 4.5",
                 "multi_compile_fog",
                 "multi_compile_instancing",
             },
@@ -56,11 +56,60 @@ namespace z3y.ShaderGraphExtended
             },
         };
         
+        ShaderPass m_ShadowCaster = new ShaderPass
+        {
+            // Definition
+            displayName = "SHADOWCASTER",
+            referenceName = "SHADOWCASTER",
+            passInclude = "Packages/com.z3y.shadergraphex/hlsl/ShadowCasterPass.hlsl",
+            varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
+            useInPreview = true,
+            
+            // Port mask
+            vertexPorts = new List<int>()
+            {
+                UnlitMasterNode.PositionSlotId
+            },
+            pixelPorts = new List<int>
+            {
+                UnlitMasterNode.AlphaSlotId,
+                UnlitMasterNode.AlphaThresholdSlotId
+            },
+
+            // Pass setup
+            includes = new List<string>()
+            {
+                "UnityCG.cginc",
+                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
+            },
+            pragmas = new List<string>()
+            {
+                "target 4.5",
+                "multi_compile_instancing",
+                "multi_compile_shadowcaster"
+            },
+            keywords = new KeywordDescriptor[]
+            {
+                defaultModeKeywordsShadowCaster
+            },
+            
+            lightMode = "ShadowCaster"
+        };
+        
 #endregion
-    static KeywordDescriptor defaultModeKeywords = new KeywordDescriptor()
+    private static KeywordDescriptor defaultModeKeywords = new KeywordDescriptor()
     {
         displayName = "Mode Keywords",
         referenceName = "_ _ALPHATEST_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor defaultModeKeywordsShadowCaster = new KeywordDescriptor()
+    {
+        displayName = "Mode Keywords",  
+        referenceName = "_ _ALPHATEST_ON _ALPHAPREMULTIPLY_ON _ALPHAFADE_ON",
         type = KeywordType.Boolean,
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,
@@ -145,6 +194,8 @@ namespace z3y.ShaderGraphExtended
 
             subShader.AddShaderChunk("SubShader", true);
             subShader.AddShaderChunk("{", true);
+            
+            // unlit pass
             subShader.Indent();
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
@@ -154,6 +205,18 @@ namespace z3y.ShaderGraphExtended
                 
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
             }
+            
+            // shadowcaster pass
+            subShader.Indent();
+            {
+                var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
+                var tagsBuilder = new ShaderStringBuilder(0);
+                surfaceTags.GetTags(tagsBuilder, "");
+                subShader.AddShaderChunk(tagsBuilder.ToString());
+                
+                GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
+            }
+            
             subShader.Deindent();
             subShader.AddShaderChunk("}", true);
 
