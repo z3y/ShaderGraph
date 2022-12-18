@@ -19,9 +19,9 @@ namespace z3y.ShaderGraphExtended
         private int _AlphaToMask;
         private int _Cull;
 
-        private static bool surfaceOptionsFoldout = false;
+        private static bool surfaceOptionsFoldout = true;
         private static bool surfaceInputsFoldout = true;
-        private static bool additionalSettingsFoldout = false;
+        private static bool additionalSettingsFoldout = true;
 
         private int additionalPropertiesStart = -1;
 
@@ -54,6 +54,8 @@ namespace z3y.ShaderGraphExtended
             {
                 if (surfaceOptionsFoldout = DrawHeaderFoldout(new GUIContent("Rendering Options"), surfaceOptionsFoldout))
                 {
+                    EditorGUILayout.Space();
+
                     EditorGUI.BeginChangeCheck();
 
                     var mode = DrawPropertyFromIndex(materialEditor, properties, _Mode);
@@ -62,15 +64,12 @@ namespace z3y.ShaderGraphExtended
                     {
                         SetupBlendMode(materialEditor, mode);
                     }
-                    
-                    EditorGUILayout.Space();
 
-                    DrawPropertyFromIndex(materialEditor, properties, _Cull);
                     DrawPropertyFromIndex(materialEditor, properties, _SrcBlend);
                     DrawPropertyFromIndex(materialEditor, properties, _DstBlend);
                     DrawPropertyFromIndex(materialEditor, properties, _ZWrite);
+                    DrawPropertyFromIndex(materialEditor, properties, _Cull);
                     //DrawPropertyFromIndex(materialEditor, properties, _AlphaToMask);
-
 
 
                     EditorGUILayout.Space();
@@ -127,15 +126,18 @@ namespace z3y.ShaderGraphExtended
                             break;
                     }
                 }
+                EditorGUILayout.Space();
+
             }
 
 
 
             if (additionalSettingsFoldout = DrawHeaderFoldout(new GUIContent("Additional Settings"), additionalSettingsFoldout))
             {
-                EditorGUILayout.Space();
                 if (additionalPropertiesStart > 0)
                 {
+                    EditorGUILayout.Space();
+
                     for (int i = additionalPropertiesStart; i < properties.Length; i++)
                     {
                         var property = properties[i];
