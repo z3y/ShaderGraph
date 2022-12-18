@@ -1,8 +1,9 @@
 using System.Globalization;
 using UnityEditor.Graphing;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
-namespace UnityEditor.ShaderGraph
+namespace z3y.ShaderGraphExtended
 {
     [Title("Input", "Scene", "Instance ID")]
     sealed class InstanceIDNode : AbstractMaterialNode, IGeneratesFunction
