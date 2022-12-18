@@ -122,7 +122,7 @@ namespace UnityEditor.ShaderGraph
                 return;
 
             var referenceName = property.referenceName;
-            if (property.gpuInstanced)
+            if (property.gpuInstanced && !owner.isSubGraph)
             {
                 referenceName += "_Array";
             }

@@ -195,7 +195,6 @@ namespace z3y.ShaderGraphExtended
             subShader.AddShaderChunk("SubShader", true);
             subShader.AddShaderChunk("{", true);
             
-            // unlit pass
             subShader.Indent();
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
@@ -203,22 +202,20 @@ namespace z3y.ShaderGraphExtended
                 surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
+                // unlit pass
                 ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode, ref m_UnlitPass, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
-            }
-            
-            // shadowcaster pass
-            subShader.Indent();
-            {
-                var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
-                var tagsBuilder = new ShaderStringBuilder(0);
-                surfaceTags.GetTags(tagsBuilder, "");
-                subShader.AddShaderChunk(tagsBuilder.ToString());
                 
-                ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
-                GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
+                
+                // shadowcaster pass
+                bool generateShadowCaster = false;
+                if (generateShadowCaster)
+                {
+                    ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
+                    GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
+                }
             }
-            
+
             subShader.Deindent();
             subShader.AddShaderChunk("}", true);
 

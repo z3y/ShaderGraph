@@ -107,6 +107,10 @@ namespace UnityEditor.ShaderGraph
                         count++;
                     }
                 }
+
+                builder.AppendLine("UNITY_INSTANCING_BUFFER_END(InstancedProps)");
+                builder.AppendLine("#endif");
+            
                 foreach (var prop in properties.Where(n => batchAll || (n.generatePropertyBlock && n.isBatchable)))
                 {
                     if (prop.gpuInstanced)
@@ -116,9 +120,8 @@ namespace UnityEditor.ShaderGraph
                     }
                 }
             }
-            builder.AppendLine("UNITY_INSTANCING_BUFFER_END(InstancedProps)");
-
-            builder.AppendLine("#endif");
+            
+            
             return builder.ToString();
         }
 
