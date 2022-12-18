@@ -23,9 +23,9 @@ namespace z3y.ShaderGraphExtended
         private static bool surfaceInputsFoldout = true;
         private static bool additionalSettingsFoldout = true;
 
-        private int additionalPropertiesStart = -1;
-
         private int propCount = 0;
+
+        private (int, int) overridePropertiesRange;
 
         private static MaterialProperty DrawPropertyFromIndex(MaterialEditor materialEditor, MaterialProperty[] properties, int index)
         {
@@ -46,6 +46,8 @@ namespace z3y.ShaderGraphExtended
                 _ZWrite = Array.FindIndex(properties, x => x.name.Equals("_ZWrite", StringComparison.Ordinal));
                 _AlphaToMask = Array.FindIndex(properties, x => x.name.Equals("_AlphaToMask", StringComparison.Ordinal));
                 _Cull = Array.FindIndex(properties, x => x.name.Equals("_Cull", StringComparison.Ordinal));
+
+                overridePropertiesRange = (_Mode, _Cull);
 
                 _firstTime = false;
             }
@@ -83,15 +85,10 @@ namespace z3y.ShaderGraphExtended
                 for (int i = 0; i < properties.Length; i++)
                 {
                     var property = properties[i];
-                    
-                    if (property.name.Equals("_Cull", StringComparison.Ordinal))
+
+                    if (i >= overridePropertiesRange.Item1 && i <= overridePropertiesRange.Item2)
                     {
-                        additionalPropertiesStart = i+1;
-                    }
-                    
-                    if (property.name.Equals("_Mode", StringComparison.Ordinal))
-                    {
-                        break;
+                        continue;
                     }
 
                     if ((property.flags & MaterialProperty.PropFlags.HideInInspector) != 0)
@@ -134,23 +131,6 @@ namespace z3y.ShaderGraphExtended
 
             if (additionalSettingsFoldout = DrawHeaderFoldout(new GUIContent("Additional Settings"), additionalSettingsFoldout))
             {
-                if (additionalPropertiesStart > 0)
-                {
-                    EditorGUILayout.Space();
-
-                    for (int i = additionalPropertiesStart; i < properties.Length; i++)
-                    {
-                        var property = properties[i];
-
-                        if ((property.flags & MaterialProperty.PropFlags.HideInInspector) != 0)
-                        {
-                            continue;
-                        }
-
-                        materialEditor.ShaderProperty(property, new GUIContent(property.displayName));
-                    }
-                }
-
 
                 EditorGUILayout.Space();
                 materialEditor.RenderQueueField();
