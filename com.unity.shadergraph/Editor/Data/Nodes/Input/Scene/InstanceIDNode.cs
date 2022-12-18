@@ -1,10 +1,11 @@
+using System.Globalization;
 using UnityEditor.Graphing;
 using UnityEngine;
 
 namespace UnityEditor.ShaderGraph
 {
     [Title("Input", "Scene", "Instance ID")]
-    sealed class InstanceIDNode : AbstractMaterialNode
+    sealed class InstanceIDNode : AbstractMaterialNode, IGeneratesFunction
     {
 
         public InstanceIDNode()
@@ -22,7 +23,22 @@ namespace UnityEditor.ShaderGraph
 
         public override string GetVariableNameForSlot(int slotId)
         {
-            return @"unity_InstanceID";
+            return @"Unity_GetInstanceID()";
+        }
+
+        public void GenerateNodeFunction(FunctionRegistry registry, GenerationMode generationMode)
+        {
+            registry.ProvideFunction($"Unity_GetInstanceID", s => s.Append(
+                @"
+uint Unity_GetInstanceID()
+{
+#ifdef UNITY_INSTANCING_ENABLED
+    return unity_InstanceID;
+#else
+    return 0;
+#endif
+}
+        "));
         }
     }
 }
