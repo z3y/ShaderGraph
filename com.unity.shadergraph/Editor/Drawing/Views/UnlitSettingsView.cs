@@ -46,6 +46,18 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });*/
             
+            ps.Add(new PropertyRow(new Label("Shadow Caster")), (row) =>
+                {
+                    row.Add(new Toggle(), (toggle) =>
+                    {
+                        toggle.value = m_Node.generateShadowCaster;
+                        toggle.OnToggleChanged((callback) =>
+                        {
+                            m_Node.generateShadowCaster = callback.newValue;
+                        });
+                    });
+                });
+            
 
 
             Add(ps);

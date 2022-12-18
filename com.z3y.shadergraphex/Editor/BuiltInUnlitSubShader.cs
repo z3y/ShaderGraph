@@ -208,8 +208,7 @@ namespace z3y.ShaderGraphExtended
                 
                 
                 // shadowcaster pass
-                bool generateShadowCaster = false;
-                if (generateShadowCaster)
+                if (unlitMasterNode.generateShadowCaster)
                 {
                     ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
                     GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);

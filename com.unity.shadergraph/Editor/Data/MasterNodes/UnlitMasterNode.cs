@@ -30,6 +30,9 @@ namespace UnityEditor.ShaderGraph
 
         [SerializeField]
         SurfaceType m_SurfaceType;
+        
+        [SerializeField]
+        public bool generateShadowCaster = true;
 
         public SurfaceType surfaceType
         {
