@@ -7,6 +7,7 @@ using UnityEditor.Graphing;
 using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph;
 using UnityEditor.ShaderGraph.Internal;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace z3y.ShaderGraphExtended
@@ -18,8 +19,8 @@ namespace z3y.ShaderGraphExtended
         ShaderPass m_UnlitPass = new ShaderPass
         {
             // Definition
-            displayName = "Unlit Pass",
-            referenceName = "SHADERPASS_UNLIT",
+            displayName = "FORWARDBASE",
+            referenceName = "UnlitPass",
             passInclude = "Packages/com.z3y.shadergraphex/hlsl/UnlitPass.hlsl",
             varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
             useInPreview = true,
@@ -205,6 +206,12 @@ namespace z3y.ShaderGraphExtended
                 // unlit pass
                 ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode, ref m_UnlitPass, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
+
+                if (unlitMasterNode.additionalPass)
+                {
+                    var shaderName = unlitMasterNode.additionalPass.name;
+                    subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
+                }
                 
                 
                 // shadowcaster pass
@@ -235,6 +242,8 @@ namespace z3y.ShaderGraphExtended
         {
             return true;
         }
+
+
 
         public BuiltInUnlitSubShaderExtended() { }
     }

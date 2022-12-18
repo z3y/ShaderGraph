@@ -5,6 +5,7 @@ using UnityEditor.ShaderGraph;
 using UnityEditor.Graphing.Util;
 using UnityEditor.ShaderGraph.Drawing.Controls;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnityEditor.ShaderGraph.Drawing
@@ -57,6 +58,19 @@ namespace UnityEditor.ShaderGraph.Drawing
                         });
                     });
                 });
+            
+            ps.Add(new PropertyRow(new Label("Additional Pass")), (row) =>
+            {
+                row.Add(new ObjectField(), (shaderObject) =>
+                {
+                    shaderObject.objectType = typeof(Shader);
+                    shaderObject.value = m_Node.additionalPass;
+                    shaderObject.RegisterValueChangedCallback((callback) =>
+                    {
+                        m_Node.additionalPass = (Shader)callback.newValue;
+                    });
+                });
+            });
             
 
 

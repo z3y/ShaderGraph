@@ -34,6 +34,9 @@ namespace UnityEditor.ShaderGraph
         [SerializeField]
         public bool generateShadowCaster = true;
 
+        [SerializeField] public bool hasAdditionalPass;
+        [SerializeField] public Shader additionalPass;
+        [SerializeField] public string additionalPassName;
         public SurfaceType surfaceType
         {
             get { return m_SurfaceType; }
