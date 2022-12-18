@@ -6,7 +6,7 @@ PackedVaryings vert(Attributes input)
     return packedOutput;
 }
 
-half frag(PackedVaryings packedInput) : SV_TARGET 
+half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
     Varyings unpacked = UnpackVaryings(packedInput);
     UNITY_SETUP_INSTANCE_ID(unpacked);

@@ -1,3 +1,10 @@
+// unity macros need workaround
+struct LegacyAttributes
+{
+    float4 vertex;
+    float3 normal;
+};
+
 Varyings BuildVaryings(Attributes input)
 {
     Varyings output = (Varyings)0;
@@ -11,6 +18,8 @@ Varyings BuildVaryings(Attributes input)
     VertexDescriptionInputs vertexDescriptionInputs = BuildVertexDescriptionInputs(input);
     VertexDescription vertexDescription = VertexDescriptionFunction(vertexDescriptionInputs);
 
+
+
     // Assign modified vertex attributes
     input.positionOS = vertexDescription.VertexPosition;
     #if defined(VARYINGS_NEED_NORMAL_WS)
@@ -20,6 +29,12 @@ Varyings BuildVaryings(Attributes input)
         input.tangentOS.xyz = vertexDescription.VertexTangent.xyz;
     #endif //FEATURES GRAPH TANGENT
 #endif //FEATURES_GRAPH_VERTEX
+
+    LegacyAttributes v = (LegacyAttributes)0;
+    v.vertex = float4(input.positionOS.xyz, 1);
+    #ifdef ATTRIBUTES_NEED_NORMAL
+    v.normal = input.normalOS.xyz;
+    #endif
 
     // Returns the camera relative position (if enabled)
     float3 positionWS = TransformObjectToWorld(input.positionOS);
@@ -54,17 +69,7 @@ Varyings BuildVaryings(Attributes input)
 #endif
 
 #if defined(SHADERPASS_SHADOWCASTER)
-
-    #define v input // unity macros lmao
-    #define vertex positionOS
-    #define normal normalOS
-    output.positionCS = UnityClipSpaceShadowCasterPos(input.positionOS, input.normalOS);
-    output.positionCS = UnityApplyLinearShadowBias(output.positionCS);
     TRANSFER_SHADOW_CASTER_NOPOS(output, output.positionCS);
-    #undef v
-    #undef normal
-    #undef positionOS
-
 #elif defined(SHADERPASS_META)
     output.positionCS = MetaVertexPosition(float4(input.positionOS, 0), input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
 #else
