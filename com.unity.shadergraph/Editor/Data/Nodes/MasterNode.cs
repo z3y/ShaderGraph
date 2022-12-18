@@ -31,6 +31,18 @@ namespace UnityEditor.ShaderGraph
         [SerializeField]
         bool m_DOTSInstancing = false;
 
+        [Serializable]
+        public enum CullingOverrideMode
+        {
+            None,
+            Back,
+            Front,
+            Off
+        }
+        
+        [SerializeField]
+        public CullingOverrideMode cullingOverride = CullingOverrideMode.None;
+
         public ToggleData dotsInstancing
         {
             get { return new ToggleData(m_DOTSInstancing); }

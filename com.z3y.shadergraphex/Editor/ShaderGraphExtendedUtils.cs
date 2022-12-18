@@ -19,11 +19,18 @@ namespace z3y.ShaderGraphExtended
 
             pass.ZWriteOverride = "ZWrite [_ZWrite]";
 
-            pass.CullOverride = "Cull [_Cull]";
+            if (masterNode.cullingOverride != MasterNode.CullingOverrideMode.None)
+            {
+                pass.CullOverride = "Cull " + Enum.GetName(typeof(MasterNode.CullingOverrideMode), masterNode.cullingOverride);
+            }
+            else
+            {
+                pass.CullOverride = "Cull [_Cull]";
+            }
 
             if (masterNode.m_AlphaToCoverage)
             {
-                pass.CullOverride += "\nAlphaToMask [_AlphaToMask]";
+                pass.ZWriteOverride += "\nAlphaToMask [_AlphaToMask]";
             }
 
 

@@ -47,6 +47,18 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });*/
             
+            ps.Add(new PropertyRow(new Label("Culling Override")), (row) =>
+                {
+                    row.Add(new EnumField(MasterNode.CullingOverrideMode.None), (field) =>
+                    {
+                        field.value = m_Node.cullingOverride;
+                        field.RegisterValueChangedCallback((callback) =>
+                        {
+                            m_Node.cullingOverride = (MasterNode.CullingOverrideMode)callback.newValue;
+                        });
+                    });
+                });
+
             ps.Add(new PropertyRow(new Label("Shadow Caster")), (row) =>
                 {
                     row.Add(new Toggle(), (toggle) =>
