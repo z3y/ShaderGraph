@@ -6,6 +6,8 @@ PackedVaryings vert(Attributes input)
     return packedOutput;
 }
 
+#include "LightFunctions.hlsl"
+
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
     Varyings unpacked = UnpackVaryings(packedInput);
@@ -45,15 +47,15 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         float3 normalWS = surfaceDescription.Normal;
     #endif
 
+    half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
+    half roughness = perceptualRoughness * perceptualRoughness;
+
     half3 indirectSpecular = 0.0;
     half3 directSpecular = 0.0;
     half3 indirectDiffuse = 0.0;
 
-    //normalWS = normalize(surfaceDescription.Normal.x * tangent + surfaceDescription.Normal.y * bitangent + surfaceDescription.Normal.z * normalWS);
     float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
     half NoV = abs(dot(normalWS, viewDirectionWS)) + 1e-5f;
-    //float3 bitangent = normalize(cross(normalWS, unpacked.tangentWS.xyz));
-
 
     // main light
     float3 lightDirection = normalize(UnityWorldSpaceLightDir(unpacked.positionWS));
@@ -75,9 +77,9 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightFinalColor = lightNoL * lightColor;
 
 
-    // #ifndef SHADER_API_MOBILE
-    //     lightData.FinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
-    // #endif
+    #ifndef SHADER_API_MOBILE
+        lightFinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
+    #endif
 
     // #if defined(LIGHTMAP_SHADOW_MIXING) && defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
     //     lightData.FinalColor *= UnityComputeForwardShadows(input.uv01.zw * unity_LightmapST.xy + unity_LightmapST.zw, input.worldPos, input._ShadowCoord);
