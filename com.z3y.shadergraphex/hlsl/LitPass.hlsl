@@ -62,6 +62,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half clampedRoughness = max(roughness, 0.002);
     half reflectance = 0.5f;
 
+    float2 lightmapUV = unpacked.texCoord0.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+
     half3 f0 = 0.16 * reflectance * reflectance * (1.0 - surfaceDescription.Metallic) + surfaceDescription.Albedo * surfaceDescription.Metallic;
 
     half3 indirectSpecular = 0.0;
@@ -70,6 +72,10 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
     half NoV = abs(dot(normalWS, viewDirectionWS)) + 1e-5f;
+
+    half3 brdf;
+    half3 energyCompensation;
+    EnvironmentBRDF(NoV, perceptualRoughness, f0, brdf, energyCompensation);
 
     // main light
     float3 lightDirection = Unity_SafeNormalize(UnityWorldSpaceLightDir(unpacked.positionWS));
@@ -86,15 +92,13 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
-    return lightAttenuation;
-
     #ifndef SHADER_API_MOBILE
         lightFinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
     #endif
 
-    // #if defined(LIGHTMAP_SHADOW_MIXING) && defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
-    //     lightData.FinalColor *= UnityComputeForwardShadows(input.uv01.zw * unity_LightmapST.xy + unity_LightmapST.zw, input.worldPos, input._ShadowCoord);
-    // #endif
+    #if defined(LIGHTMAP_SHADOW_MIXING) && defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
+         lightFinalColor *= UnityComputeForwardShadows(lightmapUV, unpacked.positionWS, unpacked.shadowCoord);
+    #endif
 
     half3 lightSpecular;
     #ifdef _ANISOTROPY
