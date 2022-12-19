@@ -18,14 +18,38 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
     half NoV = abs(dot(unpacked.normalWS, viewDirectionWS)) + 1e-5f;
-
-    return viewDirectionWS.xyzz;
-
-
-    // lighting
+    float3 bitangent = normalize(cross(unpacked.normalWS, unpacked.tangentWS.xyz));
 
 
-    // lighting end
+    // main light
+    float3 lightDirection = normalize(UnityWorldSpaceLightDir(unpacked.positionWS));
+    float3 lightHalfVector = Unity_SafeNormalize(lightDirection + viewDirectionWS);
+    half lightNoL = saturate(dot(unpacked.normalWS, lightDirection));
+    half lightLoH = saturate(dot(lightDirection, lightHalfVector));
+    half lightNoH = saturate(dot(unpacked.normalWS, lightHalfVector));
+    
+    #if defined(UNITY_PASS_FORWARDBASE) && !defined(SHADOWS_SCREEN)
+        half lightAttenuation = 1.0;
+    #else
+        #define _ShadowCoord shadowCoord
+        UNITY_LIGHT_ATTENUATION(lightAttenuation, unpacked, unpacked.positionWS.xyz);
+        #undef _ShadowCoord
+    #endif
+    half3 lightColor = lightAttenuation * _LightColor0.rgb;
+    half3 lightFinalColor = lightNoL * lightColor;
+
+    //return lightFinalColor.xyzz * surfaceDescription.Albedo.xyzz;
+
+
+    // #ifndef SHADER_API_MOBILE
+    //     lightData.FinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
+    // #endif
+
+    // #if defined(LIGHTMAP_SHADOW_MIXING) && defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
+    //     lightData.FinalColor *= UnityComputeForwardShadows(input.uv01.zw * unity_LightmapST.xy + unity_LightmapST.zw, input.worldPos, input._ShadowCoord);
+    // #endif
+
+    // main light end
 
 
     #ifdef _ALPHATEST_ON

@@ -21,11 +21,13 @@
     #define FOG_ANY
 #endif
 
+#ifndef AUTOLIGHT_INCLUDED
 inline float3 Unity_SafeNormalize(float3 inVec)
 {
     float dp3 = max(0.001f, dot(inVec, inVec));
     return inVec * rsqrt(dp3);
 }
+#endif
 #define SafeNormalize Unity_SafeNormalize
 
 float4 GetTimeParameters()

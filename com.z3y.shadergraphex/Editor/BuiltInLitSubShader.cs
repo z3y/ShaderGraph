@@ -49,6 +49,8 @@ namespace z3y.ShaderGraphExtended
             includes = new List<string>()
             {
                 "UnityCG.cginc",
+                "AutoLight.cginc",
+                "Lighting.cginc",
                 "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
             },
             pragmas = new List<string>()
@@ -70,6 +72,7 @@ namespace z3y.ShaderGraphExtended
                 "Varyings.normalWS",
                 "Varyings.tangentWS",
                 "Varyings.texCoord1",
+                "Varyings.shadowCoord"
             },
             
             requiredAttributes = new List<string>()
