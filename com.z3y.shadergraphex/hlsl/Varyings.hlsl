@@ -4,6 +4,11 @@ struct LegacyAttributes
     float4 vertex;
     float3 normal;
 };
+struct LegacyVaryings
+{
+    float4 pos;
+    float4 _ShadowCoord;
+};
 
 #if defined(UNITY_PASS_FORWARDBASE) || defined(UNITY_PASS_FORWARDADD)
     #define UNITY_PASS_FORWARD
@@ -35,6 +40,7 @@ Varyings BuildVaryings(Attributes input)
 #endif //FEATURES_GRAPH_VERTEX
 
     LegacyAttributes v = (LegacyAttributes)0;
+    LegacyVaryings o = (LegacyVaryings)0;
     v.vertex = float4(input.positionOS.xyz, 1);
     #ifdef ATTRIBUTES_NEED_NORMAL
     v.normal = input.normalOS.xyz;
@@ -120,8 +126,14 @@ Varyings BuildVaryings(Attributes input)
     UNITY_TRANSFER_FOG(output, output.positionCS);
 #endif
 
-#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
-    output.shadowCoord = GetShadowCoord(vertexInput);
+// #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+#if defined(UNITY_PASS_FORWARD)
+    //output.shadowCoord = GetShadowCoord(input);
+    o.pos = output.positionCS;
+    o._ShadowCoord = output.shadowCoord;
+    UNITY_TRANSFER_SHADOW(o, input.uv1.xy);
+    output.shadowCoord = o._ShadowCoord;
+    output.positionCS = o.pos;
 #endif
 
     return output;

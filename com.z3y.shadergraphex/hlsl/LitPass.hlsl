@@ -6,6 +6,9 @@ PackedVaryings vert(Attributes input)
     return packedOutput;
 }
 
+// unity macros need workaround
+
+
 #include "LightFunctions.hlsl"
 
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
@@ -13,6 +16,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     Varyings unpacked = UnpackVaryings(packedInput);
     UNITY_SETUP_INSTANCE_ID(unpacked);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(unpacked);
+
+    LegacyVaryings legacyVaryings = (LegacyVaryings)0;
+
+    legacyVaryings.pos = unpacked.positionCS;
+    legacyVaryings._ShadowCoord = unpacked.shadowCoord;
 
     SurfaceDescriptionInputs surfaceDescriptionInputs = BuildSurfaceDescriptionInputs(unpacked);
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
@@ -47,8 +55,14 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         float3 normalWS = surfaceDescription.Normal;
     #endif
 
+    normalWS = normalize(normalWS);
+
     half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
     half roughness = perceptualRoughness * perceptualRoughness;
+    half clampedRoughness = max(roughness, 0.002);
+    half reflectance = 0.5f;
+
+    half3 f0 = 0.16 * reflectance * reflectance * (1.0 - surfaceDescription.Metallic) + surfaceDescription.Albedo * surfaceDescription.Metallic;
 
     half3 indirectSpecular = 0.0;
     half3 directSpecular = 0.0;
@@ -58,24 +72,21 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half NoV = abs(dot(normalWS, viewDirectionWS)) + 1e-5f;
 
     // main light
-    float3 lightDirection = normalize(UnityWorldSpaceLightDir(unpacked.positionWS));
-    float3 lightHalfVector = Unity_SafeNormalize(lightDirection + viewDirectionWS);
+    float3 lightDirection = Unity_SafeNormalize(UnityWorldSpaceLightDir(unpacked.positionWS));
+    float3 lightHalfVector = normalize(lightDirection + viewDirectionWS);
     half lightNoL = saturate(dot(normalWS, lightDirection));
     half lightLoH = saturate(dot(lightDirection, lightHalfVector));
     half lightNoH = saturate(dot(normalWS, lightHalfVector));
     
+    UNITY_LIGHT_ATTENUATION(lightAttenuation, legacyVaryings, unpacked.positionWS.xyz);
     #if defined(UNITY_PASS_FORWARDBASE) && !defined(SHADOWS_SCREEN)
-        half lightAttenuation = 1.0;
-    #else
-        #define _ShadowCoord shadowCoord
-        #define pos positionCS
-        UNITY_LIGHT_ATTENUATION(lightAttenuation, unpacked, unpacked.positionWS.xyz);
-        #undef pos
-        #undef _ShadowCoord
+        lightAttenuation = 1.0;
     #endif
+
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
+    return lightAttenuation;
 
     #ifndef SHADER_API_MOBILE
         lightFinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
@@ -85,9 +96,22 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     //     lightData.FinalColor *= UnityComputeForwardShadows(input.uv01.zw * unity_LightmapST.xy + unity_LightmapST.zw, input.worldPos, input._ShadowCoord);
     // #endif
 
+    half3 lightSpecular;
+    #ifdef _ANISOTROPY
+        //lightData.Specular = LightSpecularAnisotropic(lightData, NoV, perceptualRoughness, f0, input.tangent, input.bitangent, viewDir, surf);
+    #else
+    {
+        half3 F = F_Schlick(lightLoH, f0);
+        //f *= DFGEnergyCompensation; TODO: implement dfg lut
+        half D = D_GGX(lightNoH, clampedRoughness);
+        half V = V_SmithGGXCorrelated(NoV, lightNoL, clampedRoughness);
+        lightSpecular = max(0.0, (D * V) * F) * lightFinalColor * UNITY_PI;
+    }
+    #endif
+
+    directSpecular += lightSpecular;
+
     // main light end
-
-
 
 
 
