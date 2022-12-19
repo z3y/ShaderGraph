@@ -57,6 +57,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     normalWS = normalize(normalWS);
 
+
     half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
     half roughness = perceptualRoughness * perceptualRoughness;
     half clampedRoughness = max(roughness, 0.002);
@@ -78,6 +79,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     EnvironmentBRDF(NoV, perceptualRoughness, f0, brdf, energyCompensation);
 
 
+    return brdf.rgbb;
 
     // main light
     float3 lightDirection = Unity_SafeNormalize(UnityWorldSpaceLightDir(unpacked.positionWS));

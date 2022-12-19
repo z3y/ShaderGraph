@@ -75,6 +75,7 @@ namespace UnityEditor.ShaderGraph
             return null;
         }
 
+        public static Texture2D dfgLut => Resources.Load<Texture2D>("dfg-multiscatter");
         public virtual object saveContext => null;
 
         public virtual void ProcessPreviewMaterial(Material Material) {}
@@ -171,7 +172,7 @@ namespace UnityEditor.ShaderGraph
 
             var dfgTexture = new SerializableTexture
             {
-                texture = Resources.Load<Texture2D>("dfg-multiscatter")
+                texture = MasterNode.dfgLut
             };
 
             var dfgLut = new Texture2DShaderProperty()

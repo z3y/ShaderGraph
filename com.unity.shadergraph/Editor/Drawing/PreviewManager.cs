@@ -110,6 +110,8 @@ namespace UnityEditor.ShaderGraph.Drawing
                 shader = ShaderUtil.CreateShaderAsset(k_EmptyShader, false)
             };
             shaderData.shader.hideFlags = HideFlags.HideAndDontSave;
+            
+            EditorMaterialUtility.SetShaderNonModifiableDefaults(shaderData.shader, new[]{"_DFG"}, new Texture[]{MasterNode.dfgLut});
             shaderData.mat = new Material(shaderData.shader) {hideFlags = HideFlags.HideAndDontSave};
             renderData.shaderData = shaderData;
 
