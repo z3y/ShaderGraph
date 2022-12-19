@@ -15,6 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.llealloo.audiolink",
+            "expression": "0.3.1",
+            "define": "AUDIOLINK_INCLUDED"
+        }
+    ],
     "noEngineReferences": false
 }

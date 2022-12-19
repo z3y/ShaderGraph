@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor.Graphing;
 using UnityEditor.ShaderGraph.Internal;
 using Data.Util;
+using z3y.ShaderGraphExtended;
 
 namespace UnityEditor.ShaderGraph
 {
@@ -244,6 +245,11 @@ namespace UnityEditor.ShaderGraph
                 finalShader.AppendLine(@"#include ""Packages/com.unity.shadergraph/ShaderGraphLibrary/ShaderVariables.hlsl""");
                 finalShader.AppendLine(@"#include ""Packages/com.unity.shadergraph/ShaderGraphLibrary/ShaderVariablesFunctions.hlsl""");
                 finalShader.AppendLine(@"#include ""Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl""");
+
+                if (ShaderGraphExtendedUtils.AudioLinkExists)
+                {
+                    finalShader.AppendLine("#include \"{0}\"", ShaderGraphExtendedUtils.AudioLinkPath);
+                }
 
                 finalShader.AppendLines(shaderKeywordDeclarations.ToString());
                 finalShader.AppendLine(@"#define SHADERGRAPH_PREVIEW 1");
