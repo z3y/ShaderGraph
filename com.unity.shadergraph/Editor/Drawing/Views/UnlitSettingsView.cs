@@ -47,17 +47,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });*/
             
-            ps.Add(new PropertyRow(new Label("Culling Override")), (row) =>
-                {
-                    row.Add(new EnumField(MasterNode.CullingOverrideMode.None), (field) =>
-                    {
-                        field.value = m_Node.cullingOverride;
-                        field.RegisterValueChangedCallback((callback) =>
-                        {
-                            m_Node.cullingOverride = (MasterNode.CullingOverrideMode)callback.newValue;
-                        });
-                    });
-                });
+            
 
             ps.Add(new PropertyRow(new Label("Shadow Caster")), (row) =>
                 {
@@ -71,21 +61,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });
             
-            ps.Add(new PropertyRow(new Label("Additional Pass")), (row) =>
-            {
-                row.Add(new ObjectField(), (shaderObject) =>
-                {
-                    shaderObject.objectType = typeof(Shader);
-                    shaderObject.value = m_Node.additionalPass;
-                    shaderObject.RegisterValueChangedCallback((callback) =>
-                    {
-                        m_Node.additionalPass = (Shader)callback.newValue;
-                    });
-                });
-            });
             
-
-
             Add(ps);
             Add(GetShaderGUIOverridePropertySheet());
         }

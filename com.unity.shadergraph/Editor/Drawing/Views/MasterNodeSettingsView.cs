@@ -43,24 +43,58 @@ namespace UnityEditor.ShaderGraph.Drawing
         {
             m_PropertySheet = new PropertySheet();
             
-            m_PropertySheet.Add(new PropertyRow(new Label("Rendering Mode")), (row) =>
+            m_PropertySheet.Add(new PropertyRow(new Label("Rendering Mode Override")), (row) =>
             {
                 row.Add(new EnumField(RenderMode.Opaque), (field) =>
                 {
-                    field.value = m_MasterNode.renderMode;
+                    field.value = m_MasterNode.renderModeOverride;
                     field.RegisterValueChangedCallback(ChangeRenderingMode);
                 });
             });
-            
-            m_PropertySheet.Add(new PropertyRow(new Label("Alpha To Coverage")), (row) =>
+
+            if (m_MasterNode is MasterNode masterNode)
             {
-                var alphaToCoverage = new Toggle();
-                row.Add(alphaToCoverage, (toggle) =>
+                
+                m_PropertySheet.Add(new PropertyRow(new Label("Culling Override")), (row) =>
                 {
-                    toggle.value = m_MasterNode.m_AlphaToCoverage;
-                    toggle.OnToggleChanged(ChangeAlphaToCoverageEvent);
+                    row.Add(new EnumField(MasterNode.CullingOverrideMode.None), (field) =>
+                    {
+                        field.value = masterNode.cullingOverride;
+                        field.RegisterValueChangedCallback((callback) =>
+                        {
+                            masterNode.cullingOverride = (MasterNode.CullingOverrideMode)callback.newValue;
+                        });
+                    });
                 });
-            });
+                
+                m_PropertySheet.Add(new PropertyRow(new Label("Alpha To Coverage")), (row) =>
+                {
+                    var alphaToCoverage = new Toggle();
+                    row.Add(alphaToCoverage, (toggle) =>
+                    {
+                        toggle.value = masterNode.alphaToCoverage;
+                        toggle.OnToggleChanged((evt) =>
+                        {
+                            masterNode.alphaToCoverage = evt.newValue;
+                        });
+                    });
+                });
+                
+                
+                m_PropertySheet.Add(new PropertyRow(new Label("Additional Pass")), (row) =>
+                {
+                    row.Add(new ObjectField(), (shaderObject) =>
+                    {
+                        shaderObject.objectType = typeof(Shader);
+                        shaderObject.value = masterNode.additionalPass;
+                        shaderObject.RegisterValueChangedCallback((callback) =>
+                        {
+                            masterNode.additionalPass = (Shader)callback.newValue;
+                        });
+                    });
+                });
+            }
+            
 
             Toggle enabledToggle = new Toggle();
             m_PropertySheet.Add(new PropertyRow(new Label("Override ShaderGUI")), (row) =>
@@ -94,12 +128,6 @@ namespace UnityEditor.ShaderGraph.Drawing
             m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Override Enabled Change");
             ProcessOverrideEnabledToggle(evt.newValue);
         }
-        
-        private void ChangeAlphaToCoverageEvent(ChangeEvent<bool> evt)
-        {
-            m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Change A2C Value");
-            m_MasterNode.m_AlphaToCoverage = evt.newValue;
-        }
 
         private void ChangeShaderGUIOverride(ChangeEvent<string> evt)
         {
@@ -109,11 +137,11 @@ namespace UnityEditor.ShaderGraph.Drawing
 
         void ChangeRenderingMode(ChangeEvent<Enum> evt)
         {
-            if (Equals(m_MasterNode.renderMode, evt.newValue))
+            if (Equals(m_MasterNode.renderModeOverride, evt.newValue))
                 return;
 
             m_MasterNode.owner.owner.RegisterCompleteObjectUndo("Rendering Mode Change");
-            m_MasterNode.renderMode = (RenderMode)evt.newValue;
+            m_MasterNode.renderModeOverride = (RenderMode)evt.newValue;
         }
 
         private void ProcessOverrideEnabledToggle(bool newValue)

@@ -40,6 +40,10 @@ namespace UnityEditor.ShaderGraph
             Off
         }
         
+        [SerializeField] public Shader additionalPass;
+        [SerializeField] public bool alphaToCoverage = true;
+
+
         [SerializeField]
         public CullingOverrideMode cullingOverride = CullingOverrideMode.None;
 
@@ -125,8 +129,8 @@ namespace UnityEditor.ShaderGraph
             {
                 displayName = "Rendering Mode",
                 overrideReferenceName = "_Mode",
-                attributes = "[Enum(UnityEditor.ShaderGraph.RenderMode)]",
-                value = (int)renderMode
+                attributes = "[Enum(Opaque, 0, Cutout A2C, 1, Fade, 2, Transparent, 3, Additive, 4, Multiply, 5)]",
+                value = (int)renderModeOverride
             };
             
             

@@ -28,7 +28,7 @@ namespace z3y.ShaderGraphExtended
                 pass.CullOverride = "Cull [_Cull]";
             }
 
-            if (masterNode.m_AlphaToCoverage)
+            if (masterNode.alphaToCoverage)
             {
                 pass.ZWriteOverride += "\nAlphaToMask [_AlphaToMask]";
             }

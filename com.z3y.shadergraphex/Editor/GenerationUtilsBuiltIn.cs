@@ -338,7 +338,7 @@ namespace z3y.ShaderGraphExtended
             {
                 graphDefines.AppendLine("#define {0}", pass.referenceName);
 
-                if (masterNode.m_AlphaToCoverage)
+                if (masterNode is MasterNode actualMasterNode && actualMasterNode.alphaToCoverage)
                 {
                     graphDefines.AppendLine("#define ALPHATOCOVERAGE_ON");
                 }

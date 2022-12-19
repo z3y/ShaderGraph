@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.Graphing;
 using UnityEditor.ShaderGraph.Drawing.Colors;
 using UnityEditor.ShaderGraph.Internal;
+using UnityEngine.Serialization;
 
 namespace UnityEditor.ShaderGraph
 {
@@ -63,25 +64,22 @@ namespace UnityEditor.ShaderGraph
                 m_OnModified(this, scope);
         }
         
-        [SerializeField]
-        RenderMode m_SurfaceMode;
+        [FormerlySerializedAs("m_SurfaceMode")] [SerializeField]
+        RenderMode m_SurfaceModeOverride = RenderMode.None;
 
-        public RenderMode renderMode
+        public RenderMode renderModeOverride
         {
-            get { return m_SurfaceMode; }
+            get { return m_SurfaceModeOverride; }
             set
             {
-                if (m_SurfaceMode == value)
+                if (m_SurfaceModeOverride == value)
                     return;
 
-                m_SurfaceMode = value;
+                m_SurfaceModeOverride = value;
                 Dirty(ModificationScope.Graph);
             }
         }
         
-        [SerializeField]
-        public bool m_AlphaToCoverage = true;
-
         public Guid guid
         {
             get { return m_Guid; }

@@ -10,6 +10,7 @@ namespace UnityEditor.ShaderGraph
     
     enum RenderMode
     {
+        None,
         Opaque,
         Cutout,
         Fade,
