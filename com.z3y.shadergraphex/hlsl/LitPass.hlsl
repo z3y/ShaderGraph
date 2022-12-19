@@ -105,8 +105,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         //lightData.Specular = LightSpecularAnisotropic(lightData, NoV, perceptualRoughness, f0, input.tangent, input.bitangent, viewDir, surf);
     #else
     {
-        half3 F = F_Schlick(lightLoH, f0);
-        //f *= DFGEnergyCompensation; TODO: implement dfg lut
+        half3 F = F_Schlick(lightLoH, f0) * energyCompensation;
         half D = D_GGX(lightNoH, clampedRoughness);
         half V = V_SmithGGXCorrelated(NoV, lightNoL, clampedRoughness);
         lightSpecular = max(0.0, (D * V) * F) * lightFinalColor * UNITY_PI;

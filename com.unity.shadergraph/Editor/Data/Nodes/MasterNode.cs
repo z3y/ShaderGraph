@@ -178,7 +178,8 @@ namespace UnityEditor.ShaderGraph
             {
                 overrideReferenceName = "_DFG",
                 modifiable = false,
-                value = dfgTexture
+                value = dfgTexture,
+                hidden = true
             };
     
 
