@@ -16,17 +16,32 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
 
 
+    //TODO: define in generator
+    #define _NORMAL_DROPOFF_TS 1
+
+    #if _NORMAL_DROPOFF_TS
+	    // IMPORTANT! If we ever support Flip on double sided materials ensure bitangent and tangent are NOT flipped.
+        float crossSign = (unpacked.tangentWS.w > 0.0 ? 1.0 : -1.0) * GetOddNegativeScale();
+        float3 bitangent = crossSign * cross(unpacked.normalWS.xyz, unpacked.tangentWS.xyz);
+        float3 normalWS = TransformTangentToWorld(surfaceDescription.Normal, half3x3(unpacked.tangentWS.xyz, bitangent, unpacked.normalWS.xyz));
+    #elif _NORMAL_DROPOFF_OS
+        float3 normalWS = TransformObjectToWorldNormal(surfaceDescription.Normal);
+    #elif _NORMAL_DROPOFF_WS
+        float3 normalWS = surfaceDescription.Normal;
+    #endif
+
+    //normalWS = normalize(surfaceDescription.Normal.x * tangent + surfaceDescription.Normal.y * bitangent + surfaceDescription.Normal.z * normalWS);
     float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
-    half NoV = abs(dot(unpacked.normalWS, viewDirectionWS)) + 1e-5f;
-    float3 bitangent = normalize(cross(unpacked.normalWS, unpacked.tangentWS.xyz));
+    half NoV = abs(dot(normalWS, viewDirectionWS)) + 1e-5f;
+    //float3 bitangent = normalize(cross(normalWS, unpacked.tangentWS.xyz));
 
 
     // main light
     float3 lightDirection = normalize(UnityWorldSpaceLightDir(unpacked.positionWS));
     float3 lightHalfVector = Unity_SafeNormalize(lightDirection + viewDirectionWS);
-    half lightNoL = saturate(dot(unpacked.normalWS, lightDirection));
+    half lightNoL = saturate(dot(normalWS, lightDirection));
     half lightLoH = saturate(dot(lightDirection, lightHalfVector));
-    half lightNoH = saturate(dot(unpacked.normalWS, lightHalfVector));
+    half lightNoH = saturate(dot(normalWS, lightHalfVector));
     
     #if defined(UNITY_PASS_FORWARDBASE) && !defined(SHADOWS_SCREEN)
         half lightAttenuation = 1.0;
@@ -38,7 +53,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
-    //return lightFinalColor.xyzz * surfaceDescription.Albedo.xyzz;
+    return lightFinalColor.xyzz * surfaceDescription.Albedo.xyzz;
 
 
     // #ifndef SHADER_API_MOBILE

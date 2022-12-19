@@ -65,7 +65,7 @@ namespace z3y.ShaderGraphExtended
             referenceName = "SHADERPASS_SHADOWCASTER",
             passInclude = "Packages/com.z3y.shadergraphex/hlsl/ShadowCasterPass.hlsl",
             varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
-            useInPreview = true,
+            useInPreview = false,
             
             // Port mask
             vertexPorts = new List<int>()
