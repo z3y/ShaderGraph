@@ -251,12 +251,14 @@ namespace z3y.ShaderGraphExtended
                 }*/
 
 
-                /*// shadowcaster pass
-                if (pbrMasterNode.generateShadowCaster)
-                {
-                    ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(pbrMasterNode.surfaceType, pbrMasterNode.alphaMode, pbrMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
-                    GenerateShaderPass(pbrMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
-                }*/
+                // shadowcaster pass
+                ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(pbrMasterNode.surfaceType, pbrMasterNode.alphaMode, pbrMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
+                var activeFieldsShadowCaster = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ShadowCaster);
+                GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ShadowCaster, mode, activeFieldsShadowCaster, subShader,
+                    sourceAssetDependencyPaths,
+                    BuiltInGraphResources.s_Dependencies,
+                    BuiltInGraphResources.s_ResourceClassName,
+                    BuiltInGraphResources.s_AssemblyName);
             }
 
             subShader.Deindent();
