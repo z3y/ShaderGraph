@@ -15,6 +15,21 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     SurfaceDescriptionInputs surfaceDescriptionInputs = BuildSurfaceDescriptionInputs(unpacked);
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
 
+    #ifdef _ALPHATEST_ON
+        #ifdef ALPHATOCOVERAGE_ON
+            surfaceDescription.Alpha = (surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold) / max(fwidth(surfaceDescription.Alpha), 0.01f) + 0.5f;
+        #else
+            clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
+        #endif
+    #endif
+
+    #ifdef _ALPHAPREMULTIPLY_ON
+        surfaceDescription.Albedo *= surfaceDescription.Alpha;
+    #endif
+
+    #ifdef _ALPHAMODULATE_ON
+        surfaceDescription.Albedo = lerp(1.0f, surfaceDescription.Albedo, surfaceDescription.Alpha);
+    #endif
 
     //TODO: define in generator
     #define _NORMAL_DROPOFF_TS 1
@@ -29,6 +44,10 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     #elif _NORMAL_DROPOFF_WS
         float3 normalWS = surfaceDescription.Normal;
     #endif
+
+    half3 indirectSpecular = 0.0;
+    half3 directSpecular = 0.0;
+    half3 indirectDiffuse = 0.0;
 
     //normalWS = normalize(surfaceDescription.Normal.x * tangent + surfaceDescription.Normal.y * bitangent + surfaceDescription.Normal.z * normalWS);
     float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
@@ -55,8 +74,6 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
-    return lightFinalColor.xyzz * surfaceDescription.Albedo.xyzz;
-
 
     // #ifndef SHADER_API_MOBILE
     //     lightData.FinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
@@ -69,24 +86,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     // main light end
 
 
-    #ifdef _ALPHATEST_ON
-        #ifdef ALPHATOCOVERAGE_ON
-            surfaceDescription.Alpha = (surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold) / max(fwidth(surfaceDescription.Alpha), 0.01f) + 0.5f;
-        #else
-            clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
-        #endif
-    #endif
-
-    #ifdef _ALPHAPREMULTIPLY_ON
-        surfaceDescription.Albedo *= surfaceDescription.Alpha;
-    #endif
-
-    #ifdef _ALPHAMODULATE_ON
-        surfaceDescription.Albedo = lerp(1.0f, surfaceDescription.Albedo, surfaceDescription.Alpha);
-    #endif
 
 
-    half4 finalColor = half4(surfaceDescription.Albedo, surfaceDescription.Alpha);
+
+    half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColor))
+                     + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);
 
     #ifdef FOG_ANY
         UNITY_APPLY_FOG(unpacked.fogCoord, finalColor);
