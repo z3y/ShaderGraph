@@ -204,7 +204,7 @@ namespace z3y.ShaderGraphExtended
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
                 // unlit pass
-                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode, ref m_UnlitPass, ref subShader);
+                ShaderGraphExtendedUtils.SetRenderStateForwardPass(unlitMasterNode, ref m_UnlitPass, ref subShader);
                 GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
 
                 if (unlitMasterNode.additionalPass)

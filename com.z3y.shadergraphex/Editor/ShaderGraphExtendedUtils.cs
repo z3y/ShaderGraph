@@ -12,7 +12,7 @@ namespace z3y.ShaderGraphExtended
 {
     internal class ShaderGraphExtendedUtils
     {
-        public static void SetRenderStateForwardBasePass<T>(T masterNode, ref ShaderPass pass, ref ShaderGenerator result) where T : MasterNode
+        public static void SetRenderStateForwardPass<T>(T masterNode, ref ShaderPass pass, ref ShaderGenerator result) where T : MasterNode
         {
             //var options = ShaderGenerator.GetMaterialOptions(surfaceType, alphaMode, twoSided);
             
@@ -28,16 +28,27 @@ namespace z3y.ShaderGraphExtended
                 pass.CullOverride = "Cull [_Cull]";
             }
 
-            if (masterNode.alphaToCoverage)
-            {
-                pass.ZWriteOverride += "\nAlphaToMask [_AlphaToMask]";
-            }
+            
 
 
             pass.BlendOverride = "Blend [_SrcBlend] [_DstBlend]";
 
+            if (pass.lightMode.Equals("ForwardAdd"))
+            {
+                pass.ZWriteOverride = "ZWrite Off";
+                pass.ZTestOverride = "ZTest LEqual";
+                pass.BlendOverride = "Blend [_SrcBlend] One";
+
+                pass.BlendOverride += "\nFog { Color (0,0,0,0) }";
+            }
+
+            
+            if (masterNode.alphaToCoverage)
+            {
+                pass.ZWriteOverride += "\nAlphaToMask [_AlphaToMask]";
+            }
         }
-        
+
         public static void SetRenderStateShadowCasterPass(SurfaceType surfaceType, AlphaMode alphaMode, bool twoSided, ref ShaderPass pass, ref ShaderGenerator result)
         {
            // var options = ShaderGenerator.GetMaterialOptions(surfaceType, alphaMode, twoSided);

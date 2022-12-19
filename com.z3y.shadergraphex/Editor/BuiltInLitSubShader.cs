@@ -87,6 +87,77 @@ namespace z3y.ShaderGraphExtended
             
         };
         
+        ShaderPass m_ForwardAddPass = new ShaderPass
+        {
+            // Definition
+            displayName = "FORWARDADD",
+            referenceName = "SHADERPASS_FORWARDADD",
+            lightMode = "ForwardAdd",
+            passInclude = "Packages/com.z3y.shadergraphex/hlsl/LitPass.hlsl",
+            varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
+            useInPreview = false,
+
+            // Port mask
+            vertexPorts = new List<int>()
+            {
+                PBRMasterNode.PositionSlotId,
+                PBRMasterNode.VertNormalSlotId,
+                PBRMasterNode.VertTangentSlotId,
+            },
+            pixelPorts = new List<int>
+            {
+                PBRMasterNode.AlbedoSlotId,
+                PBRMasterNode.NormalSlotId,
+                PBRMasterNode.MetallicSlotId,
+                PBRMasterNode.EmissionSlotId,
+                PBRMasterNode.SmoothnessSlotId,
+                PBRMasterNode.OcclusionSlotId,
+                PBRMasterNode.AlphaSlotId,
+                PBRMasterNode.AlphaThresholdSlotId,
+                PBRMasterNode.ReflectanceSlotID,
+            },
+
+            // Pass setup
+            includes = new List<string>()
+            {
+                "UnityCG.cginc",
+                "AutoLight.cginc",
+                "Lighting.cginc",
+                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
+            },
+            pragmas = new List<string>()
+            {
+                "target 4.5",
+                "multi_compile_fog",
+                "multi_compile_instancing",
+                "multi_compile_fwdadd_fullshadows"
+            },
+            keywords = new KeywordDescriptor[]
+            {
+                defaultModeKeywords
+            },
+            
+            requiredVaryings = new List<string>()
+            {
+                "Varyings.positionCS",
+                "Varyings.positionWS",
+                "Varyings.normalWS",
+                "Varyings.tangentWS",
+                "Varyings.texCoord1",
+                "Varyings.shadowCoord"
+            },
+            
+            requiredAttributes = new List<string>()
+            {
+                "Attributes.positionOS",
+                "Attributes.normalOS",
+                "Attributes.tangentOS",
+                "Attributes.uv1",
+            }
+            
+            
+        };
+        
         ShaderPass m_ShadowCaster = new ShaderPass
         {
             // Definition
@@ -236,7 +307,7 @@ namespace z3y.ShaderGraphExtended
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
                 // forwardbase pass
-                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
+                ShaderGraphExtendedUtils.SetRenderStateForwardPass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
                 
                 var activeFields = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardBasePass);
                 GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, activeFields, subShader,
@@ -250,6 +321,15 @@ namespace z3y.ShaderGraphExtended
                     var shaderName = pbrMasterNode.additionalPass.name;
                     subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
                 }
+                
+                //fwd add
+                ShaderGraphExtendedUtils.SetRenderStateForwardPass(pbrMasterNode, ref m_ForwardAddPass, ref subShader);
+                var activeFieldsFwdAdd = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardAddPass);
+                GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardAddPass, mode, activeFieldsFwdAdd, subShader,
+                    sourceAssetDependencyPaths,
+                    BuiltInGraphResources.s_Dependencies,
+                    BuiltInGraphResources.s_ResourceClassName,
+                    BuiltInGraphResources.s_AssemblyName);
 
 
                 // shadowcaster pass
