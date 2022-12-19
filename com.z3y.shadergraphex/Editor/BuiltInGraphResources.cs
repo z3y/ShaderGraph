@@ -11,11 +11,11 @@ using UnityEngine;
 
 namespace z3y.ShaderGraphExtended
 {
-    static class BuiltInLitGraphResources
+    static class BuiltInGraphResources
     {
-        public static string s_ResourceClassName => typeof(BuiltInLitGraphResources).FullName;
+        public static string s_ResourceClassName => typeof(BuiltInGraphResources).FullName;
 
-        public static string s_AssemblyName => typeof(BuiltInLitGraphResources).Assembly.FullName.ToString();
+        public static string s_AssemblyName => typeof(BuiltInGraphResources).Assembly.FullName.ToString();
 
         struct UInt32_4
         { }
@@ -24,9 +24,9 @@ namespace z3y.ShaderGraphExtended
         {
             [Semantic("POSITION")]
             Vector3 positionOS;
-            [Semantic("NORMAL")]
+            [Semantic("NORMAL")][Optional]
             Vector3 normalOS;
-            [Semantic("TANGENT")]
+            [Semantic("TANGENT")][Optional]
             Vector4 tangentOS;
             [Semantic("TEXCOORD0")][Optional]
             Vector4 uv0;
@@ -51,12 +51,15 @@ namespace z3y.ShaderGraphExtended
         {
             [Semantic("SV_POSITION")]
             Vector4 positionCS;
+            [Optional]
             Vector3 positionWS;
+            [Optional]
             Vector3 normalWS;
+            [Optional]
             Vector4 tangentWS;
             [Optional]
             Vector4 texCoord0;
-            [PreprocessorIf("defined(LIGHTMAP_ON) || defined(VARYINGS_NEED_TEXCOORD1)")]
+            [Optional]
             Vector4 texCoord1;
             [Optional]
             Vector4 texCoord2;
@@ -68,6 +71,10 @@ namespace z3y.ShaderGraphExtended
             Vector3 viewDirectionWS;
             [Optional]
             Vector4 screenPosition;
+            [Optional][PreprocessorIf("defined(LIGHTMAP_ON)")]
+            Vector2 lightmapUV;
+            [Optional][PreprocessorIf("!defined(LIGHTMAP_ON)")]
+            Vector3 sh;
             [Semantic("FOG_COORD")][PreprocessorIf("defined(FOG_ANY)")]
             float fogCoord;
             [Optional]

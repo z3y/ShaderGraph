@@ -16,6 +16,12 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
 
 
+    float3 viewDirectionWS = normalize(UnityWorldSpaceViewDir(unpacked.positionWS));
+    half NoV = abs(dot(unpacked.normalWS, viewDirectionWS)) + 1e-5f;
+
+    return viewDirectionWS.xyzz;
+
+
     // lighting
 
 

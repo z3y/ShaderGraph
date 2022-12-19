@@ -5,6 +5,10 @@ struct LegacyAttributes
     float3 normal;
 };
 
+#if defined(UNITY_PASS_FORWARDBASE) || defined(UNITY_PASS_FORWARDADD)
+    #define UNITY_PASS_FORWARD
+#endif
+
 Varyings BuildVaryings(Attributes input)
 {
     Varyings output = (Varyings)0;
@@ -56,11 +60,11 @@ Varyings BuildVaryings(Attributes input)
     ApplyVertexModification(input, normalWS, positionWS, _TimeParameters.xyz);
 #endif
 
-#ifdef VARYINGS_NEED_POSITION_WS
+#if defined(VARYINGS_NEED_POSITION_WS)
     output.positionWS = positionWS;
 #endif
 
-#ifdef VARYINGS_NEED_NORMAL_WS
+#if defined(VARYINGS_NEED_NORMAL_WS) || defined(UNITY_PASS_FORWARDBASE)
     output.normalWS = normalWS;			// normalized in TransformObjectToWorldNormal()
 #endif
 

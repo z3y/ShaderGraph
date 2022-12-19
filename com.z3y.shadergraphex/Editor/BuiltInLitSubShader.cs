@@ -63,6 +63,24 @@ namespace z3y.ShaderGraphExtended
                 defaultModeKeywords
             },
             
+            requiredVaryings = new List<string>()
+            {
+                "Varyings.positionCS",
+                "Varyings.positionWS",
+                "Varyings.normalWS",
+                "Varyings.tangentWS",
+                "Varyings.texCoord1",
+            },
+            
+            requiredAttributes = new List<string>()
+            {
+                "Attributes.positionOS",
+                "Attributes.normalOS",
+                "Attributes.tangentOS",
+                "Attributes.uv1",
+            }
+            
+            
         };
         
         ShaderPass m_ShadowCaster = new ShaderPass
@@ -219,9 +237,9 @@ namespace z3y.ShaderGraphExtended
                 var activeFields = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardBasePass);
                 GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, activeFields, subShader,
                     sourceAssetDependencyPaths,
-                    BuiltInLitGraphResources.s_Dependencies,
-                    BuiltInLitGraphResources.s_ResourceClassName,
-                    BuiltInLitGraphResources.s_AssemblyName);
+                    BuiltInGraphResources.s_Dependencies,
+                    BuiltInGraphResources.s_ResourceClassName,
+                    BuiltInGraphResources.s_AssemblyName);
 
                 /*if (pbrMasterNode.additionalPass)
                 {
