@@ -43,9 +43,17 @@ float bicubich1(float a)
     return 1.0f + bicubicw3(a) / (bicubicw2(a) + bicubicw3(a)) + 0.5f;
 }
 
+float4 GetTexelSize(Texture2D t)
+{
+    float4 texelSize;
+    t.GetDimensions(texelSize.x, texelSize.y);
+    texelSize.zw = 1.0 / texelSize.xy;
+    return texelSize;
+}
+
 half4 SampleBicubic(Texture2D t, SamplerState s, float2 uv, float4 texelSize, float lod = 0)
 {
-    #if defined(SHADER_API_MOBILE)
+    #if defined(SHADER_API_MOBILE) || !defined(BICUBIC_LIGHTMAP)
         return t.SampleLevel(s, uv, lod);
     #else
         float2 xy = uv * texelSize.xy - 0.5;

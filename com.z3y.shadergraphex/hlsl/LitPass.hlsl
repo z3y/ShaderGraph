@@ -10,7 +10,6 @@ PackedVaryings vert(Attributes input)
 
 
 #include "LightFunctions.hlsl"
-#include "Bicubic.hlsl"
 
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
@@ -112,7 +111,6 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         half D = D_GGX(lightNoH, clampedRoughness);
         half V = V_SmithGGXCorrelated(NoV, lightNoL, clampedRoughness);
         lightSpecular = max(0.0, (D * V) * F) * lightFinalColor * UNITY_PI;
-        directSpecular += lightSpecular;
     }
     #endif
     // main light end
@@ -214,8 +212,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         
         #ifdef LIGHTMAP_ON
             #if defined(LIGHTMAP_SHADOW_MIXING) && !defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN)
-                lightData.FinalColor = 0.0;
-                lightData.Specular = 0.0;
+                lightFinalColor = 0.0;
+                lightSpecular = 0.0;
                 indirectDiffuse = SubtractMainLightWithRealtimeAttenuationFromLightmap (indirectDiffuse, lightAttenuation, bakedColorTex, normalWS);
             #endif
         #endif
@@ -253,6 +251,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     #endif
     }
     // indirect diffuse end
+
+    directSpecular += lightSpecular;
 
     indirectSpecular = indirectSpecular * energyCompensation * brdf;
 

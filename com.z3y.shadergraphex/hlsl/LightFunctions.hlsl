@@ -117,6 +117,8 @@ void EnvironmentBRDF(half NoV, half perceptualRoughness, half3 f0, out half3 brd
 
 SamplerState custom_bilinear_clamp_sampler;
 
+#include "Bicubic.hlsl"
+
 #ifdef DYNAMICLIGHTMAP_ON
 half3 RealtimeLightmap(float2 uv, float3 worldNormal)
 {   
