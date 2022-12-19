@@ -5,7 +5,7 @@ using UnityEditor.ShaderGraph;
 namespace z3y.ShaderGraphExtended
 {
     [Title("VRChat", "AudioLink", "Available")]
-    sealed class AudioLinkExistsNode : AbstractMaterialNode
+    sealed class AudioLinkExistsNode : AbstractMaterialNode, IMayRequireTime
     {
 
         public AudioLinkExistsNode()
@@ -23,6 +23,11 @@ namespace z3y.ShaderGraphExtended
         public override string GetVariableNameForSlot(int slotId)
         {
             return @"AudioLinkIsAvailable()";
+        }
+
+        public bool RequiresTime()
+        {
+            return true;
         }
     }
 }

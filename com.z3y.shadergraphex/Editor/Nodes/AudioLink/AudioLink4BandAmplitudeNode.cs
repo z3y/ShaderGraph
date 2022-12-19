@@ -3,7 +3,7 @@ using System.Reflection;
 namespace UnityEditor.ShaderGraph
 {
     [Title("VRChat", "AudioLink", "4Band Amplitude")]
-    class AudioLink4BandAmplitudeNode : CodeFunctionNode
+    class AudioLink4BandAmplitudeNode : CodeFunctionNode, IMayRequireTime
     {
         public AudioLink4BandAmplitudeNode()
         {
@@ -14,18 +14,21 @@ namespace UnityEditor.ShaderGraph
         {
             return GetType().GetMethod("AudioLink_4BandAmplitudeNode", BindingFlags.Static | BindingFlags.NonPublic);
         }
+        
 
         static string AudioLink_4BandAmplitudeNode(
-            [Slot(0, Binding.None)] Vector1 Delay,
-            [Slot(1, Binding.None)] Vector1 Band,
+            [Slot(0, Binding.None)] Vector1 Band,
+            [Slot(1, Binding.None)] Vector1 Delay,
             [Slot(2, Binding.None)] out Vector1 Out)
         {
             return
                 @"
 {
-    Out = AudioLinkData(ALPASS_AUDIOLINK + uint2( Delay, Band ) ).rrrr;
+    Out = AudioLinkData(ALPASS_AUDIOLINK + uint2( Delay, Band ) ).r;
 }
 ";
         }
+
+        public bool RequiresTime() => true;
     }
 }
