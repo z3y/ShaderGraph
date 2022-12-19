@@ -19,7 +19,7 @@ namespace UnityEditor.ShaderGraph.Drawing
 
             PropertySheet ps = new PropertySheet();
 
-            ps.Add(new PropertyRow(new Label("Workflow")), (row) =>
+            /*ps.Add(new PropertyRow(new Label("Workflow")), (row) =>
                 {
                     row.Add(new EnumField(PBRMasterNode.Model.Metallic), (field) =>
                     {
@@ -71,7 +71,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     toggle.value = m_Node.dotsInstancing.isOn;
                     toggle.OnToggleChanged(ChangeDotsInstancing);
                 });
-            });
+            });*/
 
             Add(ps);
             Add(GetShaderGUIOverridePropertySheet());

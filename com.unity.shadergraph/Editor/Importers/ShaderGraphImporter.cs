@@ -87,8 +87,6 @@ Shader ""Hidden/GraphErrorShader2""
 
             UnityEngine.Object mainObject;
 
-            Material defaultMaterial = null;
-
             var textGraph = File.ReadAllText(path, Encoding.UTF8);
             GraphData graph = JsonUtility.FromJson<GraphData>(textGraph);
             graph.messageManager = new MessageManager();
@@ -126,7 +124,6 @@ Shader ""Hidden/GraphErrorShader2""
                 configuredTextures.Where(x => !x.modifiable).Select(x => EditorUtility.InstanceIDToObject(x.textureId) as Texture).ToArray());
 
             mainObject = shader;
-            defaultMaterial = new Material(shader);
 
             }
             Texture2D texture = Resources.Load<Texture2D>("Icons/sg_graph_icon@64");
@@ -140,14 +137,6 @@ Shader ""Hidden/GraphErrorShader2""
                 metadata.outputNodeTypeName = graph.outputNode.GetType().FullName;
             }
             ctx.AddObjectToAsset("Metadata", metadata);
-
-            if (defaultMaterial != null)
-            {
-                defaultMaterial.name = "Material";
-                DefaultInspector.ApplyChanges(defaultMaterial);
-                ctx.AddObjectToAsset("DefaultMaterial", defaultMaterial);
-            }
-
 
             foreach (var sourceAssetDependencyPath in sourceAssetDependencyPaths.Distinct())
             {
