@@ -16,6 +16,12 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     SurfaceDescription surfaceDescription = SurfaceDescriptionFunction(surfaceDescriptionInputs);
 
 
+    // lighting
+
+
+    // lighting end
+
+
     #ifdef _ALPHATEST_ON
         #ifdef ALPHATOCOVERAGE_ON
             surfaceDescription.Alpha = (surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold) / max(fwidth(surfaceDescription.Alpha), 0.01f) + 0.5f;

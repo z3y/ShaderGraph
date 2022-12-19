@@ -178,7 +178,7 @@ namespace z3y.ShaderGraphExtended
 
             // use standard shader pass generation
             return GenerationUtilsBuiltIn.GenerateShaderPass(masterNode, pass, mode, activeFields, result, sourceAssetDependencyPaths,
-                BuiltInExtendedGraphResources.s_Dependencies, BuiltInExtendedGraphResources.s_ResourceClassName, BuiltInExtendedGraphResources.s_AssemblyName);
+                BuiltInUnlitGraphResources.s_Dependencies, BuiltInUnlitGraphResources.s_ResourceClassName, BuiltInUnlitGraphResources.s_AssemblyName);
         }
         
         public string GetSubshader(IMasterNode masterNode, GenerationMode mode, List<string> sourceAssetDependencyPaths = null)

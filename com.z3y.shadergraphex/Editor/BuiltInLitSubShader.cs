@@ -179,6 +179,7 @@ namespace z3y.ShaderGraphExtended
             return activeFields;
         }
 
+        /*
         private static bool GenerateShaderPass(PBRMasterNode masterNode, ShaderPass pass, GenerationMode mode, ShaderGenerator result, List<string> sourceAssetDependencyPaths)
         {
             // apply master node options to active fields
@@ -186,8 +187,9 @@ namespace z3y.ShaderGraphExtended
 
             // use standard shader pass generation
             return GenerationUtilsBuiltIn.GenerateShaderPass(masterNode, pass, mode, activeFields, result, sourceAssetDependencyPaths,
-                BuiltInExtendedGraphResources.s_Dependencies, BuiltInExtendedGraphResources.s_ResourceClassName, BuiltInExtendedGraphResources.s_AssemblyName);
+                BuiltInLitGraphResources.s_Dependencies, BuiltInLitGraphResources.s_ResourceClassName, BuiltInLitGraphResources.s_AssemblyName);
         }
+        */
         
         public string GetSubshader(IMasterNode masterNode, GenerationMode mode, List<string> sourceAssetDependencyPaths = null)
         {
@@ -213,15 +215,21 @@ namespace z3y.ShaderGraphExtended
                 
                 // forwardbase pass
                 ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
-                GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, subShader, sourceAssetDependencyPaths);
+                
+                var activeFields = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardBasePass);
+                GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, activeFields, subShader,
+                    sourceAssetDependencyPaths,
+                    BuiltInLitGraphResources.s_Dependencies,
+                    BuiltInLitGraphResources.s_ResourceClassName,
+                    BuiltInLitGraphResources.s_AssemblyName);
 
                 /*if (pbrMasterNode.additionalPass)
                 {
                     var shaderName = pbrMasterNode.additionalPass.name;
                     subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
                 }*/
-                
-                
+
+
                 /*// shadowcaster pass
                 if (pbrMasterNode.generateShadowCaster)
                 {
