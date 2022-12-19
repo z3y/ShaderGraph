@@ -72,6 +72,18 @@ namespace UnityEditor.ShaderGraph.Drawing
                     toggle.OnToggleChanged(ChangeDotsInstancing);
                 });
             });*/
+            
+            ps.Add(new PropertyRow(new Label("Bicubic Lightmap")), (row) =>
+            {
+                row.Add(new Toggle(), (toggle) =>
+                {
+                    toggle.value = m_Node.bicubicLightmap;
+                    toggle.OnToggleChanged((etv) =>
+                    {
+                        m_Node.bicubicLightmap = etv.newValue;
+                    });
+                });
+            });
 
             Add(ps);
             Add(GetShaderGUIOverridePropertySheet());

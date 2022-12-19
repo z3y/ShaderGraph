@@ -245,11 +245,11 @@ namespace z3y.ShaderGraphExtended
                     BuiltInGraphResources.s_ResourceClassName,
                     BuiltInGraphResources.s_AssemblyName);
 
-                /*if (pbrMasterNode.additionalPass)
+                if (pbrMasterNode.additionalPass)
                 {
                     var shaderName = pbrMasterNode.additionalPass.name;
                     subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
-                }*/
+                }
 
 
                 // shadowcaster pass

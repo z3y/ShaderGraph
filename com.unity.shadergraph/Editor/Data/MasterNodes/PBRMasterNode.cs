@@ -50,6 +50,22 @@ namespace UnityEditor.ShaderGraph
             Metallic
         }
 
+        [SerializeField] private bool m_BicubicLightmap = false;
+        
+        public bool bicubicLightmap
+        {
+            get => m_BicubicLightmap;
+            set
+            {
+                if (m_BicubicLightmap == value)
+                    return;
+
+                m_BicubicLightmap = value;
+                UpdateNodeAfterDeserialization();
+                Dirty(ModificationScope.Topological);
+            }
+        }
+
         [SerializeField]
         Model m_Model = Model.Metallic;
 

@@ -9,6 +9,7 @@ using UnityEditor.Graphing;
 using UnityEditor.ShaderGraph;
 using UnityEditor.ShaderGraph.Internal;
 using Data.Util;
+using RenderMode = UnityEditor.ShaderGraph.RenderMode;
 
 // had to copy the entire file just to change a template path
 namespace z3y.ShaderGraphExtended
@@ -338,9 +339,23 @@ namespace z3y.ShaderGraphExtended
             {
                 graphDefines.AppendLine("#define {0}", pass.referenceName);
 
-                if (masterNode is MasterNode actualMasterNode && actualMasterNode.alphaToCoverage)
+                if (masterNode is MasterNode actualMasterNode)
                 {
-                    graphDefines.AppendLine("#define ALPHATOCOVERAGE_ON");
+                    if (actualMasterNode.alphaToCoverage) graphDefines.AppendLine("#define ALPHATOCOVERAGE_ON");
+
+                    if (actualMasterNode.renderModeOverride != RenderMode.None)
+                    {
+
+                    }
+                    
+                }
+
+                if (masterNode is PBRMasterNode pbrMasterNode)
+                {
+                    if (pbrMasterNode.bicubicLightmap)
+                    {
+                        graphDefines.AppendLine("#define BICUBIC_LIGHTMAP");
+                    }
                 }
 
                 if (graphRequirements.permutationCount > 0)
