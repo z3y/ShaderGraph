@@ -47,7 +47,9 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         half lightAttenuation = 1.0;
     #else
         #define _ShadowCoord shadowCoord
+        #define pos positionCS
         UNITY_LIGHT_ATTENUATION(lightAttenuation, unpacked, unpacked.positionWS.xyz);
+        #undef pos
         #undef _ShadowCoord
     #endif
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
