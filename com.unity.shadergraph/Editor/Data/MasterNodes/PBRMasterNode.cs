@@ -30,7 +30,7 @@ namespace UnityEditor.ShaderGraph
         public const int AlbedoSlotId = 0;
         public const int NormalSlotId = 1;
         public const int MetallicSlotId = 2;
-        public const int SpecularSlotId = 3;
+        //public const int SpecularSlotId = 3;
         public const int EmissionSlotId = 4;
         public const int SmoothnessSlotId = 5;
         public const int OcclusionSlotId = 6;
@@ -164,10 +164,7 @@ namespace UnityEditor.ShaderGraph
             }
             AddSlot(new NormalMaterialSlot(NormalSlotId, NormalSlotName, NormalSlotName, coordSpace, ShaderStageCapability.Fragment));
             AddSlot(new ColorRGBMaterialSlot(EmissionSlotId, EmissionSlotName, EmissionSlotName, SlotType.Input, Color.black, ColorMode.Default, ShaderStageCapability.Fragment));
-            if (model == Model.Metallic)
                 AddSlot(new Vector1MaterialSlot(MetallicSlotId, MetallicSlotName, MetallicSlotName, SlotType.Input, 0, ShaderStageCapability.Fragment));
-            else
-                AddSlot(new ColorRGBMaterialSlot(SpecularSlotId, SpecularSlotName, SpecularSlotName, SlotType.Input, Color.grey, ColorMode.Default, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(SmoothnessSlotId, SmoothnessSlotName, SmoothnessSlotName, SlotType.Input, 0.5f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(OcclusionSlotId, OcclusionSlotName, OcclusionSlotName, SlotType.Input, 1f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(AlphaSlotId, AlphaSlotName, AlphaSlotName, SlotType.Input, 1f, ShaderStageCapability.Fragment));
@@ -184,7 +181,7 @@ namespace UnityEditor.ShaderGraph
                 AlbedoSlotId,
                 NormalSlotId,
                 EmissionSlotId,
-                model == Model.Metallic ? MetallicSlotId : SpecularSlotId,
+                MetallicSlotId,
                 SmoothnessSlotId,
                 OcclusionSlotId,
                 AlphaSlotId,

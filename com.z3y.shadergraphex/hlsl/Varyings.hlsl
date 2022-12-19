@@ -18,9 +18,11 @@ Varyings BuildVaryings(Attributes input)
 {
     Varyings output = (Varyings)0;
 
+    //#define instanceID unity_InstanceID
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
     UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+    //#undef instanceID
 
 #if defined(FEATURES_GRAPH_VERTEX)
     // Evaluate Vertex Graph

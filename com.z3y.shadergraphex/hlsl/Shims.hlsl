@@ -13,9 +13,15 @@
 // #define UNITY_MATRIX_IT_MV transpose(mul(UNITY_MATRIX_I_M, UNITY_MATRIX_I_V))
 // #define UNITY_MATRIX_MVP   mul(UNITY_MATRIX_VP, UNITY_MATRIX_M)
 
-#if defined(UNITY_INSTANCING_ENABLED)
+#if defined(UNITY_INSTANCING_ENABLED) || defined(STEREO_INSTANCING_ON)
     #define UNITY_ANY_INSTANCING_ENABLED 1
 #endif
+
+#ifdef STEREO_INSTANCING_ON
+    #define UNITY_STEREO_INSTANCING_ENABLED
+#endif
+
+#define stereoTargetEyeIndex stereoTargetEyeIndexAsRTArrayIdx
 
 #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
     #define FOG_ANY
