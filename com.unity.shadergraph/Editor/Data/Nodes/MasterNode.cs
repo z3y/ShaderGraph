@@ -168,6 +168,20 @@ namespace UnityEditor.ShaderGraph
                 attributes = "[Enum(UnityEngine.Rendering.CullMode)]",
                 value = 2
             };
+
+            var dfgTexture = new SerializableTexture
+            {
+                texture = Resources.Load<Texture2D>("dfg-multiscatter")
+            };
+
+            var dfgLut = new Texture2DShaderProperty()
+            {
+                overrideReferenceName = "_DFG",
+                modifiable = false,
+                value = dfgTexture
+            };
+    
+
             
 
             propertyCollector.AddShaderProperty(modeProperty);
@@ -175,6 +189,8 @@ namespace UnityEditor.ShaderGraph
             propertyCollector.AddShaderProperty(dstBlendProperty);
             propertyCollector.AddShaderProperty(zWriteProperty);
             propertyCollector.AddShaderProperty(alphaToMaskProperty);
+            propertyCollector.AddShaderProperty(dfgLut);
+
             
             // cull last marks the end of rendering properties
             propertyCollector.AddShaderProperty(cullProperty);
