@@ -43,6 +43,7 @@ namespace z3y.ShaderGraphExtended
                 PBRMasterNode.OcclusionSlotId,
                 PBRMasterNode.AlphaSlotId,
                 PBRMasterNode.AlphaThresholdSlotId,
+                PBRMasterNode.ReflectanceSlotID,
             },
 
             // Pass setup

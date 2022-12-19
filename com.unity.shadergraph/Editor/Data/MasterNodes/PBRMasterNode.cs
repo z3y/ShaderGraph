@@ -27,6 +27,8 @@ namespace UnityEditor.ShaderGraph
         public const string NormalName = "Vertex Normal";
         public const string TangentName = "Vertex Tangent";
 
+        public const string ReflectanceName = "Reflectance";
+
         public const int AlbedoSlotId = 0;
         public const int NormalSlotId = 1;
         public const int MetallicSlotId = 2;
@@ -39,6 +41,8 @@ namespace UnityEditor.ShaderGraph
         public const int PositionSlotId = 9;
         public const int VertNormalSlotId = 10;
         public const int VertTangentSlotId = 11;
+
+        public const int ReflectanceSlotID = 12;
 
         public enum Model
         {
@@ -164,8 +168,9 @@ namespace UnityEditor.ShaderGraph
             }
             AddSlot(new NormalMaterialSlot(NormalSlotId, NormalSlotName, NormalSlotName, coordSpace, ShaderStageCapability.Fragment));
             AddSlot(new ColorRGBMaterialSlot(EmissionSlotId, EmissionSlotName, EmissionSlotName, SlotType.Input, Color.black, ColorMode.Default, ShaderStageCapability.Fragment));
-                AddSlot(new Vector1MaterialSlot(MetallicSlotId, MetallicSlotName, MetallicSlotName, SlotType.Input, 0, ShaderStageCapability.Fragment));
+            AddSlot(new Vector1MaterialSlot(MetallicSlotId, MetallicSlotName, MetallicSlotName, SlotType.Input, 0, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(SmoothnessSlotId, SmoothnessSlotName, SmoothnessSlotName, SlotType.Input, 0.5f, ShaderStageCapability.Fragment));
+            AddSlot(new Vector1MaterialSlot(ReflectanceSlotID, ReflectanceName, ReflectanceName, SlotType.Input, 0.5f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(OcclusionSlotId, OcclusionSlotName, OcclusionSlotName, SlotType.Input, 1f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(AlphaSlotId, AlphaSlotName, AlphaSlotName, SlotType.Input, 1f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(AlphaThresholdSlotId, AlphaClipThresholdSlotName, AlphaClipThresholdSlotName, SlotType.Input, 0.0f, ShaderStageCapability.Fragment));
@@ -182,6 +187,7 @@ namespace UnityEditor.ShaderGraph
                 NormalSlotId,
                 EmissionSlotId,
                 MetallicSlotId,
+                ReflectanceSlotID,
                 SmoothnessSlotId,
                 OcclusionSlotId,
                 AlphaSlotId,

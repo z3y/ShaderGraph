@@ -61,7 +61,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
     half roughness = perceptualRoughness * perceptualRoughness;
     half clampedRoughness = max(roughness, 0.002);
-    half reflectance = 0.5f;
+    half reflectance = surfaceDescription.Reflectance;
 
     float2 lightmapUV = unpacked.texCoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 
