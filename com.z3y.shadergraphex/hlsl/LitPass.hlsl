@@ -62,7 +62,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half clampedRoughness = max(roughness, 0.002);
     half reflectance = 0.5f;
 
-    float2 lightmapUV = unpacked.texCoord0.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+    float2 lightmapUV = unpacked.texCoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 
     half3 f0 = 0.16 * reflectance * reflectance * (1.0 - surfaceDescription.Metallic) + surfaceDescription.Albedo * surfaceDescription.Metallic;
 
@@ -116,7 +116,68 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     // main light end
 
+    half3 reflectionSpecular = 0;
+    // reflections
+    {
+        #if defined(UNITY_PASS_FORWARDBASE)
 
+            float3 reflDir = reflect(-viewDirectionWS, normalWS);
+
+            // #ifdef _ANISOTROPY
+            //     float3 anisotropicDirection = surf.anisotropyDirection >= 0.0 ? bitangent : tangent;
+            //     float3 anisotropicTangent = cross(anisotropicDirection, viewDirectionWS);
+            //     float3 anisotropicNormal = cross(anisotropicTangent, anisotropicDirection);
+            //     float bendFactor = abs(surf.anisotropyDirection) * saturate(1.0 - (Pow5(1.0 - surf.perceptualRoughness))) * surf.anisotropyLevel;
+            //     float3 bentNormal = normalize(lerp(normalWS, anisotropicNormal, bendFactor));
+            //     reflDir = reflect(-viewDirectionWS, bentNormal);
+            // #endif
+
+            #ifndef SHADER_API_MOBILE
+                reflDir = lerp(reflDir, normalWS, roughness * roughness);
+            #endif
+
+            Unity_GlossyEnvironmentData envData;
+            envData.roughness = perceptualRoughness;
+            
+            #ifdef UNITY_SPECCUBE_BOX_PROJECTION
+                envData.reflUVW = BoxProjectedCubemapDirection(reflDir, unpacked.positionWS.xyz, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+            #else
+                envData.reflUVW = reflDir;
+            #endif
+
+            half3 probe0 = Unity_GlossyEnvironment(UNITY_PASS_TEXCUBE(unity_SpecCube0), unity_SpecCube0_HDR, envData);
+            reflectionSpecular = probe0;
+
+            #if defined(UNITY_SPECCUBE_BLENDING)
+                UNITY_BRANCH
+                if (unity_SpecCube0_BoxMin.w < 0.99999)
+                {
+                    #ifdef UNITY_SPECCUBE_BOX_PROJECTION
+                        envData.reflUVW = BoxProjectedCubemapDirection(reflDir, unpacked.positionWS.xyz, unity_SpecCube1_ProbePosition, unity_SpecCube1_BoxMin, unity_SpecCube1_BoxMax);
+                    #else
+                        envData.reflUVW = reflDir;
+                    #endif
+
+                    float3 probe1 = Unity_GlossyEnvironment(UNITY_PASS_TEXCUBE_SAMPLER(unity_SpecCube1, unity_SpecCube0), unity_SpecCube1_HDR, envData);
+                    reflectionSpecular = lerp(probe1, probe0, unity_SpecCube0_BoxMin.w);
+                }
+            #endif
+
+            float horizon = min(1.0 + dot(reflDir, normalWS), 1.0);
+            reflectionSpecular *= horizon * horizon;
+            
+            //TODO: Implement specular occlusion
+            //#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON)
+            //    surf.occlusion *= lerp(1.0, saturate(dot(indirectDiffuse, 1.0)), _SpecularOcclusion);
+            //#endif
+
+            reflectionSpecular *= computeSpecularAO(NoV, surfaceDescription.Occlusion, roughness);
+        #endif
+    }
+
+    indirectSpecular += reflectionSpecular;
+
+    indirectSpecular = indirectSpecular * energyCompensation * brdf;
 
     half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColor))
                      + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);

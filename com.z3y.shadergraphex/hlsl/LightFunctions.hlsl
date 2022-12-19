@@ -86,29 +86,6 @@ half V_Kelemen(half LoH)
     return saturate(0.25 / (LoH * LoH));
 }
 
-// static float2 DFGLut;
-// static half3 DFGEnergyCompensation;
-
-// half4 SampleDFG(half NoV, half perceptualRoughness)
-// {
-//     return _DFG.SampleLevel(sampler_DFG, float2(NoV, perceptualRoughness), 0);
-// }
-
-// half3 EnvBRDF(half2 dfg, half3 f0)
-// {
-//     return f0 * dfg.x + dfg.y;
-// }
-
-// half3 EnvBRDFMultiscatter(half2 dfg, half3 f0)
-// {
-//     return lerp(dfg.xxx, dfg.yyy, f0);
-// }
-
-// half3 EnvironmentBRDFEnergyCompensation(half2 dfg, half3 f0)
-// {
-//     return 1.0 + f0 * (1.0 / dfg.y - 1.0);
-// }
-
 half3 EnvironmentBRDFApproximation(half perceptualRoughness, half NoV, half3 f0)
 {
     // original code from https://blog.selfshadow.com/publications/s2013-shading-course/lazarov/s2013_pbs_black_ops_2_notes.pdf
