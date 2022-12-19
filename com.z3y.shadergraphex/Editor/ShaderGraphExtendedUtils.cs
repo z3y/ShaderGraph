@@ -12,7 +12,7 @@ namespace z3y.ShaderGraphExtended
 {
     internal class ShaderGraphExtendedUtils
     {
-        public static void SetRenderStateForwardBasePass(UnlitMasterNode masterNode, ref ShaderPass pass, ref ShaderGenerator result)
+        public static void SetRenderStateForwardBasePass<T>(T masterNode, ref ShaderPass pass, ref ShaderGenerator result) where T : MasterNode
         {
             //var options = ShaderGenerator.GetMaterialOptions(surfaceType, alphaMode, twoSided);
             

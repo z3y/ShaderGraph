@@ -13,30 +13,36 @@ using UnityEngine.Rendering;
 namespace z3y.ShaderGraphExtended
 {
     [Serializable]
-    class BuiltInUnlitSubShaderExtended : IUnlitSubShader
+    class BuiltInLitSubShaderExtended : IPBRSubShader
     {
 #region Passes
-        ShaderPass m_UnlitPass = new ShaderPass
+        ShaderPass m_ForwardBasePass = new ShaderPass
         {
             // Definition
             displayName = "FORWARDBASE",
-            referenceName = "SHADERPASS_UNLIT",
-            passInclude = "Packages/com.z3y.shadergraphex/hlsl/UnlitPass.hlsl",
+            referenceName = "SHADERPASS_FORWARDBASE",
+            lightMode = "ForwardBase",
+            passInclude = "Packages/com.z3y.shadergraphex/hlsl/LitPass.hlsl",
             varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
             useInPreview = true,
 
             // Port mask
             vertexPorts = new List<int>()
             {
-                UnlitMasterNode.PositionSlotId,
-                UnlitMasterNode.VertNormalSlotId,
-                UnlitMasterNode.VertTangentSlotId
+                PBRMasterNode.PositionSlotId,
+                PBRMasterNode.VertNormalSlotId,
+                PBRMasterNode.VertTangentSlotId,
             },
             pixelPorts = new List<int>
             {
-                UnlitMasterNode.ColorSlotId,
-                UnlitMasterNode.AlphaSlotId,
-                UnlitMasterNode.AlphaThresholdSlotId
+                PBRMasterNode.AlbedoSlotId,
+                PBRMasterNode.NormalSlotId,
+                PBRMasterNode.MetallicSlotId,
+                PBRMasterNode.EmissionSlotId,
+                PBRMasterNode.SmoothnessSlotId,
+                PBRMasterNode.OcclusionSlotId,
+                PBRMasterNode.AlphaSlotId,
+                PBRMasterNode.AlphaThresholdSlotId,
             },
 
             // Pass setup
@@ -50,6 +56,7 @@ namespace z3y.ShaderGraphExtended
                 "target 4.5",
                 "multi_compile_fog",
                 "multi_compile_instancing",
+                "multi_compile_fwdbase"
             },
             keywords = new KeywordDescriptor[]
             {
@@ -70,13 +77,14 @@ namespace z3y.ShaderGraphExtended
             // Port mask
             vertexPorts = new List<int>()
             {
-                UnlitMasterNode.PositionSlotId,
-                UnlitMasterNode.VertNormalSlotId,
+                PBRMasterNode.PositionSlotId,
+                PBRMasterNode.VertNormalSlotId,
             },
             pixelPorts = new List<int>
             {
-                UnlitMasterNode.AlphaSlotId,
-                UnlitMasterNode.AlphaThresholdSlotId
+                PBRMasterNode.AlphaSlotId,
+                PBRMasterNode.AlphaThresholdSlotId,
+                PBRMasterNode.MetallicSlotId
             },
 
             // Pass setup
@@ -124,15 +132,15 @@ namespace z3y.ShaderGraphExtended
 
         public int GetPreviewPassIndex() { return 0; }
 
-        private static ActiveFields GetActiveFieldsFromMasterNode(UnlitMasterNode masterNode, ShaderPass pass)
+        private static ActiveFields GetActiveFieldsFromMasterNode(PBRMasterNode masterNode, ShaderPass pass)
         {
             var activeFields = new ActiveFields();
             var baseActiveFields = activeFields.baseInstance;
 
             // Graph Vertex
-            if(masterNode.IsSlotConnected(UnlitMasterNode.PositionSlotId) || 
-               masterNode.IsSlotConnected(UnlitMasterNode.VertNormalSlotId) || 
-               masterNode.IsSlotConnected(UnlitMasterNode.VertTangentSlotId))
+            if(masterNode.IsSlotConnected(PBRMasterNode.PositionSlotId) || 
+               masterNode.IsSlotConnected(PBRMasterNode.VertNormalSlotId) || 
+               masterNode.IsSlotConnected(PBRMasterNode.VertTangentSlotId))
             {
                 baseActiveFields.Add("features.graphVertex");
             }
@@ -140,8 +148,8 @@ namespace z3y.ShaderGraphExtended
             // Graph Pixel (always enabled)
             baseActiveFields.Add("features.graphPixel");
 
-            if (masterNode.IsSlotConnected(UnlitMasterNode.AlphaThresholdSlotId) ||
-                masterNode.GetInputSlots<Vector1MaterialSlot>().First(x => x.id == UnlitMasterNode.AlphaThresholdSlotId).value > 0.0f)
+            if (masterNode.IsSlotConnected(PBRMasterNode.AlphaThresholdSlotId) ||
+                masterNode.GetInputSlots<Vector1MaterialSlot>().First(x => x.id == PBRMasterNode.AlphaThresholdSlotId).value > 0.0f)
             {
                 baseActiveFields.Add("AlphaClip");
             }
@@ -171,7 +179,7 @@ namespace z3y.ShaderGraphExtended
             return activeFields;
         }
 
-        private static bool GenerateShaderPass(UnlitMasterNode masterNode, ShaderPass pass, GenerationMode mode, ShaderGenerator result, List<string> sourceAssetDependencyPaths)
+        private static bool GenerateShaderPass(PBRMasterNode masterNode, ShaderPass pass, GenerationMode mode, ShaderGenerator result, List<string> sourceAssetDependencyPaths)
         {
             // apply master node options to active fields
             var activeFields = GetActiveFieldsFromMasterNode(masterNode, pass);
@@ -190,7 +198,7 @@ namespace z3y.ShaderGraphExtended
             }
 
             // Master Node data
-            var unlitMasterNode = masterNode as UnlitMasterNode;
+            var pbrMasterNode = masterNode as PBRMasterNode;
             var subShader = new ShaderGenerator();
 
             subShader.AddShaderChunk("SubShader", true);
@@ -198,28 +206,28 @@ namespace z3y.ShaderGraphExtended
             
             subShader.Indent();
             {
-                var surfaceTags = ShaderGenerator.BuildMaterialTags(unlitMasterNode.surfaceType);
+                var surfaceTags = ShaderGenerator.BuildMaterialTags(pbrMasterNode.surfaceType);
                 var tagsBuilder = new ShaderStringBuilder(0);
                 surfaceTags.GetTags(tagsBuilder, "");
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
-                // unlit pass
-                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(unlitMasterNode, ref m_UnlitPass, ref subShader);
-                GenerateShaderPass(unlitMasterNode, m_UnlitPass, mode, subShader, sourceAssetDependencyPaths);
+                // forwardbase pass
+                ShaderGraphExtendedUtils.SetRenderStateForwardBasePass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
+                GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, subShader, sourceAssetDependencyPaths);
 
-                if (unlitMasterNode.additionalPass)
+                /*if (pbrMasterNode.additionalPass)
                 {
-                    var shaderName = unlitMasterNode.additionalPass.name;
+                    var shaderName = pbrMasterNode.additionalPass.name;
                     subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
-                }
+                }*/
                 
                 
-                // shadowcaster pass
-                if (unlitMasterNode.generateShadowCaster)
+                /*// shadowcaster pass
+                if (pbrMasterNode.generateShadowCaster)
                 {
-                    ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(unlitMasterNode.surfaceType, unlitMasterNode.alphaMode, unlitMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
-                    GenerateShaderPass(unlitMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
-                }
+                    ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(pbrMasterNode.surfaceType, pbrMasterNode.alphaMode, pbrMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
+                    GenerateShaderPass(pbrMasterNode, m_ShadowCaster, mode, subShader, sourceAssetDependencyPaths);
+                }*/
             }
 
             subShader.Deindent();
@@ -245,6 +253,6 @@ namespace z3y.ShaderGraphExtended
 
 
 
-        public BuiltInUnlitSubShaderExtended() { }
+        public BuiltInLitSubShaderExtended() { }
     }
 }
