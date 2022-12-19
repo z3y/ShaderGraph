@@ -114,3 +114,76 @@ void EnvironmentBRDF(half NoV, half perceptualRoughness, half3 f0, out half3 brd
         energyCompensation = 1.0 + f0 * (1.0 / dfg.y - 1.0);
     #endif
 }
+
+SamplerState custom_bilinear_clamp_sampler;
+
+#ifdef DYNAMICLIGHTMAP_ON
+half3 RealtimeLightmap(float2 uv, float3 worldNormal)
+{   
+    //half4 bakedCol = SampleBicubic(unity_DynamicLightmap, custom_bilinear_clamp_sampler, uv);
+    half4 bakedCol = SampleBicubic(unity_DynamicLightmap, custom_bilinear_clamp_sampler, uv, GetTexelSize(unity_DynamicLightmap));
+    
+    half3 realtimeLightmap = DecodeRealtimeLightmap(bakedCol);
+    #ifdef DIRLIGHTMAP_COMBINED
+        float4 realtimeDirTex = UNITY_SAMPLE_TEX2D_SAMPLER(unity_DynamicDirectionality, unity_DynamicLightmap, uv);
+        realtimeLightmap += DecodeDirectionalLightmap(realtimeLightmap, realtimeDirTex, worldNormal);
+    #endif
+    return realtimeLightmap;
+}
+#endif
+
+float shEvaluateDiffuseL1Geomerics(float L0, float3 L1, float3 n)
+{
+    // average energy
+    float R0 = L0;
+    
+    // avg direction of incoming light
+    float3 R1 = 0.5f * L1;
+    
+    // directional brightness
+    float lenR1 = length(R1);
+    
+    // linear angle between normal and direction 0-1
+    //float q = 0.5f * (1.0f + dot(R1 / lenR1, n));
+    //float q = dot(R1 / lenR1, n) * 0.5 + 0.5;
+    float q = dot(normalize(R1), n) * 0.5 + 0.5;
+    q = saturate(q); // Thanks to ScruffyRuffles for the bug identity.
+    
+    // power for q
+    // lerps from 1 (linear) to 3 (cubic) based on directionality
+    float p = 1.0f + 2.0f * lenR1 / R0;
+    
+    // dynamic range constant
+    // should vary between 4 (highly directional) and 0 (ambient)
+    float a = (1.0f - lenR1 / R0) / (1.0f + lenR1 / R0);
+    
+    return R0 * (a + (1.0f - a) * (p + 1.0f) * pow(q, p));
+}
+
+half3 GetLightProbes(float3 normalWS, float3 positionWS)
+{
+    half3 indirectDiffuse = 0;
+    #ifndef LIGHTMAP_ON
+        #if UNITY_LIGHT_PROBE_PROXY_VOLUME
+            UNITY_BRANCH
+            if (unity_ProbeVolumeParams.x == 1.0)
+            {
+                indirectDiffuse = SHEvalLinearL0L1_SampleProbeVolume(float4(normalWS, 1.0), positionWS);
+            }
+            else
+            {
+        #endif
+                #ifdef NONLINEAR_LIGHTPROBESH
+                    float3 L0 = float3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
+                    indirectDiffuse.r = shEvaluateDiffuseL1Geomerics(L0.r, unity_SHAr.xyz, normalWS);
+                    indirectDiffuse.g = shEvaluateDiffuseL1Geomerics(L0.g, unity_SHAg.xyz, normalWS);
+                    indirectDiffuse.b = shEvaluateDiffuseL1Geomerics(L0.b, unity_SHAb.xyz, normalWS);
+                #else
+                indirectDiffuse = ShadeSH9(float4(normalWS, 1.0));
+                #endif
+        #if UNITY_LIGHT_PROBE_PROXY_VOLUME
+            }
+        #endif
+    #endif
+    return indirectDiffuse;
+}

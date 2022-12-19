@@ -10,6 +10,7 @@ PackedVaryings vert(Attributes input)
 
 
 #include "LightFunctions.hlsl"
+#include "Bicubic.hlsl"
 
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
@@ -77,6 +78,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 energyCompensation;
     EnvironmentBRDF(NoV, perceptualRoughness, f0, brdf, energyCompensation);
 
+
+
     // main light
     float3 lightDirection = Unity_SafeNormalize(UnityWorldSpaceLightDir(unpacked.positionWS));
     float3 lightHalfVector = normalize(lightDirection + viewDirectionWS);
@@ -109,15 +112,15 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         half D = D_GGX(lightNoH, clampedRoughness);
         half V = V_SmithGGXCorrelated(NoV, lightNoL, clampedRoughness);
         lightSpecular = max(0.0, (D * V) * F) * lightFinalColor * UNITY_PI;
+        directSpecular += lightSpecular;
     }
     #endif
-
-    directSpecular += lightSpecular;
-
     // main light end
 
-    half3 reflectionSpecular = 0;
+
+
     // reflections
+    half3 reflectionSpecular = 0;
     {
         #if defined(UNITY_PASS_FORWARDBASE)
 
@@ -172,10 +175,84 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
             //#endif
 
             reflectionSpecular *= computeSpecularAO(NoV, surfaceDescription.Occlusion, roughness);
+            indirectSpecular += reflectionSpecular;
         #endif
     }
+    // reflections end
 
-    indirectSpecular += reflectionSpecular;
+
+
+    half3 lightmappedSpecular = 0;
+    {
+    #ifdef UNITY_PASS_FORWARDBASE
+        #if defined(LIGHTMAP_ON)
+
+            half4 bakedColorTex = SampleBicubic(unity_Lightmap, custom_bilinear_clamp_sampler, lightmapUV, GetTexelSize(unity_Lightmap));
+            half3 lightMap = DecodeLightmap(bakedColorTex);
+
+            #if defined(DIRLIGHTMAP_COMBINED)
+                float4 lightMapDirection = unity_LightmapInd.SampleLevel(custom_bilinear_clamp_sampler, lightmapUV, 0);
+                #ifndef BAKERY_MONOSH
+                    lightMap = DecodeDirectionalLightmap(lightMap, lightMapDirection, normalWS);
+                #endif
+            #endif
+
+            // #if defined(BAKERY_MONOSH)
+            //     BakeryMonoSH(lightMap, lightmappedSpecular, lightmapUV, normalWS, viewDir, PerceptualRoughnessToRoughnessClamped(surf.perceptualRoughness),
+            //     surf, i.tangent, i.bitangent
+            //     );
+
+            // #endif
+
+            indirectDiffuse = lightMap;
+        #endif
+
+        #if defined(DYNAMICLIGHTMAP_ON)
+            float2 realtimeUV = unpacked.texCoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw; //TODO: add uv2 interpolator req
+            indirectDiffuse += RealtimeLightmap(realtimeUV, normalWS);
+        #endif
+        
+        #ifdef LIGHTMAP_ON
+            #if defined(LIGHTMAP_SHADOW_MIXING) && !defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN)
+                lightData.FinalColor = 0.0;
+                lightData.Specular = 0.0;
+                indirectDiffuse = SubtractMainLightWithRealtimeAttenuationFromLightmap (indirectDiffuse, lightAttenuation, bakedColorTex, normalWS);
+            #endif
+        #endif
+
+        #if !defined(DYNAMICLIGHTMAP_ON) && !defined(LIGHTMAP_ON)
+            #ifdef LIGHTPROBE_VERTEX
+               // indirectDiffuse = ShadeSHPerPixel(normalWS, i.lightProbe, i.worldPos.xyz);
+            #else
+                indirectDiffuse = GetLightProbes(normalWS, unpacked.positionWS);
+            #endif
+        #endif
+
+        indirectDiffuse = max(0.0, indirectDiffuse);
+
+        // #if defined(_LIGHTMAPPED_SPECULAR)
+        // {
+        //     float3 bakedDominantDirection = 1.0;
+        //     half3 bakedSpecularColor = 0.0;
+
+        //     #if defined(DIRLIGHTMAP_COMBINED) && defined(LIGHTMAP_ON) && !defined(BAKERY_SH) && !defined(BAKERY_RNM) && !defined(BAKERY_MONOSH)
+        //         bakedDominantDirection = (lightMapDirection.xyz) * 2.0 - 1.0;
+        //         bakedSpecularColor = indirectDiffuse;
+        //     #endif
+
+        //     #ifndef LIGHTMAP_ON
+        //         bakedSpecularColor = half3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
+        //         bakedDominantDirection = unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz;
+        //     #endif
+
+        //     bakedDominantDirection = normalize(bakedDominantDirection);
+        // lightmappedSpecular += SpecularHighlights(normalWS, bakedSpecularColor, bakedDominantDirection, f0, viewDir, PerceptualRoughnessToRoughnessClamped(surf.perceptualRoughness), NoV, DFGEnergyCompensation);
+        // }
+        // #endif
+
+    #endif
+    }
+    // indirect diffuse end
 
     indirectSpecular = indirectSpecular * energyCompensation * brdf;
 
