@@ -1,3 +1,4 @@
+#if AUDIOLINK_INCLUDED
 using System.Reflection;
 
 namespace UnityEditor.ShaderGraph
@@ -32,3 +33,4 @@ namespace UnityEditor.ShaderGraph
         public bool RequiresTime() => true;
     }
 }
+#endif
