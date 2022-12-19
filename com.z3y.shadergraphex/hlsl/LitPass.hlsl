@@ -79,8 +79,6 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     EnvironmentBRDF(NoV, perceptualRoughness, f0, brdf, energyCompensation);
 
 
-    return brdf.rgbb;
-
     // main light
     float3 lightDirection = Unity_SafeNormalize(UnityWorldSpaceLightDir(unpacked.positionWS));
     float3 lightHalfVector = normalize(lightDirection + viewDirectionWS);
