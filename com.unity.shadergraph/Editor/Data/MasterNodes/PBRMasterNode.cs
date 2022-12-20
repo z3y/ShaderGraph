@@ -27,7 +27,6 @@ namespace UnityEditor.ShaderGraph
         public const string NormalName = "Vertex Normal";
         public const string TangentName = "Vertex Tangent";
 
-        public const string ReflectanceName = "Reflectance";
 
         public const int AlbedoSlotId = 0;
         public const int NormalSlotId = 1;
@@ -42,28 +41,65 @@ namespace UnityEditor.ShaderGraph
         public const int VertNormalSlotId = 10;
         public const int VertTangentSlotId = 11;
 
+        public const string ReflectanceName = "Reflectance";
         public const int ReflectanceSlotID = 12;
+        
+        public const string GSAAVarienceName = "GSAA Variance";
+        public const int GSAAVarienceSlotID = 13;
+        public const string GSAAThresholdName = "GSAA Threshold";
+        public const int GSAAThresholdSlotID = 14;
+        
+        public const string AnisotropyTangentName = "Tangent";
+        public const int AnisotropyTangentSlotID = 15;
+        public const string AnisotropyLevelName = "Anisotropy";
+        public const int AnisotropyLevelSlotID = 16;
+
+
+
 
         public enum Model
         {
             Specular,
             Metallic
         }
+        
+        private void UpdateSettingValue(ref bool value, bool newValue)
+        {
+            if (value == newValue)
+                return;
+
+            value = newValue;
+            UpdateNodeAfterDeserialization();
+            Dirty(ModificationScope.Graph);
+        }
 
         [SerializeField] private bool m_BicubicLightmap = false;
+        [SerializeField] public bool m_Ltcgi = false;
+        [SerializeField] private bool m_Gsaa = false;
+        [SerializeField] private bool m_Anisotropy = false;
+        
+        public bool ltcgi
+        {
+            get => m_Ltcgi;
+            set => UpdateSettingValue(ref m_Ltcgi, value);
+        }
+        
+        public bool anisotropy
+        {
+            get => m_Anisotropy;
+            set => UpdateSettingValue(ref m_Anisotropy, value);
+        }
+
+        public bool gsaa
+        {
+            get => m_Gsaa;
+            set => UpdateSettingValue(ref m_Gsaa, value);
+        }
         
         public bool bicubicLightmap
         {
             get => m_BicubicLightmap;
-            set
-            {
-                if (m_BicubicLightmap == value)
-                    return;
-
-                m_BicubicLightmap = value;
-                UpdateNodeAfterDeserialization();
-                Dirty(ModificationScope.Topological);
-            }
+            set => UpdateSettingValue(ref m_BicubicLightmap, value);
         }
 
         [SerializeField]

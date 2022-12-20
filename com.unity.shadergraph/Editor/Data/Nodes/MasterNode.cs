@@ -129,7 +129,7 @@ namespace UnityEditor.ShaderGraph
             {
                 displayName = "Rendering Mode",
                 overrideReferenceName = "_Mode",
-                attributes = "[Enum(Opaque, 0, Cutout A2C, 1, Fade, 2, Transparent, 3, Additive, 4, Multiply, 5)]",
+                attributes = "[Enum(Opaque, 0, Cutout, 1, Fade, 2, Transparent, 3, Additive, 4, Multiply, 5)]",
                 value = (int)renderModeOverride
             };
             
@@ -230,9 +230,27 @@ namespace UnityEditor.ShaderGraph
                     attributes = "[Toggle(_LIGHTMAPPED_SPECULAR)]",
                     value = 0
                 };
+                
+                var ltcgi = new Vector1ShaderProperty
+                {
+                    displayName = "LTCGI",
+                    overrideReferenceName = "_LTCGI",
+                    attributes = "[Toggle(LTCGI)]",
+                    value = 0
+                };
+                var ltcgiSpec = new Vector1ShaderProperty
+                {
+                    displayName = "LTCGI Disable Diffuse",
+                    overrideReferenceName = "_LTCGI_DIFFUSE_OFF",
+                    attributes = "[Toggle(LTCGI_DIFFUSE_OFF)]",
+                    value = 0
+                };
 
                 propertyCollector.AddShaderProperty(bakeryMonoSHProp);
                 propertyCollector.AddShaderProperty(lightmappedSpecularProp);
+                
+                propertyCollector.AddShaderProperty(ltcgi);
+                propertyCollector.AddShaderProperty(ltcgiSpec);
                 
                 propertyCollector.AddShaderProperty(reflectionsToggle);
                 propertyCollector.AddShaderProperty(specularHighlightsToggle);

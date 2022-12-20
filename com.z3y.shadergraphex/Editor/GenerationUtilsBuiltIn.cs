@@ -158,6 +158,14 @@ namespace z3y.ShaderGraphExtended
                         passKeywordBuilder.AppendLine(keyword.ToDeclarationString());
                     }
                 }
+
+                if (pass.predefines != null)
+                {
+                    foreach (var passPredefine in pass.predefines)
+                    {
+                        passKeywordBuilder.AppendLine(passPredefine);
+                    }
+                }
                 if(passKeywordBuilder.length == 0)
                     passKeywordBuilder.AppendLine("// PassKeywords: <None>");
                 spliceCommands.Add("PassKeywords", passKeywordBuilder.ToCodeBlack());

@@ -9,6 +9,7 @@ using UnityEditor.ShaderGraph;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Debug = System.Diagnostics.Debug;
 
 namespace z3y.ShaderGraphExtended
 {
@@ -86,6 +87,11 @@ namespace z3y.ShaderGraphExtended
                 "Attributes.normalOS",
                 "Attributes.tangentOS",
                 "Attributes.uv1",
+            },
+            
+            predefines = new HashSet<string>()
+            {
+                
             }
             
             
@@ -158,6 +164,11 @@ namespace z3y.ShaderGraphExtended
                 "Attributes.normalOS",
                 "Attributes.tangentOS",
                 "Attributes.uv1",
+            },
+            
+            predefines = new HashSet<string>()
+            {
+                
             }
             
             
@@ -211,6 +222,24 @@ namespace z3y.ShaderGraphExtended
         displayName = "Mode Keywords",
         referenceName = "_ _ALPHATEST_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON",
         type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor ltcgiSpecularKeyword = new KeywordDescriptor()
+    {
+        displayName = "LTCGI",
+        referenceName = "LTCGI",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor ltcgiDiffuseOffKeyword = new KeywordDescriptor()
+    {
+        displayName = "LTCGI_DIFFUSE_OFF",
+        referenceName = "LTCGI_DIFFUSE_OFF",
+        type = KeywordType.Boolean, 
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,
     };
@@ -339,7 +368,27 @@ namespace z3y.ShaderGraphExtended
 
             subShader.AddShaderChunk("SubShader", true);
             subShader.AddShaderChunk("{", true);
-            
+
+
+            if (pbrMasterNode.gsaa)
+            {
+                m_ForwardBasePass.predefines.Add("#define _GEOMETRICSPECULAR_AA");
+                m_ForwardAddPass.predefines.Add("#define _GEOMETRICSPECULAR_AA");
+            }
+
+            if (pbrMasterNode.anisotropy)
+            {
+                m_ForwardBasePass.predefines.Add("#define _ANISOTROPY");
+                m_ForwardAddPass.predefines.Add("#define _ANISOTROPY");
+            }
+
+            if (pbrMasterNode.ltcgi)
+            {
+                m_ForwardBasePass.keywords = m_ForwardBasePass.keywords.Append(ltcgiSpecularKeyword);
+                m_ForwardBasePass.keywords = m_ForwardBasePass.keywords.Append(ltcgiSpecularKeyword);
+            }
+
+
             subShader.Indent();
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(pbrMasterNode.surfaceType);

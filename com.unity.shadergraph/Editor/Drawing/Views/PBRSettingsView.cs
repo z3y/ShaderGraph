@@ -84,6 +84,42 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });
             });
+            
+            ps.Add(new PropertyRow(new Label("Geometric Specular AA")), (row) =>
+            {
+                row.Add(new Toggle(), (toggle) =>
+                {
+                    toggle.value = m_Node.gsaa;
+                    toggle.OnToggleChanged((etv) =>
+                    {
+                        m_Node.gsaa = etv.newValue;
+                    });
+                });
+            });
+            
+            ps.Add(new PropertyRow(new Label("LTCGI")), (row) =>
+            {
+                row.Add(new Toggle(), (toggle) =>
+                {
+                    toggle.value = m_Node.ltcgi;
+                    toggle.OnToggleChanged((etv) =>
+                    {
+                        m_Node.ltcgi = etv.newValue;
+                    });
+                });
+            });
+            
+            ps.Add(new PropertyRow(new Label("Anisotropy")), (row) =>
+            {
+                row.Add(new Toggle(), (toggle) =>
+                {
+                    toggle.value = m_Node.anisotropy;
+                    toggle.OnToggleChanged((etv) =>
+                    {
+                        m_Node.anisotropy = etv.newValue;
+                    });
+                });
+            });
 
             Add(ps);
             Add(GetShaderGUIOverridePropertySheet());
