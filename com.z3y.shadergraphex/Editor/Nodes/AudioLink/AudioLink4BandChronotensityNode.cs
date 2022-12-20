@@ -1,7 +1,7 @@
 using System.Reflection;
-using UnityEditor.UIElements;
+using UnityEditor.ShaderGraph;
 
-namespace UnityEditor.ShaderGraph
+namespace z3y.ShaderGraphExtended
 {
     [Title("VRChat", "AudioLink", "4Band Chronotensity")]
     class AudioLink4BandChronotensityNode : CodeFunctionNode, IMayRequireTime

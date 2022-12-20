@@ -1,6 +1,7 @@
 using System.Reflection;
+using UnityEditor.ShaderGraph;
 
-namespace UnityEditor.ShaderGraph
+namespace z3y.ShaderGraphExtended
 {
     [Title("VRChat", "AudioLink", "4Band Amplitude Filtered")]
     class AudioLink4BandAmplitudeFilteredNode : CodeFunctionNode, IMayRequireTime

@@ -1,7 +1,8 @@
 using System.Reflection;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
-namespace UnityEditor.ShaderGraph
+namespace z3y.ShaderGraphExtended
 {
     [Title("VRChat", "AudioLink", "Waveform Preview")]
     class AudioLinkWaveformNode : CodeFunctionNode, IMayRequireTime
