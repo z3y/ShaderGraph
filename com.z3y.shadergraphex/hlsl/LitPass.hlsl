@@ -242,7 +242,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
             reflectionSpecular *= horizon * horizon;
             
             //surfaceDescription.Occlusion *= lerp(1.0, saturate(dot(indirectDiffuse, 1.0)), 1.0);
+            #ifdef LIGHTMAP_ON
             half specularOcclusion = saturate(sqrt(dot(indirectDiffuse, 1.0)) * surfaceDescription.Occlusion);
+            #else
+            half specularOcclusion = surfaceDescription.Occlusion;
+            #endif
            // surfaceDescription.Occlusion *= saturate(dot(indirectDiffuse, 1.0));
 
             reflectionSpecular *= computeSpecularAO(NoV, specularOcclusion, roughness);
