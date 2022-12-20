@@ -203,14 +203,14 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
             float3 reflDir = reflect(-viewDirectionWS, normalWS);
 
-            // #ifdef _ANISOTROPY
-            //     float3 anisotropicDirection = surf.anisotropyDirection >= 0.0 ? bitangent : tangent;
-            //     float3 anisotropicTangent = cross(anisotropicDirection, viewDirectionWS);
-            //     float3 anisotropicNormal = cross(anisotropicTangent, anisotropicDirection);
-            //     float bendFactor = abs(surf.anisotropyDirection) * saturate(1.0 - (Pow5(1.0 - surf.perceptualRoughness))) * surf.anisotropyLevel;
-            //     float3 bentNormal = normalize(lerp(normalWS, anisotropicNormal, bendFactor));
-            //     reflDir = reflect(-viewDirectionWS, bentNormal);
-            // #endif
+            #ifdef _ANISOTROPY
+                float3 anisotropicDirection = surfaceDescription.Anisotropy >= 0.0 ? bitangent : tangent;
+                float3 anisotropicTangent = cross(anisotropicDirection, viewDirectionWS);
+                float3 anisotropicNormal = cross(anisotropicTangent, anisotropicDirection);
+                float bendFactor = abs(surfaceDescription.Anisotropy) * saturate(1.0 - (Pow5(1.0 - perceptualRoughness)));
+                float3 bentNormal = normalize(lerp(normalWS, anisotropicNormal, bendFactor));
+                reflDir = reflect(-viewDirectionWS, bentNormal);
+            #endif
 
             #ifndef SHADER_API_MOBILE
                 reflDir = lerp(reflDir, normalWS, roughness * roughness);

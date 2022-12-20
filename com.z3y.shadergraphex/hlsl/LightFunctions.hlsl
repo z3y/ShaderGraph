@@ -216,3 +216,9 @@ float GSAA_Filament(float3 worldNormal, half perceptualRoughness, half varianceI
 
     return sqrt(sqrt(squareRoughness));
 }
+
+float3 Orthonormalize(float3 tangent, float3 normal)
+{
+    // TODO: use SafeNormalize()?
+    return normalize(tangent - dot(tangent, normal) * normal);
+}
