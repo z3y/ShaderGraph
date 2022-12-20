@@ -213,6 +213,9 @@ namespace z3y.ShaderGraphExtended
         };
         
 #endregion
+
+#region Keywords
+
     private static KeywordDescriptor defaultModeKeywords = new KeywordDescriptor()
     {
         displayName = "Mode Keywords",
@@ -221,25 +224,7 @@ namespace z3y.ShaderGraphExtended
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,
     };
-    
-    private static KeywordDescriptor ltcgiSpecularKeyword = new KeywordDescriptor()
-    {
-        displayName = "LTCGI",
-        referenceName = "LTCGI",
-        type = KeywordType.Boolean,
-        definition = KeywordDefinition.ShaderFeature,
-        scope = KeywordScope.Local,
-    };
-    
-    private static KeywordDescriptor ltcgiDiffuseOffKeyword = new KeywordDescriptor()
-    {
-        displayName = "LTCGI_DIFFUSE_OFF",
-        referenceName = "LTCGI_DIFFUSE_OFF",
-        type = KeywordType.Boolean, 
-        definition = KeywordDefinition.ShaderFeature,
-        scope = KeywordScope.Local,
-    };
-    
+
     private static KeywordDescriptor bakeryMonoSHKeyword = new KeywordDescriptor()
     {
         displayName = "Mono SH Keyword",
@@ -284,7 +269,6 @@ namespace z3y.ShaderGraphExtended
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,
     };
-#region Keywords
 
 
         #endregion
@@ -343,6 +327,14 @@ namespace z3y.ShaderGraphExtended
             {
                 if (masterNode.gsaa) baseActiveFields.Add("features.GSAA");
                 if (masterNode.anisotropy) baseActiveFields.Add("features.Anisotropy");
+                if (masterNode.alphaToCoverage) baseActiveFields.Add("features.A2C");
+            }
+
+            if (pass.lightMode == "ForwardBase")
+            {
+                if (masterNode.bicubicLightmap) baseActiveFields.Add("features.BicubicLightmap");
+                if (masterNode.ltcgi) baseActiveFields.Add("features.LTCGI");
+
             }
 
             return activeFields;
@@ -375,16 +367,7 @@ namespace z3y.ShaderGraphExtended
             subShader.AddShaderChunk("SubShader", true);
             subShader.AddShaderChunk("{", true);
 
-
-
-
-            if (pbrMasterNode.ltcgi)
-            {
-                m_ForwardBasePass.keywords = m_ForwardBasePass.keywords.Append(ltcgiSpecularKeyword);
-                m_ForwardBasePass.keywords = m_ForwardBasePass.keywords.Append(ltcgiSpecularKeyword);
-            }
-
-
+            
             subShader.Indent();
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(pbrMasterNode.surfaceType);

@@ -342,25 +342,6 @@ namespace z3y.ShaderGraphExtended
             {
                 graphDefines.AppendLine("#define {0}", pass.referenceName);
 
-                if (masterNode is MasterNode actualMasterNode)
-                {
-                    if (actualMasterNode.alphaToCoverage) graphDefines.AppendLine("#define ALPHATOCOVERAGE_ON");
-
-                    if (actualMasterNode.renderModeOverride != RenderMode.None)
-                    {
-
-                    }
-                    
-                }
-
-                if (masterNode is PBRMasterNode pbrMasterNode)
-                {
-                    if (pbrMasterNode.bicubicLightmap)
-                    {
-                        graphDefines.AppendLine("#define BICUBIC_LIGHTMAP");
-                    }
-                }
-
                 if (graphRequirements.permutationCount > 0)
                 {
                     List<int> activePermutationIndices;

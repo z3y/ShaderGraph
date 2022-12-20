@@ -37,6 +37,9 @@ Pass
     $features.A2C:                      #define ALPHATOCOVERAGE_ON
     $features.BicubicLightmap:          #define BICUBIC_LIGHTMAP
     
+    $features.LTCGI:                    #pragma shader_feature_local LTCGI
+    $features.LTCGI:                    #pragma shader_feature_local LTCGI_DIFFUSE_OFF
+    
     $SurfaceType.Transparent:           #define _SURFACE_TYPE_TRANSPARENT 1
     $AlphaClip:                         #define _AlphaClip 1
     $Normal:                            #define _NORMALMAP 1
