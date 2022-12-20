@@ -51,6 +51,13 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         half3x3 tangentToWorld = half3x3(unpacked.tangentWS.xyz, bitangent, unpacked.normalWS.xyz);
         float3 normalWS = TransformTangentToWorld(surfaceDescription.Normal, tangentToWorld);
         float3 tangent = unpacked.tangentWS.xyz;
+
+        #ifdef _ANISOTROPY
+            tangent = TransformTangentToWorld(surfaceDescription.Tangent, tangentToWorld);
+            tangent = Orthonormalize(tangent, normalWS);
+            bitangent = normalize(cross(normalWS, tangent));
+        #endif
+
     #elif _NORMAL_DROPOFF_OS
         float3 normalWS = TransformObjectToWorldNormal(surfaceDescription.Normal);
     #elif _NORMAL_DROPOFF_WS
@@ -58,11 +65,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     #endif
 
 
-    #ifdef _ANISOTROPY
-        tangent = TransformTangentToWorld(surfaceDescription.Tangent, tangentToWorld);
-        tangent = Orthonormalize(tangent, normalWS);
-        bitangent = normalize(cross(normalWS, tangent));
-    #endif
+    
 
     half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
     #ifdef _GEOMETRICSPECULAR_AA
@@ -118,7 +121,28 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightSpecular = 0;
     #ifndef _SPECULARHIGHLIGHTS_OFF
     #ifdef _ANISOTROPY
-        //lightData.Specular = LightSpecularAnisotropic(lightData, NoV, perceptualRoughness, f0, input.tangent, input.bitangent, viewDir, surf);
+    {
+        half at = max(clampedRoughness * (1.0 + surfaceDescription.Anisotropy), 0.001);
+        half ab = max(clampedRoughness * (1.0 - surfaceDescription.Anisotropy), 0.001);
+
+        float3 l = lightDirection;
+        float3 t = tangent;
+        float3 b = bitangent;
+        float3 v = viewDirectionWS;
+
+        half ToV = dot(t, v);
+        half BoV = dot(b, v);
+        half ToL = dot(t, l);
+        half BoL = dot(b, l);
+        half ToH = dot(t, lightHalfVector);
+        half BoH = dot(b, lightHalfVector);
+
+        half3 F = F_Schlick(lightLoH, f0) * energyCompensation;
+        half D = D_GGX_Anisotropic(lightNoH, lightHalfVector, t, b, at, ab);
+        half V = V_SmithGGXCorrelated_Anisotropic(at, ab, ToV, BoV, ToL, BoL, NoV, lightNoL);
+
+        lightSpecular = max(0.0, (D * V) * F) * lightFinalColor * UNITY_PI;
+    }
     #else
     {
         half3 F = F_Schlick(lightLoH, f0) * energyCompensation;
