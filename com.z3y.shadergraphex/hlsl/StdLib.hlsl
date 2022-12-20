@@ -1,3 +1,6 @@
+
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Macros.hlsl"
+
 // -----------------------------------------------------------------------------
 // Constants
  
@@ -14,11 +17,28 @@
 #define INV_HALF_PI     0.636619772367
  
 #define FLT_EPSILON     1.192092896e-07 // Smallest positive number, such that 1.0 + FLT_EPSILON != 1.0
-#define FLT_MIN         1.175494351e-38 // Minimum representable positive floating-point number
-#define FLT_MAX         3.402823466e+38 // Maximum representable floating-point number
  
 // -----------------------------------------------------------------------------
 // Compatibility functions
+
+#define FLT_INF  asfloat(0x7F800000)
+#define FLT_EPS  5.960464478e-8  // 2^-24, machine epsilon: 1 + EPS = 1 (half of the ULP for 1.0f)
+#define FLT_MIN  1.175494351e-38 // Minimum normalized positive floating-point number
+#define FLT_MAX  3.402823466e+38 // Maximum representable floating-point number
+#define HALF_EPS 4.8828125e-4    // 2^-11, machine epsilon: 1 + EPS = 1 (half of the ULP for 1.0f)
+#define HALF_MIN 6.103515625e-5  // 2^-14, the same value for 10, 11 and 16-bit: https://www.khronos.org/opengl/wiki/Small_Float_Formats
+#define HALF_MAX 65504.0
+#define UINT_MAX 0xFFFFFFFFu
+
+float Eps_float() { return FLT_EPS; }
+float Min_float() { return FLT_MIN; }
+float Max_float() { return FLT_MAX; }
+half Eps_half() { return HALF_EPS; }
+half Min_half() { return HALF_MIN; }
+half Max_half() { return HALF_MAX; }
+
+TEMPLATE_2_FLT(SafePositivePow_float, base, power, return pow(max(abs(base), float(FLT_EPS)), power))
+TEMPLATE_2_HALF(SafePositivePow_half, base, power, return pow(max(abs(base), half(HALF_EPS)), power))
  
 #if (SHADER_TARGET < 50 && !defined(SHADER_API_PSSL))
 float rcp(float value)
