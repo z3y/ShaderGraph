@@ -201,6 +201,21 @@ namespace UnityEditor.ShaderGraph
             
             if (this is PBRMasterNode)
             {
+                var reflectionsToggle = new Vector1ShaderProperty
+                {
+                    displayName = "Reflections",
+                    overrideReferenceName = "_GlossyReflections",
+                    attributes = "[ToggleOff(_GLOSSYREFLECTIONS_OFF)]",
+                    value = 1
+                };
+                var specularHighlightsToggle = new Vector1ShaderProperty
+                {
+                    displayName = "Specular Highlights",
+                    overrideReferenceName = "_SpecularHighlights",
+                    attributes = "[ToggleOff(_SPECULARHIGHLIGHTS_OFF)]",
+                    value = 1
+                };
+                
                 var bakeryMonoSHProp = new Vector1ShaderProperty
                 {
                     displayName = "Mono SH",
@@ -215,9 +230,12 @@ namespace UnityEditor.ShaderGraph
                     attributes = "[Toggle(_LIGHTMAPPED_SPECULAR)]",
                     value = 0
                 };
-                
+
                 propertyCollector.AddShaderProperty(bakeryMonoSHProp);
                 propertyCollector.AddShaderProperty(lightmappedSpecularProp);
+                
+                propertyCollector.AddShaderProperty(reflectionsToggle);
+                propertyCollector.AddShaderProperty(specularHighlightsToggle);
 
             }
 

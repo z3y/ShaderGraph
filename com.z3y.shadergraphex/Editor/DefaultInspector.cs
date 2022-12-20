@@ -21,6 +21,10 @@ namespace z3y.ShaderGraphExtended
 
         private int _BakeryMonoSH;
         private int _LightmappedSpecular;
+        
+        private int _SpecularHighlights;
+        private int _GlossyReflections;
+
 
         private static bool surfaceOptionsFoldout = true;
         private static bool surfaceInputsFoldout = true;
@@ -54,6 +58,10 @@ namespace z3y.ShaderGraphExtended
                 
                 _BakeryMonoSH = Array.FindIndex(properties, x => x.name.Equals("_BakeryMonoSH", StringComparison.Ordinal));
                 _LightmappedSpecular = Array.FindIndex(properties, x => x.name.Equals("_LightmappedSpecular", StringComparison.Ordinal));
+                
+                _SpecularHighlights = Array.FindIndex(properties, x => x.name.Equals("_SpecularHighlights", StringComparison.Ordinal));
+                _GlossyReflections = Array.FindIndex(properties, x => x.name.Equals("_GlossyReflections", StringComparison.Ordinal));
+
 
                 overridePropertiesRange = (_Mode, _Cull);
 
@@ -142,6 +150,9 @@ namespace z3y.ShaderGraphExtended
                 EditorGUILayout.Space();
                 DrawPropertyFromIndex(materialEditor, properties, _BakeryMonoSH);
                 DrawPropertyFromIndex(materialEditor, properties, _LightmappedSpecular);
+                DrawPropertyFromIndex(materialEditor, properties, _SpecularHighlights);
+                DrawPropertyFromIndex(materialEditor, properties, _GlossyReflections);
+
                 
                 EditorGUILayout.Space();
                 materialEditor.RenderQueueField();

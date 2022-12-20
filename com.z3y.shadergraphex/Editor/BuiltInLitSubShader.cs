@@ -65,7 +65,9 @@ namespace z3y.ShaderGraphExtended
             {
                 defaultModeKeywords,
                 bakeryMonoSHKeyword,
-                lightmappedSpecularKeyword
+                lightmappedSpecularKeyword,
+                reflectionsKeyword,
+                specularHighlightsKeyword
             },
             
             requiredVaryings = new List<string>()
@@ -225,6 +227,24 @@ namespace z3y.ShaderGraphExtended
     {
         displayName = "Lightmap Specular Keyword",
         referenceName = "_LIGHTMAPPED_SPECULAR",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor reflectionsKeyword = new KeywordDescriptor()
+    {
+        displayName = "Reflections Keyword",
+        referenceName = "_GLOSSYREFLECTIONS_OFF",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor specularHighlightsKeyword = new KeywordDescriptor()
+    {
+        displayName = "Specular Highlights Keyword",
+        referenceName = "_SPECULARHIGHLIGHTS_OFF",
         type = KeywordType.Boolean,
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,

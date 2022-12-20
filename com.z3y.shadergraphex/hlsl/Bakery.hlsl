@@ -12,7 +12,7 @@ void BakeryMonoSH(inout half3 diffuseColor, inout half3 specularColor, float2 lm
     float3 L1y = nL1.y * L0 * 2;
     float3 L1z = nL1.z * L0 * 2;
     half3 sh;
-#ifdef BAKERY_SHNONLINEAR
+#ifndef BAKERY_SHNONLINEAR_OFF
     float lumaL0 = dot(L0, 1);
     float lumaL1x = dot(L1x, 1);
     float lumaL1y = dot(L1y, 1);
