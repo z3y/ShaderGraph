@@ -186,6 +186,8 @@ namespace UnityEditor.ShaderGraph
                 value = dfgTexture,
                 hidden = true
             };
+
+            
     
 
             
@@ -196,6 +198,28 @@ namespace UnityEditor.ShaderGraph
             propertyCollector.AddShaderProperty(zWriteProperty);
             propertyCollector.AddShaderProperty(alphaToMaskProperty);
             propertyCollector.AddShaderProperty(dfgLut);
+            
+            if (this is PBRMasterNode)
+            {
+                var bakeryMonoSHProp = new Vector1ShaderProperty
+                {
+                    displayName = "Mono SH",
+                    overrideReferenceName = "_BakeryMonoSH",
+                    attributes = "[Toggle(BAKERY_MONOSH)]",
+                    value = 0
+                };
+                var lightmappedSpecularProp = new Vector1ShaderProperty
+                {
+                    displayName = "Lightmapped Specular",
+                    overrideReferenceName = "_LightmappedSpecular",
+                    attributes = "[Toggle(_LIGHTMAPPED_SPECULAR)]",
+                    value = 0
+                };
+                
+                propertyCollector.AddShaderProperty(bakeryMonoSHProp);
+                propertyCollector.AddShaderProperty(lightmappedSpecularProp);
+
+            }
 
             
             // cull last marks the end of rendering properties

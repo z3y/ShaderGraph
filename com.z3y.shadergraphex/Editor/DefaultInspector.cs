@@ -19,6 +19,9 @@ namespace z3y.ShaderGraphExtended
         private int _AlphaToMask;
         private int _Cull;
 
+        private int _BakeryMonoSH;
+        private int _LightmappedSpecular;
+
         private static bool surfaceOptionsFoldout = true;
         private static bool surfaceInputsFoldout = true;
         private static bool additionalSettingsFoldout = true;
@@ -29,6 +32,8 @@ namespace z3y.ShaderGraphExtended
 
         private static MaterialProperty DrawPropertyFromIndex(MaterialEditor materialEditor, MaterialProperty[] properties, int index)
         {
+            if (index < 0 || index > properties.Length) return null;
+            
             var prop = properties[index];
             materialEditor.ShaderProperty(prop, prop.displayName);
             return prop;
@@ -46,6 +51,9 @@ namespace z3y.ShaderGraphExtended
                 _ZWrite = Array.FindIndex(properties, x => x.name.Equals("_ZWrite", StringComparison.Ordinal));
                 _AlphaToMask = Array.FindIndex(properties, x => x.name.Equals("_AlphaToMask", StringComparison.Ordinal));
                 _Cull = Array.FindIndex(properties, x => x.name.Equals("_Cull", StringComparison.Ordinal));
+                
+                _BakeryMonoSH = Array.FindIndex(properties, x => x.name.Equals("_BakeryMonoSH", StringComparison.Ordinal));
+                _LightmappedSpecular = Array.FindIndex(properties, x => x.name.Equals("_LightmappedSpecular", StringComparison.Ordinal));
 
                 overridePropertiesRange = (_Mode, _Cull);
 
@@ -131,7 +139,10 @@ namespace z3y.ShaderGraphExtended
 
             if (additionalSettingsFoldout = DrawHeaderFoldout(new GUIContent("Additional Settings"), additionalSettingsFoldout))
             {
-
+                EditorGUILayout.Space();
+                DrawPropertyFromIndex(materialEditor, properties, _BakeryMonoSH);
+                DrawPropertyFromIndex(materialEditor, properties, _LightmappedSpecular);
+                
                 EditorGUILayout.Space();
                 materialEditor.RenderQueueField();
                 materialEditor.EnableInstancingField();
