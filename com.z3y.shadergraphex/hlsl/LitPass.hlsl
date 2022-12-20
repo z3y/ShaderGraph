@@ -49,6 +49,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         float crossSign = (unpacked.tangentWS.w > 0.0 ? 1.0 : -1.0) * GetOddNegativeScale();
         float3 bitangent = crossSign * cross(unpacked.normalWS.xyz, unpacked.tangentWS.xyz);
         float3 normalWS = TransformTangentToWorld(surfaceDescription.Normal, half3x3(unpacked.tangentWS.xyz, bitangent, unpacked.normalWS.xyz));
+        float3 tangent = normalize(unpacked.tangentWS.xyz);
     #elif _NORMAL_DROPOFF_OS
         float3 normalWS = TransformObjectToWorldNormal(surfaceDescription.Normal);
     #elif _NORMAL_DROPOFF_WS
@@ -195,12 +196,9 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
                 #endif
             #endif
 
-            // #if defined(BAKERY_MONOSH)
-            //     BakeryMonoSH(lightMap, lightmappedSpecular, lightmapUV, normalWS, viewDir, PerceptualRoughnessToRoughnessClamped(surf.perceptualRoughness),
-            //     surf, i.tangent, i.bitangent
-            //     );
-
-            // #endif
+            #if defined(BAKERY_MONOSH)
+                BakeryMonoSH(lightMap, lightmappedSpecular, lightmapUV, normalWS, viewDirectionWS, clampedRoughness, surfaceDescription, tangent, bitangent);
+            #endif
 
             indirectDiffuse = lightMap;
         #endif
@@ -253,6 +251,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     // indirect diffuse end
 
     directSpecular += lightSpecular;
+    indirectSpecular += lightmappedSpecular;
 
     indirectSpecular = indirectSpecular * energyCompensation * brdf;
 

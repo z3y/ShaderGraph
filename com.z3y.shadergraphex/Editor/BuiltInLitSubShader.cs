@@ -63,7 +63,9 @@ namespace z3y.ShaderGraphExtended
             },
             keywords = new KeywordDescriptor[]
             {
-                defaultModeKeywords
+                defaultModeKeywords,
+                bakeryMonoSHKeyword,
+                lightmappedSpecularKeyword
             },
             
             requiredVaryings = new List<string>()
@@ -205,6 +207,24 @@ namespace z3y.ShaderGraphExtended
     {
         displayName = "Mode Keywords",
         referenceName = "_ _ALPHATEST_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor bakeryMonoSHKeyword = new KeywordDescriptor()
+    {
+        displayName = "Mono SH Keyword",
+        referenceName = "BAKERY_MONOSH",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor lightmappedSpecularKeyword = new KeywordDescriptor()
+    {
+        displayName = "Lightmap Specular Keyword",
+        referenceName = "_LIGHTMAPPED_SPECULAR",
         type = KeywordType.Boolean,
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,

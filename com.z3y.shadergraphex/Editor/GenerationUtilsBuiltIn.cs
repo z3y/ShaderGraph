@@ -40,6 +40,7 @@ namespace z3y.ShaderGraphExtended
             var propertyCollector = new PropertyCollector();
             var keywordCollector = new KeywordCollector();
             masterNode.owner.CollectShaderKeywords(keywordCollector, mode);
+            
 
             // Get upstream nodes from ShaderPass port mask
             List<AbstractMaterialNode> vertexNodes;

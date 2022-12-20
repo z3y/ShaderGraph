@@ -189,3 +189,5 @@ half3 GetLightProbes(float3 normalWS, float3 positionWS)
     #endif
     return indirectDiffuse;
 }
+
+#include "Bakery.hlsl"
