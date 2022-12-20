@@ -167,6 +167,11 @@ namespace z3y.ShaderGraphExtended
                     baseActiveFields.Add("BlendMode.Premultiply");
                 }
             }
+            
+            if (pass.referenceName == "SHADERPASS_UNLIT")
+            {
+                if (masterNode.alphaToCoverage) baseActiveFields.Add("features.A2C");
+            }
 
             return activeFields;
         }
