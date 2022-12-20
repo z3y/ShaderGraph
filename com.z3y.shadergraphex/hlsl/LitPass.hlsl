@@ -249,6 +249,10 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
             Unity_GlossyEnvironmentData envData;
             envData.roughness = perceptualRoughness;
+
+            #ifdef FORCE_SPECCUBE_BOX_PROJECTION
+                #define UNITY_SPECCUBE_BOX_PROJECTION
+            #endif
             
             #ifdef UNITY_SPECCUBE_BOX_PROJECTION
                 envData.reflUVW = BoxProjectedCubemapDirection(reflDir, unpacked.positionWS.xyz, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);

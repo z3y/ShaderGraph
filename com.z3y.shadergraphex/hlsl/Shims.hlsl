@@ -160,3 +160,7 @@ half4 LinearToSRGB(half4 c)
 {
     return half4(LinearToSRGB(c.rgb), c.a);
 }
+
+#ifndef UNITY_PBS_USE_BRDF1
+    #define SHADER_API_MOBILE
+#endif
