@@ -34,7 +34,6 @@ inline float3 Unity_SafeNormalize(float3 inVec)
     return inVec * rsqrt(dp3);
 }
 #endif
-#define SafeNormalize Unity_SafeNormalize
 
 float4 GetTimeParameters()
 {
@@ -56,32 +55,7 @@ float Unity_Dither(float In, float2 ScreenPosition)
     return In - DITHER_THRESHOLDS[uint(uv.x) % 4][uint(uv.y) % 4];
 }
 
-#if defined (SHADER_API_GAMECORE)
-#include "Packages/com.unity.render-pipelines.gamecore/ShaderLibrary/API/GameCore.hlsl"
-#elif defined(SHADER_API_XBOXONE)
-#include "Packages/com.unity.render-pipelines.xboxone/ShaderLibrary/API/XBoxOne.hlsl"
-#elif defined(SHADER_API_PS4)
-#include "Packages/com.unity.render-pipelines.ps4/ShaderLibrary/API/PSSL.hlsl"
-#elif defined(SHADER_API_PS5)
-#include "Packages/com.unity.render-pipelines.ps5/ShaderLibrary/API/PSSL.hlsl"
-#elif defined(SHADER_API_D3D11)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/D3D11.hlsl"
-#elif defined(SHADER_API_METAL)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Metal.hlsl"
-#elif defined(SHADER_API_VULKAN)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Vulkan.hlsl"
-#elif defined(SHADER_API_SWITCH)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Switch.hlsl"
-#elif defined(SHADER_API_GLCORE)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLCore.hlsl"
-#elif defined(SHADER_API_GLES3)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLES3.hlsl"
-#elif defined(SHADER_API_GLES)
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/GLES2.hlsl"
-#else
-#error unsupported shader api
-#endif
-#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/API/Validate.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
  
 #include "SpaceTransforms.hlsl"
 #include "StdLib.hlsl"
