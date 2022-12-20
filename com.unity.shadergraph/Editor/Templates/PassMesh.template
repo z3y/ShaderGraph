@@ -32,6 +32,11 @@ Pass
     $splice(GraphKeywords)
     
     // Defines
+    $features.GSAA:                     #define _GEOMETRICSPECULAR_AA
+    $features.Anisotropy:               #define _ANISOTROPY
+    $features.A2C:                      #define ALPHATOCOVERAGE_ON
+    $features.BicubicLightmap:          #define BICUBIC_LIGHTMAP
+    
     $SurfaceType.Transparent:           #define _SURFACE_TYPE_TRANSPARENT 1
     $AlphaClip:                         #define _AlphaClip 1
     $Normal:                            #define _NORMALMAP 1

@@ -56,13 +56,18 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         float3 normalWS = surfaceDescription.Normal;
     #endif
 
-    normalWS = normalize(normalWS);
-
 
     half perceptualRoughness = 1.0f - surfaceDescription.Smoothness;
+    #ifdef _GEOMETRICSPECULAR_AA
+        perceptualRoughness = GSAA_Filament(normalWS, perceptualRoughness, surfaceDescription.GSAAVariance, surfaceDescription.GSAAThreshold);
+        surfaceDescription.Smoothness = 1.0f - perceptualRoughness;
+    #endif
+
     half roughness = perceptualRoughness * perceptualRoughness;
     half clampedRoughness = max(roughness, 0.002);
     half reflectance = surfaceDescription.Reflectance;
+
+    normalWS = normalize(normalWS);
 
     float2 lightmapUV = unpacked.texCoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 

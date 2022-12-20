@@ -45,6 +45,10 @@ namespace z3y.ShaderGraphExtended
                 PBRMasterNode.AlphaSlotId,
                 PBRMasterNode.AlphaThresholdSlotId,
                 PBRMasterNode.ReflectanceSlotID,
+                PBRMasterNode.AnisotropyTangentSlotID,
+                PBRMasterNode.AnisotropyLevelSlotID,
+                PBRMasterNode.GSAAThresholdSlotID,
+                PBRMasterNode.GSAAVarienceSlotID
             },
 
             // Pass setup
@@ -88,13 +92,7 @@ namespace z3y.ShaderGraphExtended
                 "Attributes.tangentOS",
                 "Attributes.uv1",
             },
-            
-            predefines = new HashSet<string>()
-            {
-                
-            }
-            
-            
+
         };
         
         ShaderPass m_ForwardAddPass = new ShaderPass
@@ -125,6 +123,10 @@ namespace z3y.ShaderGraphExtended
                 PBRMasterNode.AlphaSlotId,
                 PBRMasterNode.AlphaThresholdSlotId,
                 PBRMasterNode.ReflectanceSlotID,
+                PBRMasterNode.AnisotropyTangentSlotID,
+                PBRMasterNode.AnisotropyLevelSlotID,
+                PBRMasterNode.GSAAThresholdSlotID,
+                PBRMasterNode.GSAAVarienceSlotID
             },
 
             // Pass setup
@@ -165,12 +167,6 @@ namespace z3y.ShaderGraphExtended
                 "Attributes.tangentOS",
                 "Attributes.uv1",
             },
-            
-            predefines = new HashSet<string>()
-            {
-                
-            }
-            
             
         };
         
@@ -317,6 +313,10 @@ namespace z3y.ShaderGraphExtended
                 baseActiveFields.Add("AlphaClip");
             }
 
+            baseActiveFields.AddAll("Anisotropy");
+            baseActiveFields.AddAll("Tangent");
+
+
             // Keywords for transparent
             // #pragma shader_feature _SURFACE_TYPE_TRANSPARENT
             if (masterNode.surfaceType != SurfaceType.Opaque)
@@ -337,6 +337,12 @@ namespace z3y.ShaderGraphExtended
                 {
                     baseActiveFields.Add("BlendMode.Premultiply");
                 }
+            }
+            
+            if (pass.lightMode == "ForwardBase" || pass.lightMode == "ForwardAdd")
+            {
+                if (masterNode.gsaa) baseActiveFields.Add("features.GSAA");
+                if (masterNode.anisotropy) baseActiveFields.Add("features.Anisotropy");
             }
 
             return activeFields;
@@ -370,17 +376,7 @@ namespace z3y.ShaderGraphExtended
             subShader.AddShaderChunk("{", true);
 
 
-            if (pbrMasterNode.gsaa)
-            {
-                m_ForwardBasePass.predefines.Add("#define _GEOMETRICSPECULAR_AA");
-                m_ForwardAddPass.predefines.Add("#define _GEOMETRICSPECULAR_AA");
-            }
 
-            if (pbrMasterNode.anisotropy)
-            {
-                m_ForwardBasePass.predefines.Add("#define _ANISOTROPY");
-                m_ForwardAddPass.predefines.Add("#define _ANISOTROPY");
-            }
 
             if (pbrMasterNode.ltcgi)
             {

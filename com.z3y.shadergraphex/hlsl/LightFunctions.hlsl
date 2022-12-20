@@ -191,3 +191,28 @@ half3 GetLightProbes(float3 normalWS, float3 positionWS)
 }
 
 #include "Bakery.hlsl"
+
+float GSAA_Filament(float3 worldNormal, half perceptualRoughness, half varianceIn, half thresholdIn)
+{
+    // Kaplanyan 2016, "Stable specular highlights"
+    // Tokuyoshi 2017, "Error Reduction and Simplification for Shading Anti-Aliasing"
+    // Tokuyoshi and Kaplanyan 2019, "Improved Geometric Specular Antialiasing"
+
+    // This implementation is meant for deferred rendering in the original paper but
+    // we use it in forward rendering as well (as discussed in Tokuyoshi and Kaplanyan
+    // 2019). The main reason is that the forward version requires an expensive transform
+    // of the half vector by the tangent frame for every light. This is therefore an
+    // approximation but it works well enough for our needs and provides an improvement
+    // over our original implementation based on Vlachos 2015, "Advanced VR Rendering".
+
+    float3 du = ddx(worldNormal);
+    float3 dv = ddy(worldNormal);
+
+    half variance = varianceIn * (dot(du, du) + dot(dv, dv));
+
+    half roughness = perceptualRoughness * perceptualRoughness;
+    half kernelRoughness = min(2.0 * variance, thresholdIn);
+    half squareRoughness = saturate(roughness * roughness + kernelRoughness);
+
+    return sqrt(sqrt(squareRoughness));
+}

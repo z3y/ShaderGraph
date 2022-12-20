@@ -227,6 +227,14 @@ namespace UnityEditor.ShaderGraph
             AddSlot(new Vector1MaterialSlot(AlphaSlotId, AlphaSlotName, AlphaSlotName, SlotType.Input, 1f, ShaderStageCapability.Fragment));
             AddSlot(new Vector1MaterialSlot(AlphaThresholdSlotId, AlphaClipThresholdSlotName, AlphaClipThresholdSlotName, SlotType.Input, 0.0f, ShaderStageCapability.Fragment));
 
+            AddSlot(new Vector1MaterialSlot(GSAAVarienceSlotID, GSAAVarienceName, GSAAVarienceName, SlotType.Input, 0.15f, ShaderStageCapability.Fragment));
+            AddSlot(new Vector1MaterialSlot(GSAAThresholdSlotID, GSAAThresholdName, GSAAThresholdName, SlotType.Input, 0.1f, ShaderStageCapability.Fragment));
+
+            
+            AddSlot(new TangentMaterialSlot(AnisotropyTangentSlotID, AnisotropyTangentName, AnisotropyTangentName, CoordinateSpace.Tangent, ShaderStageCapability.Fragment, false));
+            AddSlot(new Vector1MaterialSlot(AnisotropyLevelSlotID, AnisotropyLevelName, AnisotropyLevelName, SlotType.Input, 0.0f, ShaderStageCapability.Fragment));
+
+
             // clear out slot names that do not match the slots
             // we support
             RemoveSlotsNameNotMatching(
@@ -243,7 +251,12 @@ namespace UnityEditor.ShaderGraph
                 SmoothnessSlotId,
                 OcclusionSlotId,
                 AlphaSlotId,
-                AlphaThresholdSlotId
+                AlphaThresholdSlotId,
+                anisotropy ? AnisotropyLevelSlotID : -1,
+                anisotropy ? AnisotropyTangentSlotID : -1,
+                gsaa ? GSAAThresholdSlotID : -1,
+                gsaa ? GSAAVarienceSlotID : -1,
+                
             }, true);
         }
 

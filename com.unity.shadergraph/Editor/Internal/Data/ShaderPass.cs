@@ -15,7 +15,6 @@ namespace UnityEditor.ShaderGraph.Internal
         // Setup
         public IEnumerable<string> pragmas;
         public IEnumerable<string> includes;
-        public HashSet<string> predefines;
 
         public IEnumerable<KeywordDescriptor> keywords;
 
