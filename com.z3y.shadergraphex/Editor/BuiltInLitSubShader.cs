@@ -138,7 +138,8 @@ namespace z3y.ShaderGraphExtended
             },
             keywords = new KeywordDescriptor[]
             {
-                defaultModeKeywords
+                defaultModeKeywords,
+                specularHighlightsKeyword
             },
             
             requiredVaryings = new List<string>()

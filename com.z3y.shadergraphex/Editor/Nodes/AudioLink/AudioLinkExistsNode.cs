@@ -1,4 +1,3 @@
-#if AUDIOLINK_INCLUDED
 using UnityEditor.Graphing;
 using UnityEditor.ShaderGraph;
 
@@ -31,4 +30,3 @@ namespace z3y.ShaderGraphExtended
         }
     }
 }
-#endif
