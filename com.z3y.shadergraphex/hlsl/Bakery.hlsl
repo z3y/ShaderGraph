@@ -44,16 +44,17 @@ void BakeryMonoSH(inout half3 diffuseColor, inout half3 specularColor, float2 lm
 
         sh = L0 + dominantDir.x * L1x + dominantDir.y * L1y + dominantDir.z * L1z;
         
-        specularColor = max(spec * sh, 0.0);
+        //specularColor = max(spec * sh, 0.0);
 
-        // #ifdef _ANISOTROPY
-        //     half2 atab = GetAtAb(roughness, surf.anisotropyDirection * surf.anisotropyLevel);
+        #ifdef _ANISOTROPY
+            half at = max(roughness * (1.0 + surf.Anisotropy), 0.001);
+            half ab = max(roughness * (1.0 - surf.Anisotropy), 0.001);
 
-        //     specularColor = max(D_GGX_Anisotropic(nh, halfDir, tangent, bitangent, atab.x, atab.y) * sh, 0.0);
+            specularColor = max(D_GGX_Anisotropic(nh, halfDir, tangent, bitangent, at, ab) * sh, 0.0);
 
-        // #else
-           // specularColor = max(spec * sh, 0.0);
-        // #endif
+        #else
+           specularColor = max(spec * sh, 0.0);
+        #endif
         
 
     #endif
