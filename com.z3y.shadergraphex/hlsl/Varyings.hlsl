@@ -83,7 +83,7 @@ Varyings BuildVaryings(Attributes input)
 #if defined(SHADERPASS_SHADOWCASTER)
     TRANSFER_SHADOW_CASTER_NOPOS(output, output.positionCS);
 #elif defined(SHADERPASS_META)
-    output.positionCS = MetaVertexPosition(float4(input.positionOS, 0), input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
+    output.positionCS = UnityMetaVertexPosition(float4(input.positionOS, 0), input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
 #else
     output.positionCS = TransformWorldToHClip(positionWS);
 #endif
@@ -136,6 +136,18 @@ Varyings BuildVaryings(Attributes input)
     UNITY_TRANSFER_SHADOW(o, input.uv1.xy);
     output.shadowCoord = o._ShadowCoord;
     output.positionCS = o.pos;
+#endif
+
+#ifdef EDITOR_VISUALIZATION
+    output.vizUV = 0;
+    output.lightCoord = 0;
+    if (unity_VisualizationMode == EDITORVIZ_TEXTURE)
+        output.vizUV = UnityMetaVizUV(unity_EditorViz_UVIndex, input.uv0.xy, input.uv1.xy, input.uv2.xy, unity_EditorViz_Texture_ST);
+    else if (unity_VisualizationMode == EDITORVIZ_SHOWLIGHTMASK)
+    {
+        output.vizUV = input.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+        output.lightCoord = mul(unity_EditorViz_WorldToLight, mul(unity_ObjectToWorld, float4(input.positionOS.xyz, 1)));
+    }
 #endif
 
     return output;

@@ -65,16 +65,12 @@ namespace z3y.ShaderGraphExtended
             Vector4 texCoord2;
             [Optional]
             Vector4 texCoord3;
-            [Optional]
+            [Optional][Semantic("COLOR_centroid")]
             Vector4 color;
             [Optional]
             Vector3 viewDirectionWS;
             [Optional]
             Vector4 screenPosition;
-            [Optional][PreprocessorIf("defined(LIGHTMAP_ON)")]
-            Vector2 lightmapUV;
-            [Optional][PreprocessorIf("!defined(LIGHTMAP_ON)")]
-            Vector3 sh;
             [Semantic("FOG_COORD")][PreprocessorIf("defined(FOG_ANY)")]
             float fogCoord;
             [Optional]
@@ -95,6 +91,8 @@ namespace z3y.ShaderGraphExtended
             [OverrideType("FRONT_FACE_TYPE")]
             [PreprocessorIf("defined(SHADER_STAGE_FRAGMENT) && defined(VARYINGS_NEED_CULLFACE)")]
             bool cullFace;
+            [Optional] [PreprocessorIf("defined(EDITOR_VISUALIZATION)")] Vector2 vizUV;
+            [Optional] [PreprocessorIf("defined(EDITOR_VISUALIZATION)")] Vector4 lightCoord;
         };
 
         internal struct VertexDescriptionInputs

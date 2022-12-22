@@ -57,7 +57,7 @@ namespace z3y.ShaderGraphExtended
                 "UnityCG.cginc",
                 "AutoLight.cginc",
                 "Lighting.cginc",
-                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
+                "Packages/com.z3y.shadergraphex/hlsl/ShaderGraph.hlsl",
             },
             pragmas = new List<string>()
             {
@@ -135,7 +135,7 @@ namespace z3y.ShaderGraphExtended
                 "UnityCG.cginc",
                 "AutoLight.cginc",
                 "Lighting.cginc",
-                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
+                "Packages/com.z3y.shadergraphex/hlsl/ShaderGraph.hlsl",
             },
             pragmas = new List<string>()
             {
@@ -196,7 +196,7 @@ namespace z3y.ShaderGraphExtended
             includes = new List<string>()
             {
                 "UnityCG.cginc",
-                "Packages/com.z3y.shadergraphex/hlsl/Shims.hlsl",
+                "Packages/com.z3y.shadergraphex/hlsl/ShaderGraph.hlsl",
             },
             pragmas = new List<string>()
             {
@@ -208,13 +208,85 @@ namespace z3y.ShaderGraphExtended
             {
                 defaultModeKeywordsShadowCaster
             },
-            
+
             lightMode = "ShadowCaster"
+        };
+        
+        ShaderPass m_Meta = new ShaderPass
+        {
+            // Definition
+            displayName = "META",
+            referenceName = "SHADERPASS_META",
+            passInclude = "Packages/com.z3y.shadergraphex/hlsl/MetaPass.hlsl",
+            varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
+            useInPreview = false,
+            
+            // Port mask
+            vertexPorts = new List<int>()
+            {
+                PBRMasterNode.PositionSlotId,
+                PBRMasterNode.VertNormalSlotId,
+            },
+            pixelPorts = new List<int>
+            {
+                PBRMasterNode.AlbedoSlotId,
+                PBRMasterNode.AlphaSlotId,
+                PBRMasterNode.AlphaThresholdSlotId,
+                PBRMasterNode.MetallicSlotId,
+                PBRMasterNode.SmoothnessSlotId,
+                PBRMasterNode.EmissionSlotId,
+            },
+
+            // Pass setup
+            includes = new List<string>()
+            {
+                "UnityCG.cginc",
+                "UnityMetaPass.cginc",
+                "Packages/com.z3y.shadergraphex/hlsl/ShaderGraph.hlsl",
+            },
+            pragmas = new List<string>()
+            {
+                "target 4.5"
+            },
+            keywords = new KeywordDescriptor[]
+            {
+                editorVisualizationKeyword
+            },
+            
+            requiredVaryings = new List<string>()
+            {
+                "Varyings.positionCS",
+                "Varyings.positionWS",
+                "Varyings.lightCoord",
+                "Varyings.vizUV"
+            },
+            
+            requiredAttributes = new List<string>()
+            {
+                "Attributes.positionOS",
+                "Attributes.uv0",
+                "Attributes.uv1",
+                "Attributes.uv2",
+            },
+            
+            CullOverride = "Cull Off",
+            
+            lightMode = "Meta"
         };
         
 #endregion
 
 #region Keywords
+
+    private static KeywordDescriptor editorVisualizationKeyword = new KeywordDescriptor()
+    {
+        displayName = "Editor Visualization",
+        referenceName = "EDITOR_VISUALIZATION",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Global,
+    };
+
 
     private static KeywordDescriptor defaultModeKeywords = new KeywordDescriptor()
     {
@@ -405,6 +477,13 @@ namespace z3y.ShaderGraphExtended
                 ShaderGraphExtendedUtils.SetRenderStateShadowCasterPass(pbrMasterNode.surfaceType, pbrMasterNode.alphaMode, pbrMasterNode.twoSided.isOn, ref m_ShadowCaster, ref subShader);
                 var activeFieldsShadowCaster = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ShadowCaster);
                 GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ShadowCaster, mode, activeFieldsShadowCaster, subShader,
+                    sourceAssetDependencyPaths,
+                    BuiltInGraphResources.s_Dependencies,
+                    BuiltInGraphResources.s_ResourceClassName,
+                    BuiltInGraphResources.s_AssemblyName);
+                
+                var activeFieldsMeta = GetActiveFieldsFromMasterNode(pbrMasterNode, m_Meta);
+                GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_Meta, mode, activeFieldsMeta, subShader,
                     sourceAssetDependencyPaths,
                     BuiltInGraphResources.s_Dependencies,
                     BuiltInGraphResources.s_ResourceClassName,
