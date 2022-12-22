@@ -32,7 +32,6 @@ half3 UnityLightmappingAlbedo (half3 diffuse, half3 specular, half smoothness)
     return res;
 }
 
-
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
     Varyings unpacked = UnpackVaryings(packedInput);
@@ -62,7 +61,9 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     // bakery alpha
     if (unity_MetaFragmentControl.w != 0)
     {
-        return surfaceDescription.Alpha;
+        half dither = Unity_Dither(surfaceDescription.Alpha, unpacked.positionCS.xy);
+        if (dither < 0.0) return 0;
+        else return 1;
     }
 
     return UnityMetaFragment(o);
