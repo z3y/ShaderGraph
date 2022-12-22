@@ -30,6 +30,8 @@ Pass
     // Keywords
     $splice(PassKeywords)
     $splice(GraphKeywords)
+
+    $features.FlatLit:                  #pragma skip_variants SHADOWS_SCREEN SHADOWS_CUBE SHADOWS_SOFT SHADOWS_DEPTH
     
     // Defines
     $features.GSAA:                     #define _GEOMETRICSPECULAR_AA

@@ -107,6 +107,10 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
+    #ifdef FLAT_LIT
+        half3 lightFinalColorFlat = saturate(lightColor);
+    #endif
+
     #ifndef SHADER_API_MOBILE
         lightFinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
     #endif
@@ -191,7 +195,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
             #ifdef LIGHTPROBE_VERTEX
                // indirectDiffuse = ShadeSHPerPixel(normalWS, i.lightProbe, i.worldPos.xyz);
             #else
-                indirectDiffuse = GetLightProbes(normalWS, unpacked.positionWS);
+                #ifdef FLAT_LIT
+                    indirectDiffuse = GetLightProbes(float3(0, 0, 0), unpacked.positionWS);
+                #else
+                    indirectDiffuse = GetLightProbes(normalWS, unpacked.positionWS);
+                #endif
             #endif
         #endif
 
@@ -314,8 +322,15 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     indirectSpecular = indirectSpecular * energyCompensation * brdf;
 
+    #ifdef FLAT_LIT
+    half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColorFlat))
+                     + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);
+
+    #else
+
     half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColor))
                      + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);
+    #endif
 
     #ifdef FOG_ANY
         UNITY_APPLY_FOG(unpacked.fogCoord, finalColor);
