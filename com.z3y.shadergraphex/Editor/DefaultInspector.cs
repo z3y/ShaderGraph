@@ -21,9 +21,12 @@ namespace z3y.ShaderGraphExtended
 
         private int _BakeryMonoSH;
         private int _LightmappedSpecular;
+        private int _NonLinearLightProbeSH;
+
         
         private int _SpecularHighlights;
         private int _GlossyReflections;
+
 
 
         private static bool surfaceOptionsFoldout = true;
@@ -33,7 +36,7 @@ namespace z3y.ShaderGraphExtended
         private int propCount = 0;
 
         private (int, int) overridePropertiesRange;
-
+        
         private static MaterialProperty DrawPropertyFromIndex(MaterialEditor materialEditor, MaterialProperty[] properties, int index)
         {
             if (index < 0 || index > properties.Length) return null;
@@ -58,9 +61,13 @@ namespace z3y.ShaderGraphExtended
                 
                 _BakeryMonoSH = Array.FindIndex(properties, x => x.name.Equals("_BakeryMonoSH", StringComparison.Ordinal));
                 _LightmappedSpecular = Array.FindIndex(properties, x => x.name.Equals("_LightmappedSpecular", StringComparison.Ordinal));
+                _NonLinearLightProbeSH = Array.FindIndex(properties, x => x.name.Equals("_NonLinearLightProbeSH", StringComparison.Ordinal));
                 
                 _SpecularHighlights = Array.FindIndex(properties, x => x.name.Equals("_SpecularHighlights", StringComparison.Ordinal));
                 _GlossyReflections = Array.FindIndex(properties, x => x.name.Equals("_GlossyReflections", StringComparison.Ordinal));
+                _GlossyReflections = Array.FindIndex(properties, x => x.name.Equals("_GlossyReflections", StringComparison.Ordinal));
+
+
 
 
                 overridePropertiesRange = (_Mode, _Cull);
@@ -150,6 +157,8 @@ namespace z3y.ShaderGraphExtended
                 EditorGUILayout.Space();
                 DrawPropertyFromIndex(materialEditor, properties, _BakeryMonoSH);
                 DrawPropertyFromIndex(materialEditor, properties, _LightmappedSpecular);
+                DrawPropertyFromIndex(materialEditor, properties, _NonLinearLightProbeSH);
+
                 DrawPropertyFromIndex(materialEditor, properties, _SpecularHighlights);
                 DrawPropertyFromIndex(materialEditor, properties, _GlossyReflections);
 

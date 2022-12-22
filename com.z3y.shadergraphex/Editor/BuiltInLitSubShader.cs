@@ -64,7 +64,8 @@ namespace z3y.ShaderGraphExtended
                 "target 4.5",
                 "multi_compile_fog",
                 "multi_compile_instancing",
-                "multi_compile_fwdbase"
+                "multi_compile_fwdbase",
+                "skip_variants LIGHTPROBE_SH" // doesnt seem to be needed at all
             },
             keywords = new KeywordDescriptor[]
             {
@@ -72,7 +73,8 @@ namespace z3y.ShaderGraphExtended
                 bakeryMonoSHKeyword,
                 lightmappedSpecularKeyword,
                 reflectionsKeyword,
-                specularHighlightsKeyword
+                specularHighlightsKeyword,
+                nonLinearLightProbeSHKeyword
             },
             
             requiredVaryings = new List<string>()
@@ -300,6 +302,15 @@ namespace z3y.ShaderGraphExtended
     {
         displayName = "Mono SH Keyword",
         referenceName = "BAKERY_MONOSH",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Local,
+    };
+    
+    private static KeywordDescriptor nonLinearLightProbeSHKeyword = new KeywordDescriptor()
+    {
+        displayName = "Non-linear Light Probe SH",
+        referenceName = "NONLINEAR_LIGHTPROBESH",
         type = KeywordType.Boolean,
         definition = KeywordDefinition.ShaderFeature,
         scope = KeywordScope.Local,

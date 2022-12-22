@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 212980fe1a8ba984390d6d6792fe0a63, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -37,16 +41,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - BAKERY_META_ALPHA_ENABLE: 1
     - Vector1_2453F69: 0
     - _AlbedoSaturation: 0
     - _AlphaToMask: 0
     - _BakeryMonoSH: 0
     - _Cull: 2
     - _DstBlend: 0
-    - _Glossiness: 1
+    - _Glossiness: 0
     - _GlossyReflections: 1
+    - _LTCGI: 0
+    - _LTCGI_DIFFUSE_OFF: 0
     - _LightmappedSpecular: 0
-    - _Metallic: 1
+    - _Metallic: 0
     - _Mode: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

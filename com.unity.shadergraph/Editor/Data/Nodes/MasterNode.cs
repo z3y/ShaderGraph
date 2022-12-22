@@ -231,6 +231,14 @@ namespace UnityEditor.ShaderGraph
                     value = 0
                 };
                 
+                var nonLinearLightprobeSH = new Vector1ShaderProperty
+                {
+                    displayName = "Non-linear Light Probe SH",
+                    overrideReferenceName = "_NonLinearLightProbeSH",
+                    attributes = "[Toggle(NONLINEAR_LIGHTPROBESH)]",
+                    value = 0
+                };
+                
                 var ltcgi = new Vector1ShaderProperty
                 {
                     displayName = "LTCGI",
@@ -257,6 +265,7 @@ namespace UnityEditor.ShaderGraph
                 propertyCollector.AddShaderProperty(bakeryAlphaMetaEnable);
                 propertyCollector.AddShaderProperty(bakeryMonoSHProp);
                 propertyCollector.AddShaderProperty(lightmappedSpecularProp);
+                propertyCollector.AddShaderProperty(nonLinearLightprobeSH);
                 
                 propertyCollector.AddShaderProperty(ltcgi);
                 propertyCollector.AddShaderProperty(ltcgiSpec);
