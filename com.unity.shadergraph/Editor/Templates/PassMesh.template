@@ -4,7 +4,6 @@ Pass
     Tags 
     { 
         $splice(LightMode)
-        $features.LTCGI: "LTCGI" = "_LTCGI"
     }
    
     // Render State
@@ -78,6 +77,9 @@ Pass
 
     // Includes
     $splice(PassIncludes)
+
+    $features.AudioLink:                #include "Packages/com.llealloo.audiolink/Runtime/Shaders/AudioLink.cginc"
+    $features.LTCGI:                    #include "Assets/_pi_/_LTCGI/Shaders/LTCGI.cginc"
 
     $splice(DotsInstancingVars)
     

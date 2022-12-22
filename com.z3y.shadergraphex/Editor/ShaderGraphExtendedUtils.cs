@@ -63,22 +63,8 @@ namespace z3y.ShaderGraphExtended
 
         public const string AudioLinkPath = "Packages/com.llealloo.audiolink/Runtime/Shaders/AudioLink.cginc";
         public static bool AudioLinkExists => File.Exists(AudioLinkPath);
-        public static void CheckForAudioLink(ref ShaderPass shaderPass)
-        {
-            if (!AudioLinkExists) return;
 
-            shaderPass.includes = shaderPass.includes.Append(AudioLinkPath);
-        }
-
-        
         public const string LTCGIPath = "Assets/_pi_/_LTCGI/Shaders/LTCGI.cginc";
         public static bool LTCGIExists => File.Exists(LTCGIPath);
-        public static void CheckForLTCGI(ref ShaderPass shaderPass)
-        {
-            if (!LTCGIExists) return;
-
-            shaderPass.includes = shaderPass.includes.Append(LTCGIPath);
-        }
-
     }
 }

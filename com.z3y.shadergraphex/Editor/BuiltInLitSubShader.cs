@@ -414,6 +414,11 @@ namespace z3y.ShaderGraphExtended
                 }
             }
             
+            if (ShaderGraphExtendedUtils.AudioLinkExists)
+            {
+                baseActiveFields.Add("features.AudioLink");
+            }
+            
             if (pass.lightMode == "ForwardBase" || pass.lightMode == "ForwardAdd")
             {
                 if (masterNode.gsaa) baseActiveFields.Add("features.GSAA");
@@ -421,6 +426,7 @@ namespace z3y.ShaderGraphExtended
                 if (masterNode.alphaToCoverage) baseActiveFields.Add("features.A2C");
                 
                 if (masterNode.flatLit) baseActiveFields.Add("features.FlatLit");
+                
             }
 
             if (pass.lightMode == "ForwardBase")
@@ -470,14 +476,20 @@ namespace z3y.ShaderGraphExtended
             {
                 var surfaceTags = ShaderGenerator.BuildMaterialTags(pbrMasterNode.surfaceType);
                 var tagsBuilder = new ShaderStringBuilder(0);
+                
                 surfaceTags.GetTags(tagsBuilder, "");
+                if (ShaderGraphExtendedUtils.LTCGIExists)
+                {
+                    tagsBuilder.ReplaceInCurrentMapping("}", "");
+                    tagsBuilder.AppendLine(" \"LTCGI\" = \"_LTCGI\"");
+                    tagsBuilder.AppendLine("}");
+                }
                 subShader.AddShaderChunk(tagsBuilder.ToString());
                 
                 // forwardbase pass
                 ShaderGraphExtendedUtils.SetRenderStateForwardPass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
                 
                 var activeFields = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardBasePass);
-                ShaderGraphExtendedUtils.CheckForLTCGI(ref m_ForwardBasePass);
                 GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, activeFields, subShader,
                     sourceAssetDependencyPaths,
                     BuiltInGraphResources.s_Dependencies,

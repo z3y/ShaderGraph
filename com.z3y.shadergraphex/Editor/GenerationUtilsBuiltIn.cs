@@ -24,8 +24,6 @@ namespace z3y.ShaderGraphExtended
         {
             // --------------------------------------------------
             // Debug
-            
-            ShaderGraphExtendedUtils.CheckForAudioLink(ref pass);
 
             // Get scripting symbols
             BuildTargetGroup buildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
