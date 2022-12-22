@@ -245,7 +245,16 @@ namespace UnityEditor.ShaderGraph
                     attributes = "[Toggle(LTCGI_DIFFUSE_OFF)]",
                     value = 0
                 };
+                
+                var bakeryAlphaMetaEnable = new Vector1ShaderProperty
+                {
+                    displayName = "Enable Bakery alpha meta pass",
+                    overrideReferenceName = "BAKERY_META_ALPHA_ENABLE",
+                    hidden = true,
+                    value = 1
+                };
 
+                propertyCollector.AddShaderProperty(bakeryAlphaMetaEnable);
                 propertyCollector.AddShaderProperty(bakeryMonoSHProp);
                 propertyCollector.AddShaderProperty(lightmappedSpecularProp);
                 

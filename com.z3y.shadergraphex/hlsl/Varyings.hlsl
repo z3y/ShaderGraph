@@ -113,16 +113,16 @@ Varyings BuildVaryings(Attributes input)
     output.screenPosition = ComputeScreenPos(output.positionCS, _ProjectionParams.x);
 #endif
 
-#if defined(SHADERPASS_FORWARD)
-    OUTPUT_LIGHTMAP_UV(input.uv1, unity_LightmapST, output.lightmapUV);
-    OUTPUT_SH(normalWS, output.sh);
-#endif
+// #if defined(SHADERPASS_FORWARD)
+//     OUTPUT_LIGHTMAP_UV(input.uv1, unity_LightmapST, output.lightmapUV);
+//     OUTPUT_SH(normalWS, output.sh);
+// #endif
 
-#ifdef VARYINGS_NEED_FOG_AND_VERTEX_LIGHT
-    half3 vertexLight = VertexLighting(positionWS, normalWS);
-    half fogFactor = ComputeFogFactor(output.positionCS.z);
-    output.fogFactorAndVertexLight = half4(fogFactor, vertexLight);
-#endif
+// #ifdef VARYINGS_NEED_FOG_AND_VERTEX_LIGHT
+//     half3 vertexLight = VertexLighting(positionWS, normalWS);
+//     half fogFactor = ComputeFogFactor(output.positionCS.z);
+//     output.fogFactorAndVertexLight = half4(fogFactor, vertexLight);
+// #endif
 
 #ifdef FOG_ANY
     UNITY_TRANSFER_FOG(output, output.positionCS);

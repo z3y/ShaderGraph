@@ -6,9 +6,6 @@ PackedVaryings vert(Attributes input)
     return packedOutput;
 }
 
-// unity macros need workaround
-
-
 #include "LightFunctions.hlsl"
 
 half4 frag(PackedVaryings packedInput) : SV_TARGET 

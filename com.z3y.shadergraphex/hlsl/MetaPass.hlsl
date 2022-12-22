@@ -59,5 +59,11 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         o.SpecularColor = specColor;
         o.Emission = surfaceDescription.Emission;
 
+    // bakery alpha
+    if (unity_MetaFragmentControl.w != 0)
+    {
+        return surfaceDescription.Alpha;
+    }
+
     return UnityMetaFragment(o);
 }

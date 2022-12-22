@@ -215,7 +215,7 @@ namespace z3y.ShaderGraphExtended
         ShaderPass m_Meta = new ShaderPass
         {
             // Definition
-            displayName = "META",
+            displayName = "META_BAKERY",
             referenceName = "SHADERPASS_META",
             passInclude = "Packages/com.z3y.shadergraphex/hlsl/MetaPass.hlsl",
             varyingsInclude = "Packages/com.z3y.shadergraphex/hlsl/Varyings.hlsl",
@@ -231,7 +231,6 @@ namespace z3y.ShaderGraphExtended
             {
                 PBRMasterNode.AlbedoSlotId,
                 PBRMasterNode.AlphaSlotId,
-                PBRMasterNode.AlphaThresholdSlotId,
                 PBRMasterNode.MetallicSlotId,
                 PBRMasterNode.SmoothnessSlotId,
                 PBRMasterNode.EmissionSlotId,
