@@ -74,16 +74,15 @@ namespace UnityEditor.ShaderGraph
         }
 
         [SerializeField] private bool m_BicubicLightmap = false;
-        [SerializeField] public bool m_Ltcgi = false;
         [SerializeField] private bool m_Gsaa = false;
         [SerializeField] private bool m_Anisotropy = false;
-        
-        public bool ltcgi
+        [SerializeField] private bool m_FlatLit = false;
+
+        public bool flatLit
         {
-            get => m_Ltcgi;
-            set => UpdateSettingValue(ref m_Ltcgi, value);
+            get => m_FlatLit;
+            set => UpdateSettingValue(ref m_FlatLit, value);
         }
-        
         public bool anisotropy
         {
             get => m_Anisotropy;

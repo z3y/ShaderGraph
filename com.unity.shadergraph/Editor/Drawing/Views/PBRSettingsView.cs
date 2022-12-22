@@ -96,19 +96,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     });
                 });
             });
-            
-            ps.Add(new PropertyRow(new Label("LTCGI")), (row) =>
-            {
-                row.Add(new Toggle(), (toggle) =>
-                {
-                    toggle.value = m_Node.ltcgi;
-                    toggle.OnToggleChanged((etv) =>
-                    {
-                        m_Node.ltcgi = etv.newValue;
-                    });
-                });
-            });
-            
+
             ps.Add(new PropertyRow(new Label("Anisotropy")), (row) =>
             {
                 row.Add(new Toggle(), (toggle) =>
@@ -117,6 +105,18 @@ namespace UnityEditor.ShaderGraph.Drawing
                     toggle.OnToggleChanged((etv) =>
                     {
                         m_Node.anisotropy = etv.newValue;
+                    });
+                });
+            });
+            
+            ps.Add(new PropertyRow(new Label("Flat Lit")), (row) =>
+            {
+                row.Add(new Toggle(), (toggle) =>
+                {
+                    toggle.value = m_Node.flatLit;
+                    toggle.OnToggleChanged((etv) =>
+                    {
+                        m_Node.flatLit = etv.newValue;
                     });
                 });
             });

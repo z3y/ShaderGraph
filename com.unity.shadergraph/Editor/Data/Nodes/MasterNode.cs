@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEditor.ShaderGraph.Drawing.Controls;
 using UnityEditor.ShaderGraph.Internal;
+using z3y.ShaderGraphExtended;
 
 namespace UnityEditor.ShaderGraph
 {
@@ -266,9 +267,12 @@ namespace UnityEditor.ShaderGraph
                 propertyCollector.AddShaderProperty(bakeryMonoSHProp);
                 propertyCollector.AddShaderProperty(lightmappedSpecularProp);
                 propertyCollector.AddShaderProperty(nonLinearLightprobeSH);
-                
-                propertyCollector.AddShaderProperty(ltcgi);
-                propertyCollector.AddShaderProperty(ltcgiSpec);
+
+                if (ShaderGraphExtendedUtils.LTCGIExists)
+                {
+                    propertyCollector.AddShaderProperty(ltcgi);
+                    propertyCollector.AddShaderProperty(ltcgiSpec);
+                }
                 
                 propertyCollector.AddShaderProperty(reflectionsToggle);
                 propertyCollector.AddShaderProperty(specularHighlightsToggle);

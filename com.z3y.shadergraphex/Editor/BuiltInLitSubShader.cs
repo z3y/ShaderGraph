@@ -279,6 +279,15 @@ namespace z3y.ShaderGraphExtended
 
 #region Keywords
 
+    private static KeywordDescriptor vertexLightsFragment = new KeywordDescriptor()
+    {
+        displayName = "Editor Visualization",
+        referenceName = "EDITOR_VISUALIZATION",
+        type = KeywordType.Boolean,
+        definition = KeywordDefinition.ShaderFeature,
+        scope = KeywordScope.Global,
+    };
+
     private static KeywordDescriptor editorVisualizationKeyword = new KeywordDescriptor()
     {
         displayName = "Editor Visualization",
@@ -410,12 +419,19 @@ namespace z3y.ShaderGraphExtended
                 if (masterNode.gsaa) baseActiveFields.Add("features.GSAA");
                 if (masterNode.anisotropy) baseActiveFields.Add("features.Anisotropy");
                 if (masterNode.alphaToCoverage) baseActiveFields.Add("features.A2C");
+                
+                if (masterNode.flatLit) baseActiveFields.Add("features.FlatLit");
             }
 
             if (pass.lightMode == "ForwardBase")
             {
                 if (masterNode.bicubicLightmap) baseActiveFields.Add("features.BicubicLightmap");
-                if (masterNode.ltcgi) baseActiveFields.Add("features.LTCGI");
+                
+                if (ShaderGraphExtendedUtils.LTCGIExists)
+                {
+                    baseActiveFields.Add("features.LTCGI");
+                }
+                
 
             }
 
@@ -461,6 +477,7 @@ namespace z3y.ShaderGraphExtended
                 ShaderGraphExtendedUtils.SetRenderStateForwardPass(pbrMasterNode, ref m_ForwardBasePass, ref subShader);
                 
                 var activeFields = GetActiveFieldsFromMasterNode(pbrMasterNode, m_ForwardBasePass);
+                ShaderGraphExtendedUtils.CheckForLTCGI(ref m_ForwardBasePass);
                 GenerationUtilsBuiltIn.GenerateShaderPass(pbrMasterNode, m_ForwardBasePass, mode, activeFields, subShader,
                     sourceAssetDependencyPaths,
                     BuiltInGraphResources.s_Dependencies,

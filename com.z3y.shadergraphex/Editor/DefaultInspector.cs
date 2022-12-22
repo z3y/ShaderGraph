@@ -26,7 +26,9 @@ namespace z3y.ShaderGraphExtended
         
         private int _SpecularHighlights;
         private int _GlossyReflections;
-
+        
+        private int _LTCGI;
+        private int _LTCGI_DIFFUSE_OFF;
 
 
         private static bool surfaceOptionsFoldout = true;
@@ -66,6 +68,10 @@ namespace z3y.ShaderGraphExtended
                 _SpecularHighlights = Array.FindIndex(properties, x => x.name.Equals("_SpecularHighlights", StringComparison.Ordinal));
                 _GlossyReflections = Array.FindIndex(properties, x => x.name.Equals("_GlossyReflections", StringComparison.Ordinal));
                 _GlossyReflections = Array.FindIndex(properties, x => x.name.Equals("_GlossyReflections", StringComparison.Ordinal));
+                
+                _LTCGI = Array.FindIndex(properties, x => x.name.Equals("_LTCGI", StringComparison.Ordinal));
+                _LTCGI_DIFFUSE_OFF = Array.FindIndex(properties, x => x.name.Equals("_LTCGI_DIFFUSE_OFF", StringComparison.Ordinal));
+
 
 
 
@@ -161,6 +167,10 @@ namespace z3y.ShaderGraphExtended
 
                 DrawPropertyFromIndex(materialEditor, properties, _SpecularHighlights);
                 DrawPropertyFromIndex(materialEditor, properties, _GlossyReflections);
+                
+                DrawPropertyFromIndex(materialEditor, properties, _LTCGI);
+                DrawPropertyFromIndex(materialEditor, properties, _LTCGI_DIFFUSE_OFF);
+
 
                 
                 EditorGUILayout.Space();

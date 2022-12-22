@@ -4,6 +4,7 @@ Pass
     Tags 
     { 
         $splice(LightMode)
+        $features.LTCGI: "LTCGI" = "_LTCGI"
     }
    
     // Render State
@@ -39,6 +40,8 @@ Pass
     
     $features.LTCGI:                    #pragma shader_feature_local LTCGI
     $features.LTCGI:                    #pragma shader_feature_local LTCGI_DIFFUSE_OFF
+
+    $features.FlatLit:                  #define FLAT_LIT
     
     $SurfaceType.Transparent:           #define _SURFACE_TYPE_TRANSPARENT 1
     $AlphaClip:                         #define _AlphaClip 1
@@ -70,7 +73,7 @@ Pass
     $Varyings.fogFactorAndVertexLight:  #define VARYINGS_NEED_FOG_AND_VERTEX_LIGHT
     $Varyings.cullFace:                 #define VARYINGS_NEED_CULLFACE
     $features.graphVertex:              #define FEATURES_GRAPH_VERTEX
-    $splice(PassInstancing)
+    //$splice(PassInstancing)
     $splice(GraphDefines)
 
     // Includes

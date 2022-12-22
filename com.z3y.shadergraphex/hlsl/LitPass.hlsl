@@ -294,6 +294,21 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     #endif
     // reflections end
 
+    #ifdef LTCGI
+        #if defined(LIGHTMAP_ON)
+            float2 ltcgi_lmuv = i.coord0.zw;
+        #else
+            float2 ltcgi_lmuv = float2(0, 0);
+        #endif
+
+        float3 ltcgiSpecular = 0;
+        LTCGI_Contribution(unpacked.positionWS, normalWS, viewDirectionWS, perceptualRoughness, ltcgi_lmuv, indirectDiffuse, ltcgiSpecular);
+
+        #ifndef _SPECULARHIGHLIGHTS_OFF
+            indirectSpecular += ltcgiSpecular;
+        #endif
+    #endif
+
     directSpecular += lightSpecular;
     indirectSpecular += lightmappedSpecular;
 

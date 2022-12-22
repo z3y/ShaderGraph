@@ -19,11 +19,6 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
     #endif
 
-   // #ifdef _ALPHAPREMULTIPLY_ON
-    // for lit
-        //surf.alpha = lerp(surf.alpha, 1.0, surf.metallic);
-    //#endif
-
     #if defined(_ALPHAPREMULTIPLY_ON) || defined(_ALPHAFADE_ON)
         half dither = Unity_Dither(surfaceDescription.Alpha, unpacked.positionCS.xy);
         if (dither < 0.0) discard;
