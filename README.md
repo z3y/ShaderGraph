@@ -21,7 +21,13 @@ Since this is based on an older shader graph version (8.3.1) things are likely g
 
 
 ## Installation
-In the packange manager select `Add package from git url` and type `(git url)`
+In the packange manager select `Add package from git url` and add:
+
+`https://github.com/z3y/ShaderGraphExtended.git?path=/com.unity.render-pipelines.core`
+
+`https://github.com/z3y/ShaderGraphExtended.git?path=/com.unity.shadergraph`
+
+`https://github.com/z3y/ShaderGraphExtended.git?path=/com.z3y.shadergraphex`
 
 ## How to use
 Create a new Shader Graph shader `Create > Shader > PBR or Unlit Graph`
