@@ -179,7 +179,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         #endif
 
         #if defined(DYNAMICLIGHTMAP_ON)
-            float2 realtimeUV = unpacked.texCoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw; //TODO: add uv2 interpolator req
+            float2 realtimeUV = unpacked.texCoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
             indirectDiffuse += RealtimeLightmap(realtimeUV, normalWS);
         #endif
         
