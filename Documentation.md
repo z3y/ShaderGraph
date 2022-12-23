@@ -22,7 +22,8 @@ Keywords generate a new shader variant that completely strips the other branch, 
 
 
 ## Node Settings
-Settings for the master node 
+Settings for the master node
+
 ![MasterNode](https://i.imgur.com/WnaD7Yc.png)
 
 
