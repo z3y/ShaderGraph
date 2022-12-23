@@ -47,3 +47,8 @@ Supports Tangent Maps and Anisotropy from `(-1 to 1)`
 
 ## Node Hotkeys
 Same hotkeys as Amplify shader editor or Unreal Engine
+
+## Unity Packages
+The com.unity.shadergraph package includes small modifications to fix gpu instanced properties, add hotkeys. 
+The com.unity.render-pipelines.core has runtime scripts removed to allow VRCSDK to build without errors. 
+Both packages have versions set to 0 to allow other packages like shader graph markdown to work without errors.
