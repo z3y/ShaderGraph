@@ -57,15 +57,15 @@ Gradient NewGradient(int type, int colorsLength, int alphasLength,
 #endif
 
 #ifndef SHADERGRAPH_AMBIENT_SKY
-    #define SHADERGRAPH_AMBIENT_SKY float3(0,0,0)
+    #define SHADERGRAPH_AMBIENT_SKY float3(unity_AmbientSky.xyz)
 #endif
 
 #ifndef SHADERGRAPH_AMBIENT_EQUATOR
-    #define SHADERGRAPH_AMBIENT_EQUATOR float3(0,0,0)
+    #define SHADERGRAPH_AMBIENT_EQUATOR float3(unity_AmbientEquator.xyz)
 #endif
 
 #ifndef SHADERGRAPH_AMBIENT_GROUND
-    #define SHADERGRAPH_AMBIENT_GROUND float3(0,0,0)
+    #define SHADERGRAPH_AMBIENT_GROUND float3(unity_AmbientGround.xyz)
 #endif
 
 #ifndef SHADERGRAPH_OBJECT_POSITION
