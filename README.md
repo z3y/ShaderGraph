@@ -1,5 +1,5 @@
 # ShaderGraph
-ShaderGraph with Built-in pipeline support for Unity 2019 for VRChat
+ShaderGraph with Built-in pipeline support for Unity 2019 for VRChat (Forward Rendering only)
 
 ## Features
 - Bakery Mono SH
