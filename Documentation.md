@@ -2,7 +2,7 @@
 
 
 ## Naming Conventions
-By default new properties added to the blackboard have randomized reference names. In order for them to fallback properly use standard naming conventions.
+By default new properties added to the blackboard have randomized reference names. In order for them to fallback properly use standard naming conventions. All of the properties below are reference names, display names can be anything
 
 
 ### VRChat
@@ -21,12 +21,8 @@ For the alpha clip threshold `_Cutoff`
 Keywords generate a new shader variant that completely strips the other branch, meaning it wont be possible to toggle them while in VRChat. Use boolean toggles for runtime toggles and keywords for editor only
 
 
-## Tiling and Offset
-
-
-
 ## Node Settings
-Settings for the master
+Settings for the master node https://i.imgur.com/WnaD7Yc.png
 
 
 ## Audio Link
@@ -38,7 +34,7 @@ LTCGI is automatically added if found in the project
 
 
 ## Additional Pass
-Mostly made so outlines are possible. Imports another shader's pass named `FORWARDBASE` and adds it after the main forward base. You can create 2 shader graph shaders, either lit or unlit, expand the position in the normal space, change culling override and add it to the other shader to get outlines in shader graph.
+Mostly made so outlines are possible. Imports another shader's pass named `FORWARDBASE` and adds it after the main forward base. You can create 2 shader graph shaders, either lit or unlit, expand the vertex position in the normal space, change culling override and add it to the other shader to get outlines in shader graph.
 
 
 ## Bakery Alpha Meta Pass
