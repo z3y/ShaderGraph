@@ -139,8 +139,8 @@
 #define SAMPLE_TEXTURECUBE_SHADOW(textureName, samplerName, coord4)                         SHADOWCUBE_SAMPLE(textureName, samplerName, coord4)
 #define SAMPLE_TEXTURECUBE_ARRAY_SHADOW(textureName, samplerName, coord4, index)            ERROR_ON_UNSUPPORTED_FUNCTION(SAMPLE_TEXTURECUBE_ARRAY_SHADOW)
 
-#define SAMPLE_DEPTH_TEXTURE(textureName, samplerName, coord2)                              SAMPLE_TEXTURE2D(textureName, samplerName, coord2).r
-#define SAMPLE_DEPTH_TEXTURE_LOD(textureName, samplerName, coord2, lod)                     SAMPLE_TEXTURE2D_LOD(textureName, samplerName, coord2, lod).r
+// #define SAMPLE_DEPTH_TEXTURE(textureName, samplerName, coord2)                              SAMPLE_TEXTURE2D(textureName, samplerName, coord2).r
+// #define SAMPLE_DEPTH_TEXTURE_LOD(textureName, samplerName, coord2, lod)                     SAMPLE_TEXTURE2D_LOD(textureName, samplerName, coord2, lod).r
 
 // Not supported. Can't define as error because shader library is calling these functions.
 #define LOAD_TEXTURE2D(textureName, unCoord2)                                               half4(0, 0, 0, 0)

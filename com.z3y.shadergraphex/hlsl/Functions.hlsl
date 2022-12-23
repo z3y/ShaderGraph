@@ -72,9 +72,17 @@ Gradient NewGradient(int type, int colorsLength, int alphasLength,
     #define SHADERGRAPH_OBJECT_POSITION UNITY_MATRIX_M._m03_m13_m23
 #endif
 
+#ifdef REQUIRE_DEPTH_TEXTURE
+    UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
+#endif
+
 float shadergraph_SampleSceneDepth(float2 uv)
 {
+    #ifdef REQUIRE_DEPTH_TEXTURE
+    return SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv);
+    #else
     return 1;
+    #endif
 }
 
 #ifdef REQUIRE_OPAQUE_TEXTURE

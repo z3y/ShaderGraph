@@ -497,9 +497,9 @@ namespace z3y.ShaderGraphExtended
                     BuiltInGraphResources.s_ResourceClassName,
                     BuiltInGraphResources.s_AssemblyName);
 
-                if (pbrMasterNode.additionalPass)
+                if (pbrMasterNode.additionalPass != null && pbrMasterNode.additionalPass is Shader additionalPassShader)
                 {
-                    var shaderName = pbrMasterNode.additionalPass.name;
+                    var shaderName = additionalPassShader.name;
                     subShader.AddShaderChunk($"UsePass \"{shaderName}/FORWARDBASE\"", true);
                 }
                 
