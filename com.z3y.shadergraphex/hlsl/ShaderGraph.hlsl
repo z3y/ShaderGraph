@@ -1,4 +1,5 @@
 #pragma warning(disable: 1519)
+#pragma warning(disable : 3571)
 
 #define UNITY_MATRIX_M     unity_ObjectToWorld
 #define UNITY_MATRIX_I_M   unity_WorldToObject
