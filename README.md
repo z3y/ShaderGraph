@@ -31,3 +31,5 @@ In the packange manager select `Add package from git url` and add:
 
 ## How to use
 Create a new Shader Graph shader `Create > Shader > PBR or Unlit Graph`
+
+[Documentation](https://github.com/z3y/ShaderGraph/blob/main/Documentation.md)
