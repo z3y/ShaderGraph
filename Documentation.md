@@ -43,7 +43,7 @@ Mostly made so outlines are possible. Imports another shader's pass named `FORWA
 Meta pass outputs dithered transparency for the meta pass when using bakery
 
 ## Anisotropy
-Supports tangent maps and anisotropy from `(-1 to 1)`, same as the HDRP Lit shader graph
+Supports Tangent Maps and Anisotropy from `(-1 to 1)`
 
 ## Node Hotkeys
 Same hotkeys as Amplify shader editor or Unreal Engine
