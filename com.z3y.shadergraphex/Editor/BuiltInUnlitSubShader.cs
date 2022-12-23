@@ -172,6 +172,11 @@ namespace z3y.ShaderGraphExtended
             {
                 if (masterNode.alphaToCoverage) baseActiveFields.Add("features.A2C");
             }
+            
+            if (ShaderGraphExtendedUtils.AudioLinkExists)
+            {
+                baseActiveFields.Add("features.AudioLink");
+            }
 
             return activeFields;
         }
