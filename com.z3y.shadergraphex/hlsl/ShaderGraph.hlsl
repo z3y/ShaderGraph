@@ -21,7 +21,7 @@
     #define UNITY_STEREO_INSTANCING_ENABLED
 #endif
 
-#define stereoTargetEyeIndex stereoTargetEyeIndexAsRTArrayIdx
+//#define stereoTargetEyeIndex stereoTargetEyeIndexAsRTArrayIdx
 
 #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
     #define FOG_ANY

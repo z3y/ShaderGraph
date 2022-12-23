@@ -22,76 +22,39 @@ namespace z3y.ShaderGraphExtended
 
         internal struct Attributes
         {
-            [Semantic("POSITION")]
-            Vector3 positionOS;
-            [Semantic("NORMAL")][Optional]
-            Vector3 normalOS;
-            [Semantic("TANGENT")][Optional]
-            Vector4 tangentOS;
-            [Semantic("TEXCOORD0")][Optional]
-            Vector4 uv0;
-            [Semantic("TEXCOORD1")][Optional]
-            Vector4 uv1;
-            [Semantic("TEXCOORD2")][Optional]
-            Vector4 uv2;
-            [Semantic("TEXCOORD3")][Optional]
-            Vector4 uv3;
-            [Semantic("COLOR")][Optional]
-            Vector4 color;
-            [Semantic("BLENDWEIGHTS")][Optional]
-            Vector4 weights;
-            [Semantic("BLENDINDICES")][Optional]
-            UInt32_4 indices;
-            [Semantic("INSTANCEID_SEMANTIC")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")]
-            uint instanceID;
+            [Semantic("POSITION")] Vector3 positionOS;
+            [Semantic("NORMAL")] [Optional] Vector3 normalOS;
+            [Semantic("TANGENT")] [Optional] Vector4 tangentOS;
+            [Semantic("TEXCOORD0")] [Optional] Vector4 uv0;
+            [Semantic("TEXCOORD1")] [Optional] Vector4 uv1;
+            [Semantic("TEXCOORD2")] [Optional] Vector4 uv2;
+            [Semantic("TEXCOORD3")] [Optional] Vector4 uv3;
+            [Semantic("COLOR")] [Optional] Vector4 color;
+            [Semantic("BLENDWEIGHTS")] [Optional] Vector4 weights;
+            [Semantic("BLENDINDICES")] [Optional] UInt32_4 indices;
+            [Semantic("INSTANCEID_SEMANTIC")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")] uint instanceID;
         };
 
         [InterpolatorPack]
         internal struct Varyings
         {
-            [Semantic("SV_POSITION")]
-            Vector4 positionCS;
-            [Optional]
-            Vector3 positionWS;
-            [Optional]
-            Vector3 normalWS;
-            [Optional]
-            Vector4 tangentWS;
-            [Optional]
-            Vector4 texCoord0;
-            [Optional]
-            Vector4 texCoord1;
-            [Optional]
-            [PreprocessorIf("defined(DYNAMICLIGHTMAP_ON) || defined(VARYINGS_NEED_TEXCOORD2)")]
-            Vector4 texCoord2;
-            [Optional]
-            Vector4 texCoord3;
-            [Optional][Semantic("COLOR_centroid")]
-            Vector4 color;
-            [Optional]
-            Vector3 viewDirectionWS;
-            [Optional]
-            Vector4 screenPosition;
-            [Semantic("FOG_COORD")][PreprocessorIf("defined(FOG_ANY)")]
-            float fogCoord;
-            [Optional]
-            Vector4 shadowCoord;
-            [Semantic("CUSTOM_INSTANCE_ID")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")]
-            uint instanceID;
-            [Semantic("SV_RenderTargetArrayIndex")]
-            [SystemGenerated]
-            [PreprocessorIf("(defined(UNITY_STEREO_INSTANCING_ENABLED))")]
-            uint stereoTargetEyeIndexAsRTArrayIdx;
-            [Semantic("BLENDINDICES0")]
-            [SystemGenerated]
-            [PreprocessorIf("(defined(UNITY_STEREO_MULTIVIEW_ENABLED)) || " +
-                            "(defined(UNITY_STEREO_INSTANCING_ENABLED) && (defined(SHADER_API_GLES3) || defined(SHADER_API_GLCORE)))")]
-            uint stereoTargetEyeIndexAsBlendIdx0;
-            [Semantic("FRONT_FACE_SEMANTIC")]
-            [SystemGenerated]
-            [OverrideType("FRONT_FACE_TYPE")]
-            [PreprocessorIf("defined(SHADER_STAGE_FRAGMENT) && defined(VARYINGS_NEED_CULLFACE)")]
-            bool cullFace;
+            [Semantic("SV_POSITION")] Vector4 positionCS;
+            [Optional] Vector3 positionWS;
+            [Optional] Vector3 normalWS;
+            [Optional] Vector4 tangentWS;
+            [Optional] Vector4 texCoord0;
+            [Optional] Vector4 texCoord1;
+            [Optional] [PreprocessorIf("defined(DYNAMICLIGHTMAP_ON) || defined(VARYINGS_NEED_TEXCOORD2)")] Vector4 texCoord2;
+            [Optional] Vector4 texCoord3;
+            [Optional] [Semantic("COLOR_centroid")] Vector4 color;
+            [Optional] Vector3 viewDirectionWS;
+            [Optional] Vector4 screenPosition;
+            [Semantic("FOG_COORD")] [PreprocessorIf("defined(FOG_ANY)")] float fogCoord;
+            [Optional] Vector4 shadowCoord;
+            [Semantic("CUSTOM_INSTANCE_ID")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")] uint instanceID;
+            [Semantic("SV_RenderTargetArrayIndex")] [SystemGenerated] [PreprocessorIf("(defined(UNITY_STEREO_INSTANCING_ENABLED))")] uint stereoTargetEyeIndexAsRTArrayIdx;
+            [Semantic("BLENDINDICES0")] [SystemGenerated] [PreprocessorIf("(defined(UNITY_STEREO_MULTIVIEW_ENABLED)) || " + "(defined(UNITY_STEREO_INSTANCING_ENABLED) && (defined(SHADER_API_GLES3) || defined(SHADER_API_GLCORE)))")] uint stereoTargetEyeIndexAsBlendIdx0;
+            [Semantic("FRONT_FACE_SEMANTIC")] [SystemGenerated] [OverrideType("FRONT_FACE_TYPE")] [PreprocessorIf("defined(SHADER_STAGE_FRAGMENT) && defined(VARYINGS_NEED_CULLFACE)")] bool cullFace;
             [Optional] [PreprocessorIf("defined(EDITOR_VISUALIZATION)")] Vector2 vizUV;
             [Optional] [PreprocessorIf("defined(EDITOR_VISUALIZATION)")] Vector4 lightCoord;
         };
