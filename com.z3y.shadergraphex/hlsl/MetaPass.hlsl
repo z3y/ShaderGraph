@@ -58,13 +58,14 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         o.SpecularColor = specColor;
         o.Emission = surfaceDescription.Emission;
 
+    #ifndef EDITOR_VISUALIZATION
     // bakery alpha
     if (unity_MetaFragmentControl.w != 0)
     {
         half dither = Unity_Dither(surfaceDescription.Alpha, unpacked.positionCS.xy);
-        if (dither < 0.0) return 0;
-        else return 1;
+        return dither < 0.0 ? 0 : 1;
     }
+    #endif
 
     return UnityMetaFragment(o);
 }
