@@ -51,7 +51,7 @@ namespace z3y.ShaderGraphExtended
             [Optional] Vector4 screenPosition;
             [Semantic("FOG_COORD")] [PreprocessorIf("defined(FOG_ANY)")] float fogCoord;
             [Optional] Vector4 shadowCoord;
-            [Semantic("CUSTOM_INSTANCE_ID")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")] uint instanceID;
+            [Semantic("SV_InstanceID")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")] uint instanceID;
             [Semantic("SV_RenderTargetArrayIndex")] [SystemGenerated] [PreprocessorIf("(defined(UNITY_STEREO_INSTANCING_ENABLED))")] uint stereoTargetEyeIndexAsRTArrayIdx;
             [Semantic("BLENDINDICES0")] [SystemGenerated] [PreprocessorIf("(defined(UNITY_STEREO_MULTIVIEW_ENABLED)) || " + "(defined(UNITY_STEREO_INSTANCING_ENABLED) && (defined(SHADER_API_GLES3) || defined(SHADER_API_GLCORE)))")] uint stereoTargetEyeIndexAsBlendIdx0;
             [Semantic("FRONT_FACE_SEMANTIC")] [SystemGenerated] [OverrideType("FRONT_FACE_TYPE")] [PreprocessorIf("defined(SHADER_STAGE_FRAGMENT) && defined(VARYINGS_NEED_CULLFACE)")] bool cullFace;
