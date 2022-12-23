@@ -62,6 +62,7 @@ namespace z3y.ShaderGraphExtended
             [Optional]
             Vector4 texCoord1;
             [Optional]
+            [PreprocessorIf("defined(DYNAMICLIGHTMAP_ON) || defined(VARYINGS_NEED_TEXCOORD2)")]
             Vector4 texCoord2;
             [Optional]
             Vector4 texCoord3;

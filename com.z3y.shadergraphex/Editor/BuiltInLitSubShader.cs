@@ -84,6 +84,7 @@ namespace z3y.ShaderGraphExtended
                 "Varyings.normalWS",
                 "Varyings.tangentWS",
                 "Varyings.texCoord1",
+                "Varyings.texCoord2",
                 "Varyings.shadowCoord"
             },
             

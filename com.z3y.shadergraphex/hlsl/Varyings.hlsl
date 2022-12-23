@@ -94,7 +94,7 @@ Varyings BuildVaryings(Attributes input)
 #if defined(VARYINGS_NEED_TEXCOORD1) || defined(VARYINGS_DS_NEED_TEXCOORD1)
     output.texCoord1 = input.uv1;
 #endif
-#if defined(VARYINGS_NEED_TEXCOORD2) || defined(VARYINGS_DS_NEED_TEXCOORD2)
+#if defined(VARYINGS_NEED_TEXCOORD2) || defined(VARYINGS_DS_NEED_TEXCOORD2) || defined(DYNAMICLIGHTMAP_ON)
     output.texCoord2 = input.uv2;
 #endif
 #if defined(VARYINGS_NEED_TEXCOORD3) || defined(VARYINGS_DS_NEED_TEXCOORD3)
