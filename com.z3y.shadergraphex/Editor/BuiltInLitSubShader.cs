@@ -438,7 +438,7 @@ namespace z3y.ShaderGraphExtended
                     baseActiveFields.Add("features.LTCGI");
                 }
                 
-
+                baseActiveFields.Add("features.DisableLPPV");
             }
 
             return activeFields;

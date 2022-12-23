@@ -162,6 +162,10 @@ float shEvaluateDiffuseL1Geomerics(float L0, float3 L1, float3 n)
     return R0 * (a + (1.0f - a) * (p + 1.0f) * pow(q, p));
 }
 
+#ifdef DISABLE_LIGHT_PROBE_PROXY_VOLUME
+    #define UNITY_LIGHT_PROBE_PROXY_VOLUME 0
+#endif
+
 half3 GetLightProbes(float3 normalWS, float3 positionWS)
 {
     half3 indirectDiffuse = 0;

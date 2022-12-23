@@ -32,6 +32,8 @@ Pass
     $splice(GraphKeywords)
 
     $features.FlatLit:                  #pragma skip_variants SHADOWS_SCREEN SHADOWS_CUBE SHADOWS_SOFT SHADOWS_DEPTH
+
+    $features.DisableLPPV:              #define DISABLE_LIGHT_PROBE_PROXY_VOLUME
     
     // Defines
     $features.GSAA:                     #define _GEOMETRICSPECULAR_AA
