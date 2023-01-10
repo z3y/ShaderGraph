@@ -23,7 +23,7 @@ Since this is based on an older shader graph version (8.3.1) **things are likely
 ## Installation
 If you have unity's shader graph in your project remove it first
 
-In the package manager select `Add package from git url` and them in this order:
+In the [Package Manager](https://user-images.githubusercontent.com/33181641/210658098-851627b9-c67d-4fab-a493-94e2c8bb53e3.png) select `Add package from git url` and them in this order:
 
 `https://github.com/z3y/ShaderGraph.git?path=/com.unity.render-pipelines.core`
 
