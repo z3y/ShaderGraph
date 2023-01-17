@@ -25,11 +25,16 @@ If you have unity's shader graph in your project remove it first
 
 In the [Package Manager](https://user-images.githubusercontent.com/33181641/210658098-851627b9-c67d-4fab-a493-94e2c8bb53e3.png) select `Add package from git url` and them in this order:
 
-`https://github.com/z3y/ShaderGraph.git?path=/com.unity.render-pipelines.core`
+```
+https://github.com/z3y/ShaderGraph.git?path=/com.unity.render-pipelines.core
+```
 
-`https://github.com/z3y/ShaderGraph.git?path=/com.unity.shadergraph`
-
-`https://github.com/z3y/ShaderGraph.git?path=/com.z3y.shadergraphex`
+```
+https://github.com/z3y/ShaderGraph.git?path=/com.unity.shadergraph
+```
+```
+https://github.com/z3y/ShaderGraph.git?path=/com.z3y.shadergraphex
+```
 
 ## How to use
 Create a new Shader Graph shader `Create > Shader > PBR or Unlit Graph`
