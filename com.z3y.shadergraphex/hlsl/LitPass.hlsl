@@ -7,6 +7,7 @@ PackedVaryings vert(Attributes input)
 }
 
 #include "LightFunctions.hlsl"
+#include "Poi.hlsl"
 
 half4 frag(PackedVaryings packedInput) : SV_TARGET 
 {    
@@ -107,10 +108,6 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     half3 lightColor = lightAttenuation * _LightColor0.rgb;
     half3 lightFinalColor = lightNoL * lightColor;
 
-    #ifdef FLAT_LIT
-        half3 lightFinalColorFlat = saturate(lightColor);
-    #endif
-
     #ifndef SHADER_API_MOBILE
         lightFinalColor *= Fd_Burley(perceptualRoughness, NoV, lightNoL, lightLoH);
     #endif
@@ -118,6 +115,35 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
     #if defined(LIGHTMAP_SHADOW_MIXING) && defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
          lightFinalColor *= UnityComputeForwardShadows(lightmapUV, unpacked.positionWS, unpacked.shadowCoord);
     #endif
+
+
+
+    #ifdef FLAT_LIT
+    #define _SPECULARHIGHLIGHTS_OFF
+    #define _GLOSSYREFLECTIONS_OFF
+    {
+        // based on poiyomi flat lit because im bad at toon
+        half3 magic = max(BetterSH9(normalize(unity_SHAr + unity_SHAg + unity_SHAb)), 0);
+        half3 normalLight = _LightColor0.rgb + BetterSH9(float4(0, 0, 0, 1));
+        
+        half magiLumi = calculateluminance(magic);
+        half normaLumi = calculateluminance(normalLight);
+        half maginormalumi = magiLumi + normaLumi;
+        
+        half magiratio = magiLumi / maginormalumi;
+        half normaRatio = normaLumi / maginormalumi;
+        
+        half target = calculateluminance(magic * magiratio + normalLight * normaRatio);
+        half3 properLightColor = magic + normalLight;
+        half properLuminance = calculateluminance(magic + normalLight);
+        lightFinalColor = properLightColor * max(0.0001, (target / properLuminance));
+
+        
+
+        lightFinalColor = min(lightFinalColor, 1.0) * lightAttenuation;
+    }
+    #endif
+
 
     half3 lightSpecular = 0;
     #ifndef _SPECULARHIGHLIGHTS_OFF
@@ -196,7 +222,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
                // indirectDiffuse = ShadeSHPerPixel(normalWS, i.lightProbe, i.worldPos.xyz);
             #else
                 #ifdef FLAT_LIT
-                    indirectDiffuse = GetLightProbes(float3(0, 0, 0), unpacked.positionWS);
+                    indirectDiffuse = 0.0;
                 #else
                     indirectDiffuse = GetLightProbes(normalWS, unpacked.positionWS);
                 #endif
@@ -322,15 +348,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
     indirectSpecular = indirectSpecular * energyCompensation * brdf;
 
-    #ifdef FLAT_LIT
-    half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColorFlat))
-                     + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);
-
-    #else
-
     half4 finalColor = half4(surfaceDescription.Albedo * (1.0 - surfaceDescription.Metallic) * (indirectDiffuse * surfaceDescription.Occlusion + (lightFinalColor))
                      + indirectSpecular + directSpecular + surfaceDescription.Emission, surfaceDescription.Alpha);
-    #endif
 
     #ifdef FOG_ANY
         UNITY_APPLY_FOG(unpacked.fogCoord, finalColor);

@@ -80,6 +80,7 @@ Shader ""Hidden/GraphErrorShader2""
             var oldShader = AssetDatabase.LoadAssetAtPath<Shader>(ctx.assetPath);
             if (oldShader != null)
                 ShaderUtil.ClearShaderMessages(oldShader);
+            
 
             List<PropertyCollector.TextureInfo> configuredTextures;
             string path = ctx.assetPath;
