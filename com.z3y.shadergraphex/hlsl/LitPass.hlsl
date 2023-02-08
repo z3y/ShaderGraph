@@ -119,8 +119,8 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
 
 
     #ifdef FLAT_LIT
-    #define _SPECULARHIGHLIGHTS_OFF
-    #define _GLOSSYREFLECTIONS_OFF
+    //#define _SPECULARHIGHLIGHTS_OFF
+    //#define _GLOSSYREFLECTIONS_OFF
     {
         // based on poiyomi flat lit because im bad at toon
         half3 magic = max(BetterSH9(normalize(unity_SHAr + unity_SHAg + unity_SHAb)), 0);
