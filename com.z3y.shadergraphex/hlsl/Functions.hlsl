@@ -106,9 +106,13 @@ float3 shadergraph_BakedGI(float3 positionWS, float3 normalWS, float2 uvStaticLi
 
 float3 shadergraph_ReflectionProbe(float3 viewDir, float3 normalOS, float lod)
 {
+    #ifdef UNITY_PASS_FORWARDBASE
     float3 reflectVec = reflect(-viewDir, normalOS);
     half4 rgbm = unity_SpecCube0.SampleLevel(samplerunity_SpecCube0, reflectVec, lod);
     return DecodeHDR(rgbm, unity_SpecCube0_HDR);
+    #else
+    return 0;
+    #endif
 }
 
 void shadergraph_Fog(float3 position, out float4 color, out float density)
