@@ -52,3 +52,7 @@ Same hotkeys as Amplify shader editor or Unreal Engine
 The com.unity.shadergraph package includes small modifications to fix gpu instanced properties, add hotkeys. 
 The com.unity.render-pipelines.core has runtime scripts removed to allow VRCSDK to build without errors. 
 Both packages have versions set to 0 to allow other packages like shader graph markdown to work without errors.
+
+## Differences from Unity Shader Graph
+- Some outputs arent clamped, you might need to add a Saturate node to fix values outside of 0-1 range
+- Shading is different from the Standard shader
