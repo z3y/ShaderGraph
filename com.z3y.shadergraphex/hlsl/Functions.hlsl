@@ -78,6 +78,9 @@ Gradient NewGradient(int type, int colorsLength, int alphasLength,
 
 float shadergraph_SampleSceneDepth(float2 uv)
 {
+    #if UNITY_SINGLE_PASS_STEREO
+        uv = TransformStereoScreenSpaceTex(uv, 1.0);
+    #endif
     #ifdef REQUIRE_DEPTH_TEXTURE
     return SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv);
     #else
