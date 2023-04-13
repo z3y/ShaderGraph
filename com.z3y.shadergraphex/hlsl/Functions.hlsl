@@ -86,14 +86,17 @@ float shadergraph_SampleSceneDepth(float2 uv)
 }
 
 #ifdef REQUIRE_OPAQUE_TEXTURE
-    TEXTURE2D(_CameraOpaqueTexture);
-    SAMPLER(sampler_CameraOpaqueTexture);
+    UNITY_DECLARE_SCREENSPACE_TEXTURE(_CameraOpaqueTexture);
+    float4 _CameraOpaqueTexture_TexelSize;
 #endif
 
 float3 shadergraph_SampleSceneColor(float2 uv)
 {
+    #if UNITY_SINGLE_PASS_STEREO
+        uv = TransformStereoScreenSpaceTex(uv, 1.0);
+    #endif
     #ifdef REQUIRE_OPAQUE_TEXTURE
-        return SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv);
+            return UNITY_SAMPLE_SCREENSPACE_TEXTURE(_CameraOpaqueTexture, uv).rgb;
     #else
         return 0;
     #endif
@@ -101,7 +104,11 @@ float3 shadergraph_SampleSceneColor(float2 uv)
 
 float3 shadergraph_BakedGI(float3 positionWS, float3 normalWS, float2 uvStaticLightmap, float2 uvDynamicLightmap, bool applyScaling)
 {
+    #ifdef LIGHTMAP_ON
+    return 0; // TODO
+    #else
     return 0;
+    #endif
 }
 
 float3 shadergraph_ReflectionProbe(float3 viewDir, float3 normalOS, float lod)
