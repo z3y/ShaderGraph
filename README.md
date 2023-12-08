@@ -33,7 +33,8 @@ Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
 
 [Documentation](https://github.com/z3y/ShaderGraph/blob/main/Documentation.md)
 
-https://i.imgur.com/no0FfiZ.png
+![image](https://github.com/z3y/ShaderGraph/assets/33181641/5dc732c9-5518-4661-985c-073d067f412d)
+
 ##
 
 [Discord](https://discord.gg/bw46tKgRFT)
