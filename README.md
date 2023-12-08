@@ -27,6 +27,7 @@ https://github.com/z3y/ShaderGraph.git
 
 To install a specific version add #VersionNumber from the release tags to the end of the urls
 
+(2019 Version https://github.com/z3y/ShaderGraph/tree/2019)
 
 ## How to use
 Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
