@@ -1,49 +1,39 @@
 # ShaderGraph
-ShaderGraph with Built-in pipeline support for Unity 2019 for VRChat (Forward Rendering only)
+Modified ShaderGraph Built-in pipeline target for Unity 2022 for VRChat (Forward Rendering only).
 
 ## Features
 - Bakery Mono SH
 - Mono SH Lightmapped Specular
-- Bakery Alpha Meta
 - Geometric Specular AA
+- Anisotropy
 - Specular Occlusion
 - Alpha To Coverage
-- Accurate PBR Shading
-- Additional Pass
 - Bicubic Lightmap
 - Anisotropy
-- LTCGI
 - Audio Link
-- Node Hotkeys 
-
-## Future Updates
-Since this is based on an older shader graph version (8.3.1) **things are likely going to break**  with the next Shader Graph update. A new version will be made once VRChat moves to a newer Unity version, until then treat this as **experimental**
+- SSR
+- More
 
 
 ## Installation
-If you have unity's shader graph in your project remove it first
 
-To install the latest version open the [Package Manager](https://user-images.githubusercontent.com/33181641/210658098-851627b9-c67d-4fab-a493-94e2c8bb53e3.png), select `Add package from git url` and them in this order:
+First, open the package manager and install Shader Graph.
 
-```
-https://github.com/z3y/ShaderGraph.git?path=/com.unity.render-pipelines.core#2019
-```
+To install the latest version open the [Package Manager](https://user-images.githubusercontent.com/33181641/210658098-851627b9-c67d-4fab-a493-94e2c8bb53e3.png), select `Add package from git url` and add:
 
 ```
-https://github.com/z3y/ShaderGraph.git?path=/com.unity.shadergraph#2019
-```
-```
-https://github.com/z3y/ShaderGraph.git?path=/com.z3y.shadergraphex#2019
+https://github.com/z3y/ShaderGraph.git
 ```
 
 To install a specific version add #VersionNumber from the release tags to the end of the urls
 
 
 ## How to use
-Create a new Shader Graph shader `Create > Shader > PBR or Unlit Graph`
+Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
 
 [Documentation](https://github.com/z3y/ShaderGraph/blob/main/Documentation.md)
 
+https://i.imgur.com/no0FfiZ.png
 ##
 
 [Discord](https://discord.gg/bw46tKgRFT)
