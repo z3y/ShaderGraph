@@ -184,7 +184,7 @@
 //  End fog helpers
 
 #if defined(UNITY_SINGLE_PASS_STEREO)
-float2 TransformStereoScreenSpaceTex(float2 uv, float w)
+float2 TransformStereoScreenSpaceTexBuiltIn(float2 uv, float w)
 {
     float4 scaleOffset = unity_StereoScaleOffset[unity_StereoEyeIndex];
     return uv.xy * scaleOffset.xy + scaleOffset.zw * w;
@@ -202,7 +202,7 @@ inline float4 ComputeScreenPos(float4 pos)
 {
     float4 o = ComputeNonStereoScreenPos(pos);
 #if defined(UNITY_SINGLE_PASS_STEREO)
-    o.xy = TransformStereoScreenSpaceTex(o.xy, pos.w);
+    o.xy = TransformStereoScreenSpaceTexBuiltIn(o.xy, pos.w);
 #endif
     return o;
 }
