@@ -1,6 +1,6 @@
 {
   "name": "io.z3y.github.shadergraph",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2021.3",
   "unityRelease": "29f1",
   "displayName": "Shader Graph Target (z3y)",
