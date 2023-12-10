@@ -39,6 +39,8 @@ Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
 
 ![image](https://github.com/z3y/ShaderGraph/assets/33181641/5dc732c9-5518-4661-985c-073d067f412d)
 
+Shader Graph target code licensed under the Unity Companion License for Unity-dependent projects [Unity Companion License](http://www.unity3d.com/legal/licenses/Unity_Companion_License). 
+
 ##
 
 [Discord](https://discord.gg/bw46tKgRFT)
