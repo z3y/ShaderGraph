@@ -2,6 +2,7 @@
 Modified ShaderGraph Built-in pipeline target for Unity 2022 for VRChat (Forward Rendering only).
 
 ## Features
+- Fixed GPU instancing and rendering in VR
 - Bakery Mono SH
 - Mono SH Lightmapped Specular
 - Geometric Specular AA
