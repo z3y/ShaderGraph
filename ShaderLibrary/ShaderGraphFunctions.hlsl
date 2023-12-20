@@ -10,7 +10,7 @@
 #define SHADERGRAPH_AMBIENT_EQUATOR unity_AmbientEquator
 #define SHADERGRAPH_AMBIENT_GROUND unity_AmbientGround
 
-#define _TimeParameters float4(_Time.y, _SinTime.w, _CosTime.w, 0);
+#define _TimeParameters float4(_Time.y, _SinTime.w, _CosTime.w, 0)
 
 // #if defined(REQUIRE_DEPTH_TEXTURE)
 // #include "Packages/com.unity.shadergraph/Editor/Generation/Targets/BuiltIn/ShaderLibrary/DeclareDepthTexture.hlsl"
