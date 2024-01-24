@@ -21,9 +21,7 @@ half4 frag (PackedVaryings packedInput) : SV_Target
 
     half4 result = half4(surfaceDescription.BaseColor, alpha);
 
-#if defined(FOG_EXP) || defined(FOG2) || defined(FOG_LINEAR)
-    UNITY_APPLY_FOG(input.fogCoord, result);
-#endif
+    UNITY_APPLY_FOG(unpacked.fogCoord, result);
 
     return result;
 }

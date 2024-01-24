@@ -182,6 +182,11 @@ namespace z3y.BuiltIn.ShaderGraph
                     renderStates = CoreRenderStates.CopyAndAppendStencil(target, renderStates);
                 }
 
+                var requiredFields =  new FieldCollection()
+                {
+                    BuiltInStructFields.Varyings.fogCoord
+                };
+
                 var result = new PassDescriptor
                 {
                     // Definition
@@ -201,6 +206,7 @@ namespace z3y.BuiltIn.ShaderGraph
                     // Fields
                     structs = CoreStructCollections.Default,
                     fieldDependencies = CoreFieldDependencies.Default,
+                    requiredFields = requiredFields,
 
                     // Conditional State
                     renderStates = renderStates,
