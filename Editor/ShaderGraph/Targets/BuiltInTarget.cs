@@ -666,6 +666,12 @@ namespace z3y.BuiltIn.ShaderGraph
             };
 
             AddCommonPassSurfaceControlsToPass(ref result, target);
+            result.keywords = new KeywordCollection
+            {
+                CoreKeywordDescriptors.AlphaTestOn,
+                CoreKeywordDescriptors.AlphaPremultiplyOn,
+                CoreKeywordDescriptors.SurfaceTypeTransparent,
+            };
 
             return result;
         }
