@@ -31,7 +31,7 @@ void ApplyAlphaSurface(inout SurfaceDescription surfaceDescription)
 
 half GetAlphaValue(SurfaceDescription surfaceDescription)
 {
-    #if !defined(_ALPHAFADE_ON) && !defined(_ALPHATEST_ON) && !defined(_ALPHAPREMULTIPLY_ON) && !defined(_ALPHAMODULATE_ON)
+    #if !defined(_ALPHAFADE_ON) && !defined(_ALPHATEST_ON) && !defined(_ALPHAPREMULTIPLY_ON) && !defined(_ALPHAMODULATE_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
         return 1.0;
     #else
         return surfaceDescription.Alpha;
