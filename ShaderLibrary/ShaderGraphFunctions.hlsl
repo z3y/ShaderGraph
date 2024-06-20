@@ -29,9 +29,9 @@ float4 _CameraDepthTexture_TexelSize;
 
 float shadergraph_LWSampleSceneDepth(float2 uv)
 {
-    #if UNITY_SINGLE_PASS_STEREO
-        uv = TransformStereoScreenSpaceTex(uv, 1.0);
-    #endif
+    // #if UNITY_SINGLE_PASS_STEREO
+    //     uv = TransformStereoScreenSpaceTex(uv, 1.0);
+    // #endif
 
     #ifdef REQUIRE_DEPTH_TEXTURE
         return SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
@@ -48,9 +48,9 @@ float4 _CameraOpaqueTexture_TexelSize;
 
 float3 shadergraph_SampleSceneColorBuiltIn(float2 uv)
 {
-    #if UNITY_SINGLE_PASS_STEREO
-        uv = TransformStereoScreenSpaceTex(uv, 1.0);
-    #endif
+    // #if UNITY_SINGLE_PASS_STEREO
+    //     uv = TransformStereoScreenSpaceTex(uv, 1.0);
+    // #endif
     
     #ifdef REQUIRE_OPAQUE_TEXTURE
         return SAMPLE_TEXTURE2D_X(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv).rgb;

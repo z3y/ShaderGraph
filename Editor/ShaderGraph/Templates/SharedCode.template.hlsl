@@ -59,8 +59,11 @@ SurfaceDescriptionInputs BuildSurfaceDescriptionInputs(Varyings input)
     $SurfaceDescriptionInputs.PixelPosition:                            output.PixelPosition = float2(input.positionCS.x, (_ProjectionParams.x > 0) ? (_ScreenParams.y - input.positionCS.y) : input.positionCS.y);
     #endif
 
-    $SurfaceDescriptionInputs.NDCPosition:                              output.NDCPosition = output.PixelPosition.xy / _ScreenParams.xy;
-    $SurfaceDescriptionInputs.NDCPosition:                              output.NDCPosition.y = 1.0f - output.NDCPosition.y;
+    // $SurfaceDescriptionInputs.NDCPosition:                              output.NDCPosition = output.PixelPosition.xy / _ScreenParams.xy;
+    // $SurfaceDescriptionInputs.NDCPosition:                              output.NDCPosition.y = 1.0f - output.NDCPosition.y;
+    $SurfaceDescriptionInputs.NDCPosition: float4 positionCS = TransformWorldToHClip(input.positionWS);
+    $SurfaceDescriptionInputs.NDCPosition: float4 screenPos = ComputeGrabScreenPos(positionCS);
+    $SurfaceDescriptionInputs.NDCPosition: output.NDCPosition = screenPos.xy / screenPos.w;
 
 
 #if defined(SHADER_STAGE_FRAGMENT) && defined(VARYINGS_NEED_CULLFACE)
