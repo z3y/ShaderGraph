@@ -18,6 +18,7 @@ Modified ShaderGraph Built-in pipeline target for Unity 2022 for VRChat (Forward
 ## Known issues
 
 - Grab Pass / Screen Color node is broken in VR
+- If you run into more bugs you can try out [ShaderGraphZ](https://github.com/z3y/ShaderGraphZ), a free custom node editor for the built-in pipeline, it is more reliable than this project
 
 ## Installation
 

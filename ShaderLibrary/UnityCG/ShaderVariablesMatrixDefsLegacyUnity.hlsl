@@ -12,7 +12,11 @@
 // #define UNITY_MATRIX_P     OptimizeProjectionMatrix(glstate_matrix_projection)
 #define UNITY_MATRIX_I_P   ERROR_UNITY_MATRIX_I_P_IS_NOT_DEFINED
 #define UNITY_MATRIX_VP    unity_MatrixVP
-#define UNITY_MATRIX_I_VP  ERROR_UNITY_MATRIX_I_VP_IS_NOT_DEFINED
+
+// #define UNITY_MATRIX_I_VP  ERROR_UNITY_MATRIX_I_VP_IS_NOT_DEFINED // causes error in orthographics branch
+#define UNITY_MATRIX_I_VP 0 // incorrect but set to 0 to let the compiler optimized out the branch in generated code
+
+
 // #define UNITY_MATRIX_MV    mul(UNITY_MATRIX_V, UNITY_MATRIX_M)
 // #define UNITY_MATRIX_T_MV  transpose(UNITY_MATRIX_MV)
 // #define UNITY_MATRIX_IT_MV transpose(mul(UNITY_MATRIX_I_M, UNITY_MATRIX_I_V))
