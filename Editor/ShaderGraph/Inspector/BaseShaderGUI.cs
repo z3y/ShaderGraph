@@ -247,8 +247,8 @@ namespace z3y.BuiltIn.ShaderGraph
             // If we find another value, add the the property set to 1 so we will know that the
             // user has explicitly selected a render queue and we should not override it.
             //
-            int rawRenderQueue = material.renderQueue;
-            if (rawRenderQueue == -1)
+            float rawRenderQueue = material.GetFloat(Property.QueueControl());
+            if (rawRenderQueue < 0)
             {
                 material.SetFloat(Property.QueueControl(), (float)QueueControl.Auto); // Automatic behavior - surface type override
             }
