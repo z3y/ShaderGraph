@@ -366,6 +366,7 @@ namespace z3y.BuiltIn.ShaderGraph
                     // Custom Interpolator Support
                     customInterpolators = CoreCustomInterpDescriptors.Common
                 };
+
                 AddForwardSurfaceControlsToPass(ref result, target);
 
                 if (target.activeSubTarget is BuiltInLitSubTarget lit)

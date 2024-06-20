@@ -184,7 +184,8 @@ namespace z3y.BuiltIn.ShaderGraph
 
                 var requiredFields =  new FieldCollection()
                 {
-                    BuiltInStructFields.Varyings.fogCoord
+                    BuiltInStructFields.Varyings.fogCoord,
+                    StructFields.Varyings.positionWS
                 };
 
                 var result = new PassDescriptor
