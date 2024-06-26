@@ -3,15 +3,23 @@ Modified ShaderGraph Built-in pipeline target for Unity 2022 for VRChat (Forward
 
 ## Installation
 
-- First, open the package manager and install Shader Graph.
-- Add the VRChat Creator Companion listing and import the package:
+### 1. Installing Shader Graph
+- Open `Window > Package Manager` in Unity
+- Select `Packages: Unity Registry` and install Shader Graph
+
+### 2. Installing the Shader Graph Target
+- Add the listing `Settings > Packages > Add Repository` in VRChat Creator Companion
 ```
 https://z3y.github.io/vpm-package-listing/
 ```
-Alternatively you can also import the unity package from releases
+- Select your project now (Manage Project) and import the `Shader Graph Target (z3y)` package
+
+For non VRChat projects you can import the unity package from releases instead
 
 ## How to use
-Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
+
+- Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
+- For already existing shaders swap the built-in active target in graph settings
 
 ## Features
 - Fixed GPU instancing and rendering in VR
