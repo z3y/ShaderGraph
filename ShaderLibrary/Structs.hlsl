@@ -20,7 +20,7 @@ UnityLightData GetCustomMainLightData(Varyings unpacked)
 
     #if defined(HANDLE_SHADOWS_BLENDING_IN_GI) && defined(SHADOWS_SCREEN) && defined(LIGHTMAP_ON)
         half bakedAtten = UnitySampleBakedOcclusion(unpacked.lightmapUV, unpacked.positionWS);
-        float zDist = dot(_WorldSpaceCameraPos -  unpacked.positionWS, UNITY_MATRIX_V[2].xyz);
+        float zDist = dot(_WorldSpaceCameraPos - unpacked.positionWS, UNITY_MATRIX_V[2].xyz);
         float fadeDist = UnityComputeShadowFadeDistance(unpacked.positionWS, zDist);
         lightAttenuation = UnityMixRealtimeAndBakedShadows(lightAttenuation, bakedAtten, UnityComputeShadowFade(fadeDist));
     #endif
