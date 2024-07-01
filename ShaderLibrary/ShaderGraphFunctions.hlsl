@@ -70,22 +70,22 @@ float3 shadergraph_SampleSceneColorBuiltIn(float2 uv)
 
 float3 shadergraph_LWBakedGI(float3 positionWS, float3 normalWS, float2 uvStaticLightmap, float2 uvDynamicLightmap, bool applyScaling)
 {
-// #ifdef LIGHTMAP_ON
-//     if (applyScaling)
-//         uvStaticLightmap = uvStaticLightmap * unity_LightmapST.xy + unity_LightmapST.zw;
+#ifdef LIGHTMAP_ON
+    if (applyScaling)
+        uvStaticLightmap = uvStaticLightmap * unity_LightmapST.xy + unity_LightmapST.zw;
 
-//     return SampleLightmap(uvStaticLightmap, normalWS);
-// #else
-//     return ShadeSH9(float4(normalWS, 1.0));
-// #endif
+    return SampleLightmap(uvStaticLightmap, normalWS);
+#else
+    return ShadeSH9(float4(normalWS, 1.0));
+#endif
 return 0;
 }
 
-/*float3 shadergraph_LWReflectionProbe(float3 viewDir, float3 normalOS, float lod)
+float3 shadergraph_LWReflectionProbe(float3 viewDir, float3 normalOS, float lod)
 {
     float3 reflectVec = reflect(-viewDir, normalOS);
-    return DecodeHDREnvironment(SAMPLE_TEXTURECUBE_LOD(unity_SpecCube0, samplerunity_SpecCube0, reflectVec, lod), unity_SpecCube0_HDR);
-}*/
+    return DecodeHDR(SAMPLE_TEXTURECUBE_LOD(unity_SpecCube0, samplerunity_SpecCube0, reflectVec, lod), unity_SpecCube0_HDR);
+}
 
 void shadergraph_LWFog(float3 position, out float4 color, out float density)
 {
