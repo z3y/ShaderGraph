@@ -59,10 +59,10 @@ Varyings BuildVaryings(Attributes input)
 #endif
 
     
-#if defined(LIGHTMAP_ON)
+#if defined(LIGHTMAP_ON) && (SHADERPASS != SHADERPASS_UNLIT)
     output.lightmapUV.xy = input.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
-#if defined(DYNAMICLIGHTMAP_ON)
+#if defined(DYNAMICLIGHTMAP_ON) && (SHADERPASS != SHADERPASS_UNLIT)
     output.lightmapUV.zw = input.uv2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;;
 #endif
 

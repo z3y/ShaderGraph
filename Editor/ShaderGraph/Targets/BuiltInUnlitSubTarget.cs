@@ -211,7 +211,7 @@ namespace z3y.BuiltIn.ShaderGraph
 
                     // Conditional State
                     renderStates = renderStates,
-                    pragmas = CorePragmas.ForwardUnlit,
+                    pragmas = CorePragmas.Forward, // i guess we need keywords for certain things to work, so not ForwardUnlit
                     defines = new DefineCollection(),
                     keywords = new KeywordCollection(),
                     includes = UnlitIncludes.Unlit,

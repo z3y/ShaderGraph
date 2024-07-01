@@ -74,7 +74,8 @@ float3 shadergraph_LWBakedGI(float3 positionWS, float3 normalWS, float2 uvStatic
     if (applyScaling)
         uvStaticLightmap = uvStaticLightmap * unity_LightmapST.xy + unity_LightmapST.zw;
 
-    return SampleLightmap(uvStaticLightmap, normalWS);
+    half4 lm = SAMPLE_TEXTURE2D_LOD(unity_Lightmap, samplerunity_Lightmap, uvStaticLightmap, 0);
+    return lm;
 #else
     return ShadeSH9(float4(normalWS, 1.0));
 #endif
