@@ -38,7 +38,7 @@ For non VRChat projects you can import the unity package from releases instead
 
 ## Known issues
 
-- If you run into more bugs you can try out [ShaderGraphZ](https://github.com/z3y/ShaderGraphZ), a free custom node editor for the built-in pipeline, it is more reliable than this project
+- If you run into more bugs you can try out [Graphlit](https://github.com/z3y/Graphlit), a free custom node editor for the built-in pipeline, it is more reliable than this project
 
 
 ## Preview
