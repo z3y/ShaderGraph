@@ -11,6 +11,10 @@ Varyings BuildVaryings(Attributes input)
     input.normalOS.xyz = description.Normal.xyz;
     input.tangentOS.xyz = description.Tangent.xyz;
 
+    #if defined(CUSTOMINTERPOLATOR_VARYPASSTHROUGH_FUNC)
+        CustomInterpolatorPassThroughFunc(output, description);
+    #endif
+
     float3 positionWS = TransformObjectToWorld(input.positionOS);
 #if defined(ATTRIBUTES_NEED_NORMAL)
     float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
