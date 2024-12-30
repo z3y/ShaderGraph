@@ -7,7 +7,7 @@ namespace z3y.BuiltIn.ShaderGraph
 {
     static class CreateUnlitShaderGraph
     {
-        [MenuItem("Assets/Create/Shader Graph/BuiltIn (z3y)/Unlit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
+        [MenuItem("Assets/Create/Shader Graph/BuiltIn VRC/Unlit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
         public static void CreateUnlitGraph()
         {
             //var target = (BuiltInTarget)Activator.CreateInstance(typeof(BuiltInTarget));

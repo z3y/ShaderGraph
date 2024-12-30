@@ -7,7 +7,7 @@ namespace z3y.BuiltIn.ShaderGraph
 {
     static class CreateLitShaderGraph
     {
-        [MenuItem("Assets/Create/Shader Graph/BuiltIn (z3y)/Lit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
+        [MenuItem("Assets/Create/Shader Graph/BuiltIn VRC/Lit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
         public static void CreateLitGraph()
         {
             //var target = (BuiltInTarget)Activator.CreateInstance(typeof(BuiltInTarget));
@@ -20,7 +20,7 @@ namespace z3y.BuiltIn.ShaderGraph
             GraphUtil.CreateNewGraphWithOutputs(new[] { target }, blockDescriptors);
         }
 
-        [MenuItem("Assets/Create/Shader Graph/BuiltIn (z3y)/Flat-Lit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
+        [MenuItem("Assets/Create/Shader Graph/BuiltIn VRC/Flat-Lit Shader Graph", priority = CoreUtils.Sections.section1 + CoreUtils.Priorities.assetsCreateShaderMenuPriority)]
         public static void CreateFlatLitGraph()
         {
             //var target = (BuiltInTarget)Activator.CreateInstance(typeof(BuiltInTarget));
