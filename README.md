@@ -20,6 +20,7 @@ For non VRChat projects you can import the unity package from releases instead
 
 - Create a new Shader Graph shader `Create > Shader Graph > BuiltIn (z3y)`
 - For already existing shaders swap the built-in active target in graph settings
+- In some cases `Enable Material Override` needs to be checked in order for rendering modes to work properly
 
 ## Features
 - Fixed GPU instancing and rendering in VR
