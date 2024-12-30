@@ -141,7 +141,7 @@ namespace z3y.BuiltIn.ShaderGraph
 
         public BuiltInTarget()
         {
-            displayName = "Built-In (z3y)";
+            displayName = "Built-In VRC";
             m_SubTargets = TargetUtils.GetSubTargets(this);
             m_SubTargetNames = m_SubTargets.Select(x => x.displayName).ToList();
             TargetUtils.ProcessSubTargetList(ref m_ActiveSubTarget, ref m_SubTargets);

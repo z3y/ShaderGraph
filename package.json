@@ -1,9 +1,19 @@
 {
   "name": "io.z3y.github.shadergraph",
-  "version": "1.0.8",
+  "description": "Shader Graph Built-In Target for VRChat",
+  "version": "1.1.0",
   "unity": "2022.3",
-  "unityRelease": "6f1",
-  "displayName": "Shader Graph Target (z3y)",
+  "displayName": "Shader Graph VRC",
   "hideInEditor": false,
-  "description": "A bulit in target for shader graph with additional features and fixes"
+  "gitDependencies": {},
+  "vpmDependencies": {},
+  "legacyFolders": {},
+  "legacyFiles": {},
+  "dependencies": {
+    "com.unity.shadergraph": "14.0.10"
+  },
+  "author": {
+    "name": "z3y",
+    "url": "https://github.com/z3y"
+  }
 }
