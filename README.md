@@ -1,4 +1,4 @@
-# ShaderGraph
+# Shader Graph VRC
 
 Modified ShaderGraph Built-in pipeline target for Unity 2022 for VRChat (Forward Rendering only).
 
@@ -34,7 +34,6 @@ For non VRChat projects you can import the unity package from releases instead
 - Anisotropy
 - Audio Link
 - SSR
-- More
 
 ## Known issues
 
