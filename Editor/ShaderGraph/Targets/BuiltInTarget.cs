@@ -87,7 +87,7 @@ namespace z3y.BuiltIn.ShaderGraph
 
         // When checked, allows the material to control ALL surface settings (uber shader style)
         [SerializeField]
-        bool m_AllowMaterialOverride = false;
+        bool m_AllowMaterialOverride = true;
 
         [SerializeField]
         SurfaceType m_SurfaceType = SurfaceType.Opaque;
